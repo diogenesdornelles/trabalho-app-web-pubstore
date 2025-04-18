@@ -1,0 +1,15 @@
+import { AuthContext } from "@/context/auth-context";
+import { useContext } from "react";
+
+// Facilita o acesso aos valores do contexto em qualquer parte do app.
+export default function useSession() {
+    const value = useContext(AuthContext);
+    if (process.env.NODE_ENV !== 'production') {
+      if (!value) {
+        throw new Error('useSession must be wrapped in a <SessionProvider />');
+      }
+    }
+  
+    return value;
+  }
+  
