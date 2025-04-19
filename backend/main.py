@@ -2,11 +2,24 @@
 Main module
 """
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from routes.token import token_router
-from routes.product import product_router
+
+from src.config.init_db import init_db
+from src.routes.product import product_router
+from src.routes.token import token_router
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 # create app
 app = FastAPI()
