@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from src.config.get_db import get_db
 from src.models.customer import CustomerAuth
 from src.schemas.customer import Customer
-from utils.verify_hashed_value import verify_hashed_value
+from src.utils.verify_hashed_value import verify_hashed_value
 
 load_dotenv(find_dotenv())
 

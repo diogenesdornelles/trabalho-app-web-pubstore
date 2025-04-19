@@ -1,5 +1,10 @@
+""" Module Base from sql alchemy"""
 from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(DeclarativeBase):
-    pass
+    """Classe base para criar tabelas
+
+    Args:
+        DeclarativeBase (_type_):
+    """

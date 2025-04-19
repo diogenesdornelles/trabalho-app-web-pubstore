@@ -1,3 +1,4 @@
+""" Tabela Product """
 import enum
 import uuid
 from datetime import datetime, timezone
@@ -11,14 +12,24 @@ from src.config.base import Base
 
 
 class ProductType(enum.Enum):
-    chopp = "chopp"
-    wine = "wine"
-    drink = "drink"
-    sparkling = "sparkling"
+    """Enum de tipo de produto
+
+    Args:
+        enum
+    """
+    CHOPP = "chopp"
+    WINE = "wine"
+    DRINK = "drink"
+    SPARKLING = "sparkling"
 
 
 class Product(Base):
-    __tablename__ = "products"
+    """_summary_
+
+    Args:
+        Base (_type_): Sql Alchemy declarative base class
+    """
+    __tablename__ = "product"
 
     id = Column(
         UUID(as_uuid=True),
