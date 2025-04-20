@@ -5,25 +5,28 @@ Main module
 import os
 from contextlib import asynccontextmanager
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from src.config.init_db import init_db
+from src.config.get_db_session import sessionmanager
 from src.routes.product import product_router
 from src.routes.token import token_router
 
 
+load_dotenv()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """_summary_
-
-    Args:
-        app (FastAPI): _description_
-    """
-    await init_db()
     yield
+    if sessionmanager._engine is not None:
+        await init_db(sessionmanager._engine)
+        # Close the DB connection
+        await sessionmanager.close()
 
 
 app = FastAPI(

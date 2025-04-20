@@ -1,26 +1,18 @@
-import os
+"""Rota para o fornecimento de token para login"""
+
 from datetime import datetime, timedelta, timezone
 
 import jwt
-from dotenv import find_dotenv, load_dotenv
 from fastapi import APIRouter, Depends
 from fastapi.responses import ORJSONResponse
-from sqlalchemy.orm import Session
 
-from src.config.get_db import get_db
+from settings import Settings
+from src.crud.customer import get_one as one_cust
+from src.dependencies.db_session_dep import DBSessionDep
+from src.dependencies.get_settings import get_settings
+
 from src.models.customer import CustomerAuth
-from src.schemas.customer import Customer
-from src.utils.verify_hashed_value import verify_hashed_value
-
-load_dotenv(find_dotenv())
-
-SECRET_KEY = os.environ.get("SECRET_KEY")
-
-ALGORITHM = os.environ.get("ALGORITHM")
-
-ACCESS_TOKEN_EXPIRE_MINUTES = float(
-    os.environ.get("ACCESS_TOKEN_EXPIRE_MINUTES") or 86400
-)
+from src.dependencies.verify_pwd import verify_pwd
 
 token_router: APIRouter = APIRouter(
     prefix="/login",
@@ -32,26 +24,27 @@ token_router: APIRouter = APIRouter(
 
 @token_router.post("/", response_model=None)
 async def create_token(
-    customer: CustomerAuth, db: Session = Depends(get_db)
+    customer: CustomerAuth,
+    db_session: DBSessionDep,
+    settings: Settings = Depends(get_settings),
+    verifier=Depends(verify_pwd),
 ) -> ORJSONResponse:
-    customer_saved = db.get(Customer, {"cpf": customer.cpf})
+    customer_saved = await one_cust(db_session, customer.cpf)
     if not customer_saved:
         return ORJSONResponse(
             content={"failed": "Customert not found"},
             media_type="application/json; charset=UTF-8",
         )
-    is_valid: bool = verify_hashed_value(
-        customer.password, str(customer_saved.password)
-    )
+    is_valid: bool = verifier(customer.password, str(customer_saved.password))
     if is_valid:
         expiration = datetime.now(timezone.utc) + timedelta(
-            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+            minutes=float(settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         )
         data = {"token": customer_saved, "exp": expiration}
         token = jwt.encode(
             data,
-            key=SECRET_KEY,
-            algorithm=ALGORITHM,
+            key=settings.SECRET_KEY,
+            algorithm=settings.ALGORITHM,
             json_encoder=None,
         )
         return ORJSONResponse(

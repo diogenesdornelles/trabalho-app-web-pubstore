@@ -4,7 +4,7 @@ from typing import Self
 
 from pydantic import UUID4, BaseModel, ConfigDict, Field, model_validator
 
-from src.utils.cpf_validator import CpfValidator
+from src.dependencies.cpf_validator import CpfValidator
 
 
 class CustomerBase(BaseModel):
@@ -21,6 +21,8 @@ class CustomerBase(BaseModel):
     """
     name: str = Field(..., min_length=3, description="Customer name")
     cpf: str = Field(..., description="Customer CPF")
+
+    model_config = ConfigDict(from_attributes=True)
 
     @model_validator(mode="after")
     def cpf_must_be_valid(self) -> Self:
@@ -65,7 +67,7 @@ class CustomerOut(CustomerInDB):
     Args:
         CustomerInDB (BaseModel): Classe core de Customer
     """
-    model_config = ConfigDict(from_attributes=True)
+    
 
 
 class CustomerAuth(BaseModel):

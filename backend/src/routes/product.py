@@ -1,15 +1,17 @@
-""" Rotas para produtos"""
+"""Rotas para produtos"""
+
 from typing import Annotated, Literal, Optional
 
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import ORJSONResponse
-from sqlalchemy.orm import Session
 
+from src.crud.product import get_all as all_prods
+from src.crud.product import get_many as many_prods
+from src.crud.product import get_one as one_prod
 from src.dependencies.customer_auth import customer_auth
-from src.config.get_db import get_db
+from src.dependencies.db_session_dep import DBSessionDep
 from src.dependencies.validate_price_range import validate_price_range
 from src.models.product import ProductOut
-from src.schemas.product import Product
 
 product_router: APIRouter = APIRouter(
     prefix="/products",
@@ -21,9 +23,9 @@ product_router: APIRouter = APIRouter(
 
 
 @product_router.get("/all", response_model=list[ProductOut])
-async def get_all(db: Session = Depends(get_db)) -> ORJSONResponse:
+async def get_all(db_session: DBSessionDep) -> ORJSONResponse:
     # Busca todos os registros da tabela Product
-    result = db.query(Product).all()
+    result = await all_prods(db_session)
     return ORJSONResponse(
         content=[ProductOut.model_validate(prod).model_dump() for prod in result],
         media_type="application/json; charset=UTF-8",
@@ -32,6 +34,7 @@ async def get_all(db: Session = Depends(get_db)) -> ORJSONResponse:
 
 @product_router.get("/many", response_model=list[ProductOut])
 async def get_many(
+    db_session: DBSessionDep,
     name: Optional[str] = None,
     description: Optional[str] = None,
     brand: Optional[str] = None,
@@ -39,27 +42,18 @@ async def get_many(
     price_range: tuple[Optional[float], Optional[float]] = Depends(
         validate_price_range
     ),
-    db: Session = Depends(get_db),
 ) -> ORJSONResponse:
     min_price, max_price = price_range
 
-    query = db.query(Product)
-
-    if name:
-        query = query.filter(Product.name.ilike(f"%{name}%"))
-    if description:
-        query = query.filter(Product.description.ilike(f"%{description}%"))
-    if brand:
-        query = query.filter(Product.brand.ilike(f"%{brand}%"))
-    if product_type:
-        query = query.filter(Product.type == product_type)
-    if min_price:
-        query = query.filter(Product.price >= min_price)
-    if max_price:
-        query = query.filter(Product.price <= max_price)
-
-    # Executa a consulta e retorna os resultados
-    result = query.all()
+    result = await many_prods(
+        db_session=db_session,
+        name=name,
+        description=description,
+        brand=brand,
+        product_type=product_type,
+        min_price=min_price,
+        max_price=max_price,
+    )
     return ORJSONResponse(
         content=[ProductOut.model_validate(prod).model_dump() for prod in result],
         media_type="application/json; charset=UTF-8",
@@ -76,10 +70,10 @@ async def get_one(
             description="id must be valid",
         ),
     ],
-    db: Session = Depends(get_db),
+    db_session: DBSessionDep,
 ) -> ORJSONResponse:
     if product_id:
-        result = db.get(Product, {"id": product_id})
+        result = await one_prod(db_session, product_id)
         return ORJSONResponse(
             content=ProductOut.model_validate(result).model_dump(),
             media_type="application/json; charset=UTF-8",

@@ -8,7 +8,7 @@ from sqlalchemy import (Boolean, Column, DateTime, Integer, Numeric, String,
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped
 
-from src.config.base import Base
+from src.schemas.base import Base
 
 
 class ProductType(enum.Enum):
@@ -39,7 +39,7 @@ class Product(Base):
         index=True,
         nullable=False,
     )
-    name = Column(String(100), nullable=False)
+    name = Column(String(100), nullable=False, unique=True)
     brand = Column(String(100), nullable=False)
     description = Column(Text, nullable=False)
     price = Column(Numeric(10, 2), nullable=False)

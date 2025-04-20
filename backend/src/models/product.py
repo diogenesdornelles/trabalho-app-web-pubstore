@@ -22,7 +22,7 @@ class ProductBase(BaseModel):
     quantity: int = Field(gt=0, description="Product stock quantity")
     volume: float = Field(gt=0, description="Product volume")
     source: str | None = Field(default=None, description="Product image source")
-
+    model_config = ConfigDict(from_attributes=True)
 
 class ProductIn(ProductBase):
     """Validador de entrada para produto
@@ -50,4 +50,3 @@ class ProductOut(ProductInDB):
     Args:
         ProductInDB (_type_): _description_
     """
-    model_config = ConfigDict(from_attributes=True)
