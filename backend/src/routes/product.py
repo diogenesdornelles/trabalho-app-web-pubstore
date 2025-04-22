@@ -27,7 +27,7 @@ async def get_all(db_session: DBSessionDep) -> ORJSONResponse:
     # Busca todos os registros da tabela Product
     result = await all_prods(db_session)
     return ORJSONResponse(
-        content=[ProductOut.model_validate(prod).model_dump() for prod in result],
+        content=[prod.model_dump() for prod in result],
         media_type="application/json; charset=UTF-8",
     )
 
@@ -55,7 +55,7 @@ async def get_many(
         max_price=max_price,
     )
     return ORJSONResponse(
-        content=[ProductOut.model_validate(prod).model_dump() for prod in result],
+        content=[prod.model_dump() for prod in result],
         media_type="application/json; charset=UTF-8",
     )
 
@@ -75,7 +75,7 @@ async def get_one(
     if product_id:
         result = await one_prod(db_session, product_id)
         return ORJSONResponse(
-            content=ProductOut.model_validate(result).model_dump(),
+            content=result.model_dump(),
             media_type="application/json; charset=UTF-8",
         )
     return ORJSONResponse(

@@ -7,8 +7,8 @@ from sqlalchemy.future import select
 from src.schemas.base import Base
 from src.config.get_db_session import sessionmanager
 
-class MakeMigration:
-    """Realiza a migração para qualquer tabela, de acordo com uma lista de objetos e uma key"""
+class MakeSeed:
+    """Popula tabelas, de acordo com uma lista de objetos e uma key para verificar repetição"""
 
     def __init__(self, objs: Sequence[BaseModel], table: Base, key: str):
         self.objs = objs
@@ -17,7 +17,7 @@ class MakeMigration:
         self.key = key
 
     async def start(self):
-        """Inicia a migração"""
+        """Inicia a o processo de seed"""
         if len(self.objs) > 0:
             async with self.sessionmanager.session() as session:
                 for obj in self.objs:

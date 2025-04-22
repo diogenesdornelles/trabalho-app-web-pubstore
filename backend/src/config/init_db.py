@@ -2,10 +2,9 @@
 
 from sqlalchemy.ext.asyncio import AsyncEngine
 from src.schemas.base import Base
-from src.migrations.customers import costumers
-from src.migrations.make_migration import MakeMigration
-from src.config.get_db_session import get_db_session
-from fastapi import Depends
+from src.seeds.customers import costumers
+from src.seeds.make_seed import MakeSeed
+
 
 async def init_db(engine: AsyncEngine) -> None:
     """Inicializa o banco de dados e cria as tabelas"""
@@ -16,9 +15,9 @@ async def init_db(engine: AsyncEngine) -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    # Realiza as migrações
-    custmgt = MakeMigration(costumers, Customer, "cpf")  # type: ignore
+    # Realiza as seeds
+    custmgt = MakeSeed(costumers, Customer, "cpf")  # type: ignore
     await custmgt.start()
 
-    prodmgt = MakeMigration([], Product, "name")  # type: ignore
+    prodmgt = MakeSeed([], Product, "name")  # type: ignore
     await prodmgt.start()

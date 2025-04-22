@@ -1,11 +1,12 @@
 """Rota para o fornecimento de token para login"""
 
 from datetime import datetime, timedelta, timezone
+from typing import Annotated
 
 import jwt
 from fastapi import APIRouter, Depends
 from fastapi.responses import ORJSONResponse
-
+from fastapi import Body
 from settings import Settings
 from src.crud.customer import get_one as one_cust
 from src.dependencies.db_session_dep import DBSessionDep
@@ -24,10 +25,9 @@ token_router: APIRouter = APIRouter(
 
 @token_router.post("/", response_model=None)
 async def create_token(
-    customer: CustomerAuth,
+    customer: Annotated[CustomerAuth, Body()],
     db_session: DBSessionDep,
     settings: Settings = Depends(get_settings),
-    verifier=Depends(verify_pwd),
 ) -> ORJSONResponse:
     customer_saved = await one_cust(db_session, customer.cpf)
     if not customer_saved:
@@ -35,12 +35,15 @@ async def create_token(
             content={"failed": "Customert not found"},
             media_type="application/json; charset=UTF-8",
         )
-    is_valid: bool = verifier(customer.password, str(customer_saved.password))
+    is_valid: bool = verify_pwd(customer.password, str(customer_saved.password))
     if is_valid:
         expiration = datetime.now(timezone.utc) + timedelta(
             minutes=float(settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         )
-        data = {"token": customer_saved, "exp": expiration}
+        data = {
+            "token": customer_saved.model_dump(mode='json'),
+            "exp": expiration,
+        }
         token = jwt.encode(
             data,
             key=settings.SECRET_KEY,

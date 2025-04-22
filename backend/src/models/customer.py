@@ -49,7 +49,7 @@ class CustomerIn(CustomerBase):
     password: str = Field(..., description="Customer password")
 
 
-class CustomerInDB(CustomerBase):
+class CustomerInDB(CustomerIn):
     """Classe de cliente no DB
 
     Args:
@@ -61,14 +61,16 @@ class CustomerInDB(CustomerBase):
     )
 
 
-class CustomerOut(CustomerInDB):
+class CustomerOut(CustomerBase):
     """Classe de resposta para um produto
 
     Args:
         CustomerInDB (BaseModel): Classe core de Customer
     """
-    
-
+    id: UUID4 = Field(..., description="Customer ID")
+    created_at: datetime | None = Field(
+        default=None, description="Product image source"
+    )
 
 class CustomerAuth(BaseModel):
     """Classe de validação p/ autenticação
