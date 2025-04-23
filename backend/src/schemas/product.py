@@ -1,26 +1,13 @@
 """ Tabela Product """
-import enum
 import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy import (Boolean, Column, DateTime, Integer, Numeric, String,
-                        Text)
+                        Text, Enum as SqlEnum)
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped
+from src.models.product import TypeEnum
 
 from src.schemas.base import Base
-
-
-class ProductType(enum.Enum):
-    """Enum de tipo de produto
-
-    Args:
-        enum
-    """
-    CHOPP = "chopp"
-    WINE = "wine"
-    DRINK = "drink"
-    SPARKLING = "sparkling"
 
 
 class Product(Base):
@@ -45,7 +32,7 @@ class Product(Base):
     price = Column(Numeric(10, 2), nullable=False)
     alcohol_content = Column(Numeric(5, 2), nullable=False)
     ibu = Column(Numeric(5, 2), nullable=False)
-    type: Mapped[ProductType]
+    type = Column(SqlEnum(TypeEnum))
     disponible = Column(Boolean, nullable=False, default=True)
     quantity = Column(Integer, nullable=False)
     volume = Column(Numeric(10, 2), nullable=False)

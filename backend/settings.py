@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PWD: str
     DB_PORT: str
+    SUPER_USER_COD: str
+    SUPER_USER_PWD: str
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )

@@ -11,4 +11,4 @@ def get_settings() -> Settings:
     Returns:
         _type_: _description_
     """
-    return Settings()
+    return Settings()  # type: ignore

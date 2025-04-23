@@ -1,9 +1,16 @@
 """Módulo: classes de validação pydantic para produto"""
 from datetime import datetime
-from typing import Literal
+from enum import Enum
 
 from pydantic import UUID4, BaseModel, ConfigDict, Field
 
+
+class TypeEnum(str, Enum):
+    chopp = "chopp"
+    wine = "wine"
+    beer = "beer"
+    whiskey = "whiskey"
+    sparkling = "sparkling"
 
 class ProductBase(BaseModel):
     """Clases core de validação p/ produto
@@ -14,12 +21,12 @@ class ProductBase(BaseModel):
     name: str = Field(min_length=3, description="Product name")
     brand: str = Field(min_length=3, description="Product brand")
     description: str = Field(min_length=3, description="Product description")
-    price: float = Field(gt=0, description="Product price")
+    price: float = Field(ge=0, description="Product price")
     alcohol_content: float = Field(gt=0, description="Product alcohol content")
-    ibu: float = Field(gt=0, description="Product ibu")
-    type: Literal["chopp", "wine", "drink", "sparkling"]
+    ibu: float = Field(ge=0, description="Product ibu")
+    type: TypeEnum = Field(description="Product type must be chopp, wine, beer, whiskey or sparkling")
     disponible: bool = Field(description="Product disponibility")
-    quantity: int = Field(gt=0, description="Product stock quantity")
+    quantity: int = Field(ge=0, description="Product stock quantity")
     volume: float = Field(gt=0, description="Product volume")
     source: str | None = Field(default=None, description="Product image source")
     model_config = ConfigDict(from_attributes=True)

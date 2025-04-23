@@ -3,6 +3,7 @@
 from sqlalchemy.ext.asyncio import AsyncEngine
 from src.schemas.base import Base
 from src.seeds.customers import costumers
+from src.seeds.products import products
 from src.seeds.make_seed import MakeSeed
 
 
@@ -19,5 +20,5 @@ async def init_db(engine: AsyncEngine) -> None:
     custmgt = MakeSeed(costumers, Customer, "cpf")  # type: ignore
     await custmgt.start()
 
-    prodmgt = MakeSeed([], Product, "name")  # type: ignore
+    prodmgt = MakeSeed(products, Product, "name")  # type: ignore
     await prodmgt.start()
