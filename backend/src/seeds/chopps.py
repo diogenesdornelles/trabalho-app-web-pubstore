@@ -1,5 +1,4 @@
-from src.models.product import ProductIn
-from src.models.product import TypeEnum
+from src.models.product import ProductIn, TypeEnum
 
 # OK!!
 

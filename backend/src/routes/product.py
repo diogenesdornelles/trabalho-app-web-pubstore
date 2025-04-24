@@ -4,7 +4,6 @@ from typing import Annotated, Literal, Optional
 
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import ORJSONResponse
-
 from src.crud.product import get_all as all_prods
 from src.crud.product import get_many as many_prods
 from src.crud.product import get_one as one_prod

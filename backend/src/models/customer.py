@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Self
 
 from pydantic import UUID4, BaseModel, ConfigDict, Field, model_validator
-
 from src.dependencies.cpf_validator import CpfValidator
 
 

@@ -10,12 +10,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 from fastapi.staticfiles import StaticFiles
-
-from src.config.init_db import init_db
 from src.config.get_db_session import sessionmanager
+from src.config.init_db import init_db
 from src.routes.product import product_router
 from src.routes.token import token_router
-
 
 load_dotenv()
 

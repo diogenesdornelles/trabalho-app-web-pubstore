@@ -2,8 +2,8 @@
 
 from sqlalchemy.ext.asyncio import AsyncEngine
 from src.schemas.base import Base
-from src.seeds.customers import costumers
 from src.seeds.chopps import chopps
+from src.seeds.customers import costumers
 from src.seeds.make_seed import MakeSeed
 
 

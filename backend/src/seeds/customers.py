@@ -1,8 +1,8 @@
 """Dados para migração de cliente"""
 
 from src.dependencies.get_pwd_hash import get_pwd_hash
-from src.models.customer import CustomerIn
 from src.dependencies.get_settings import get_settings
+from src.models.customer import CustomerIn
 
 settings = get_settings()
 

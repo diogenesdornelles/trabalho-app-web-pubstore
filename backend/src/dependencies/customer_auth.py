@@ -4,7 +4,6 @@ from typing import Annotated, Dict, Literal, Optional, TypedDict
 
 import jwt
 from fastapi import Depends, Request, status
-
 from settings import Settings
 from src.crud.customer import get_one
 from src.dependencies.db_session_dep import DBSessionDep

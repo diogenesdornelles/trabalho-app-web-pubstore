@@ -4,7 +4,6 @@ from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
-
 from src.schemas.base import Base
 
 

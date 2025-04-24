@@ -4,16 +4,14 @@ from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 import jwt
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 from fastapi.responses import ORJSONResponse
-from fastapi import Body
 from settings import Settings
 from src.crud.customer import get_one as one_cust
 from src.dependencies.db_session_dep import DBSessionDep
 from src.dependencies.get_settings import get_settings
-
-from src.models.customer import CustomerAuth
 from src.dependencies.verify_pwd import verify_pwd
+from src.models.customer import CustomerAuth
 
 token_router: APIRouter = APIRouter(
     prefix="/login",
