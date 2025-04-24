@@ -1,7 +1,7 @@
 from src.models.product import ProductIn
 from src.models.product import TypeEnum
 
-products: list[ProductIn] = [
+chopps: list[ProductIn] = [
     ProductIn(
         name="Chopp SUD PREMIUM LAGER puro malte 500ml",
         description="""A primeira Pilsen artesanal da Serra Gaúcha em embalagem família!
@@ -85,6 +85,19 @@ products: list[ProductIn] = [
         ibu=11,
         disponible=True,
         source="http://127.0.0.1:8080/src/static/chopp_stier_weiss_1_5L.png",
+        quantity=50,
+        volume=1500,
+    ),
+        ProductIn(
+        name="Chopp Factory Pilsen Pet com 1L",
+        description="""Chopp Pilsen artesanal em embalagem 1L""",
+        price=21.0,
+        brand="Factory",
+        type=TypeEnum.chopp,
+        alcohol_content=4.6,
+        ibu=11,
+        disponible=True,
+        source="http://127.0.0.1:8080/src/static/chopp_factory_pilsen_1L.png",
         quantity=50,
         volume=1500,
     ),
