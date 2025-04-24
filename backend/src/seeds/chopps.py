@@ -1,6 +1,8 @@
 from src.models.product import ProductIn
 from src.models.product import TypeEnum
 
+# OK!!
+
 chopps: list[ProductIn] = [
     ProductIn(
         name="Chopp SUD PREMIUM LAGER puro malte 500ml",
@@ -81,12 +83,12 @@ chopps: list[ProductIn] = [
         price=21.0,
         brand="Stier",
         type=TypeEnum.chopp,
-        alcohol_content=4.6,
-        ibu=11,
+        alcohol_content=4.3,
+        ibu=16,
         disponible=True,
-        source="http://127.0.0.1:8080/src/static/chopp_stier_weiss_1_5L.png",
+        source="http://127.0.0.1:8080/src/static/chopp_stier_red_ale_1L.png",
         quantity=50,
-        volume=1500,
+        volume=1000,
     ),
         ProductIn(
         name="Chopp Factory Pilsen Pet com 1L",
@@ -99,6 +101,6 @@ chopps: list[ProductIn] = [
         disponible=True,
         source="http://127.0.0.1:8080/src/static/chopp_factory_pilsen_1L.png",
         quantity=50,
-        volume=1500,
+        volume=1000,
     ),
 ]
