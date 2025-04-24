@@ -32,6 +32,9 @@ class MakeSeed:
                         # Cria uma nova instância do modelo SQLAlchemy
                         new_entry = self.table(**obj.model_dump())
                         session.add(new_entry)
+                        print(
+                            f"Record key {self.key} value {getattr(obj, self.key)} saved"
+                        )
                     else:
                         print(
                             f"Record key {self.key} value {getattr(obj, self.key)} already inserted"
@@ -40,4 +43,4 @@ class MakeSeed:
                 # Confirma a transação
                 await session.commit()
         else:
-            print("Nothing to do here")
+            print("Nothing to do here...")

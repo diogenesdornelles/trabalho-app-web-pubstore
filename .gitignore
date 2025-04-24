@@ -48,3 +48,14 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+.mypy_cache
+.ruff_cache
+
+
+.venv
+/backend/src/static/*.png
+/backend/src/static/*.jpeg
+/backend/src/static/*.jpe
+/backend/src/static/*.webp
+

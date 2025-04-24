@@ -31,7 +31,7 @@ class Product(Base):
     description = Column(Text, nullable=False)
     price = Column(Numeric(10, 2), nullable=False)
     alcohol_content = Column(Numeric(5, 2), nullable=False)
-    ibu = Column(Numeric(5, 2), nullable=False)
+    ibu = Column(Numeric(5, 2), nullable=False) # qualificação de amargor em cerveja ou chopp. Marcar 0.0 para outros tipos.
     type = Column(SqlEnum(TypeEnum))
     disponible = Column(Boolean, nullable=False, default=True)
     quantity = Column(Integer, nullable=False)
