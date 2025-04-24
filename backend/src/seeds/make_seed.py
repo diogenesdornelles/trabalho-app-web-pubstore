@@ -37,7 +37,7 @@ class MakeSeed:
         if len(self.objs) > 0:
             async with self.sessionmanager.session() as session:
                 for obj in self.objs:
-                    if not self.check_if_exists(session, obj):
+                    if not await self.check_if_exists(session, obj):
                         await self.save(session, obj)
                         print(
                             f"Record key {self.key} value {getattr(obj, self.key)} saved"

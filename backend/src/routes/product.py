@@ -23,10 +23,10 @@ product_router: APIRouter = APIRouter(
 
 @product_router.get("/all", response_model=list[ProductOut])
 async def get_all(db_session: DBSessionDep) -> ORJSONResponse:
-    # Busca todos os registros da tabela Product
+    """Busca todos os registros da tabela Product"""
     result = await all_prods(db_session)
     return ORJSONResponse(
-        content=[prod.model_dump() for prod in result],
+        content=[prod.model_dump(mode='json') for prod in result],
         media_type="application/json; charset=UTF-8",
     )
 
@@ -38,10 +38,15 @@ async def get_many(
     description: Optional[str] = None,
     brand: Optional[str] = None,
     product_type: Optional[Literal["chopp", "wine", "drink", "sparkling"]] = None,
+    skip: Optional[int] = None,
     price_range: tuple[Optional[float], Optional[float]] = Depends(
         validate_price_range
     ),
 ) -> ORJSONResponse:
+    """Busca produtos de acordo com filtro e um skip. 
+       Retorna no máximo 10 produtos por vez.
+       Basta passar um skip para paginação.
+       """
     min_price, max_price = price_range
 
     result = await many_prods(
@@ -52,14 +57,15 @@ async def get_many(
         product_type=product_type,
         min_price=min_price,
         max_price=max_price,
+        skip=skip
     )
     return ORJSONResponse(
-        content=[prod.model_dump() for prod in result],
+        content=[prod.model_dump(mode='json') for prod in result],
         media_type="application/json; charset=UTF-8",
     )
 
 
-@product_router.get("/{product_id}", response_model=ProductOut)
+@product_router.get("/one/{product_id}", response_model=ProductOut)
 async def get_one(
     product_id: Annotated[
         str | None,
@@ -71,10 +77,11 @@ async def get_one(
     ],
     db_session: DBSessionDep,
 ) -> ORJSONResponse:
+    """Busca produto por ID"""
     if product_id:
         result = await one_prod(db_session, product_id)
         return ORJSONResponse(
-            content=result.model_dump(),
+            content=result.model_dump(mode='json'),
             media_type="application/json; charset=UTF-8",
         )
     return ORJSONResponse(

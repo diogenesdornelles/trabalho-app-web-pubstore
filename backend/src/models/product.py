@@ -6,6 +6,12 @@ from pydantic import UUID4, BaseModel, ConfigDict, Field
 
 
 class TypeEnum(str, Enum):
+    """Enum para o tipo de produto
+
+    Args:
+        str (_type_):
+        Enum (_type_):
+    """
     chopp = "chopp"
     wine = "wine"
     beer = "beer"

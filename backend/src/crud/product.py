@@ -1,3 +1,5 @@
+"""CRUD para produtos"""
+
 from typing import Literal, Optional
 from uuid import UUID
 
