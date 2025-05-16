@@ -57,7 +57,7 @@ export default function Menu() {
                <Link
                   href={{
                      pathname: '/(app)/(items)/[type_text]' as ExternalPathString,
-                     params: { type: `${button.type}_${button.text}` }
+                     params: { type_text: `${button.type}_${button.text}` }
                   }}
                   style={[styles.link, { marginHorizontal: 'auto' }]}
                   asChild

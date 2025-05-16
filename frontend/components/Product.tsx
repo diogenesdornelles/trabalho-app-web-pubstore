@@ -6,89 +6,141 @@ import { cssVar } from "@/constants/css";
 import useBasketStore from "@/hooks/useBasketStore";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { ProductProps } from "@/interfaces/Product.interface";
-
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function Product(item: ProductProps): React.ReactElement {
     const state = useBasketStore((state) => state);
 
-    const handleAddToBasket = () => {
+    const handleAddToBasket = (e: any) => {
+        // Evitar que o evento se propague para o TouchableOpacity pai
+        e.stopPropagation();
+
         if (!item.disponible) {
             Alert.alert(
-                "Error",
-                `Failed to add: indisponible product`,
-                [
-                    {
-                        text: "OK",
-                        style: "cancel"
-                    }
-                ]
+                "Erro",
+                `Falha ao adicionar: produto indisponível`,
+                [{ text: "OK", style: "cancel" }]
             );
-            return
+            return;
         }
+
         if (state && !state.customer_id) {
             Alert.alert(
-                "Error",
-                `Failed to add: indisponible customer info`,
-                [
-                    {
-                        text: "OK",
-                        style: "cancel"
-                    }
-                ]
+                "Erro",
+                `Falha ao adicionar: informações do cliente indisponíveis`,
+                [{ text: "OK", style: "cancel" }]
             );
-            return
+            return;
         }
-        state.addProduct({ ...item, customer_id: state.customer_id, total_price: 0, quantity: 1 });
+
+        const product = { ...item, quantity: 1, total_price: 0, customer_id: state.customer_id }
+
+        if (!state.products.some((_product) => _product.id === item.id)) {
+            state.addProduct(product);
+            Alert.alert(
+                "Sucesso",
+                `Produto ${item.name} adicionado ao carrinho com sucesso!`,
+                [{ text: "OK", style: "cancel" }]
+            );
+        } else {
+            Alert.alert(
+                "Aviso",
+                `Produto ${item.name} já consta no carrinho! Deseja atualizar a quantidade?`,
+                [{ text: "OK", style: "cancel", onPress: () => state.updateProduct(item.id, product) },
+                { text: "Cancelar", style: "cancel" }]
+            );
+
+        }
     }
 
     return (
-        <Link
-            href={{
-                pathname: '/(app)/(details)/[id]',
-                params: { id: item.id }
-            }}
-            style={[styles.link, { marginHorizontal: 'auto', marginBottom: 30 }]}
-            asChild
-        >
-            <TouchableOpacity
-                style={styles.container}
-                activeOpacity={.7}
-                disabled={!item.disponible}
-                onPress={() => { if (!item.disponible) alert('Product not disponible'); }}
+        <View style={styles.wrapper}>
+            <Link
+                href={{
+                    pathname: '/(app)/(details)/[id]',
+                    params: { id: item.id }
+                }}
+                style={[styles.link, { marginBottom: 30 }]}
+                asChild
             >
-                <Image source={item.source} style={styles.image} contentFit="scale-down" />
-                <View style={styles.textContainer}>
-                    {!item.disponible && (
-                        <SimpleLineIcons name="basket" size={RFValue(20)} color={cssVar.color.darkRed} onPress={handleAddToBasket} />
-                    )}
-                    <Text style={styles.name}>{item.name}</Text>
-                </View>
-                <View style={styles.footer}>
-                    <Text style={styles.value}>USD$ {item.price.toFixed(2)}</Text>
-                    <Text style={styles.type}>{item.type}</Text>
-                    <Text style={[styles.status, item.disponible ? styles.available : styles.unavailable]}>
-                        {item.disponible ? "Disponible" : "Undisponible"}
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        </Link>
+                <TouchableOpacity
+                    style={styles.container}
+                    activeOpacity={.7}
+                    disabled={!item.disponible}
+                >
+                    <Image source={item.source} style={styles.image} contentFit="scale-down" />
+                    <View style={styles.textContainer}>
+                        <Text style={styles.name}>{item.name}</Text>
+                    </View>
+                    <View style={styles.footer}>
+                        <Text style={styles.value}>R$ {item.price.toFixed(2)}</Text>
+                        <Text style={styles.type}>{item.type}</Text>
+                        <Text style={[styles.status, item.disponible ? styles.available : styles.unavailable]}>
+                            {item.disponible ? "Disponível" : "Indisponível"}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </Link>
+            {item.disponible && (
+                <TouchableOpacity
+                    style={styles.basketButton}
+                    onPress={handleAddToBasket}
+                    activeOpacity={0.7}
+                >
+                    <View style={styles.plusBadge}>
+                        <AntDesign name="plus" size={RFValue(12)} color="white" />
+                    </View>
+                    <SimpleLineIcons
+                        name="basket"
+                        size={RFValue(24)}
+                        color={cssVar.color.highlight}
+                    />
+                </TouchableOpacity>
+            )}
+            <View style={styles.tooltipContainer}>
+                <Text style={styles.tooltipText}>Ver detalhes</Text>
+            </View>
+        </View>
     );
 }
 
-
 const styles = StyleSheet.create({
+    wrapper: {
+        position: 'relative',
+        width: '100%',
+        alignItems: 'center',
+        marginVertical: RFValue(8),
+    },
+    basketButton: {
+        position: 'absolute',
+        top: RFValue(10),
+        right: RFValue(10),
+        zIndex: 10,
+        padding: RFValue(8),
+    },
+    plusBadge: {
+        position: 'absolute',
+        top: RFValue(0),
+        right: RFValue(0),
+        backgroundColor: 'red',
+        borderRadius: RFValue(10),
+        width: RFValue(20),
+        height: RFValue(20),
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 20,
+    },
     container: {
         width: "95%",
         backgroundColor: cssVar.color.backgroundDark,
         borderRadius: 5,
         padding: RFValue(10),
-        marginVertical: RFValue(8),
         alignItems: "center",
         shadowColor: cssVar.color.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
-        elevation: 5
+        elevation: 5,
     },
     image: {
         width: "100%",
@@ -139,5 +191,20 @@ const styles = StyleSheet.create({
     link: {
         width: "100%",
         textDecorationLine: "none"
-    }
+    },
+    tooltipContainer: {
+        position: 'absolute',
+        top: RFValue(10),
+        left: RFValue(10),
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        borderRadius: RFValue(5),
+        padding: RFValue(5),
+        zIndex: 15,
+        // display: 'none', 
+    },
+    tooltipText: {
+        color: 'white',
+        fontSize: RFValue(10),
+        fontWeight: 'bold',
+    },
 });

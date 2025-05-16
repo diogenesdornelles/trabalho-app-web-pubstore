@@ -3,7 +3,7 @@ import { ProductBasketProps } from "@/interfaces/Product.interface";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 
 interface BasketItemProps {
@@ -29,12 +29,40 @@ export default function BasketItem({ product, index, removeProduct, updateProduc
                 quantity: product.quantity - 1,
             });
         } else {
-            removeProduct(product);
+            Alert.alert(
+                'Remover Produto',
+                `Deseja remover ${product.name} do carrinho?`,
+                [
+                    {
+                        text: 'Cancelar',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Remover',
+                        onPress: () => removeProduct(product),
+                        style: 'destructive',
+                    }
+                ]
+            );
         }
     };
 
     const handleRemove = () => {
-        removeProduct(product);
+        Alert.alert(
+            'Remover Produto',
+            `Deseja remover ${product.name} do carrinho?`,
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Remover',
+                    onPress: () => removeProduct(product),
+                    style: 'destructive',
+                }
+            ]
+        );
     };
 
     return (
@@ -44,9 +72,9 @@ export default function BasketItem({ product, index, removeProduct, updateProduc
             <View style={styles.info}>
                 <Text style={styles.name}>{product.name}</Text>
                 <Text style={styles.quantity}>Quantidade: {product.quantity}</Text>
-                <Text style={styles.price}>Preço: BRL$ {product.price.toFixed(2)}</Text>
+                <Text style={styles.price}>Preço: R$ {product.price.toFixed(2)}</Text>
                 <Text style={styles.totalPrice}>
-                    Total: BRL$ {product.total_price.toFixed(2)}
+                    Total: R$ {product.total_price.toFixed(2)}
                 </Text>
             </View>
             <View style={styles.actions}>

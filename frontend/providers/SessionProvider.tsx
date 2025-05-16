@@ -33,7 +33,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
             }
         }
 
-    }, [isLoading, session]);
+    }, [isLoading, session, updateCustomerId, setAuthSession]);
 
 
     const signIn = useCallback(async (cpf: string, password: string): Promise<boolean> => {
@@ -45,6 +45,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
                     token: loginData.access_token,
                     cpf: loginData.customer.cpf,
                     name: loginData.customer.name,
+                    email: loginData.customer.email,
+                    address: loginData.customer.address,
                     id: loginData.customer.id,
                     loggedAt: date.toISOString()
                 };

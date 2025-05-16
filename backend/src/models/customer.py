@@ -35,7 +35,6 @@ class CustomerIn(CustomerBase):
     Args:
         CustomerBase (BaseModel): Classe core de Customer
     """
-    
     password: str = Field(..., description="Customer password")
 
 

@@ -3,7 +3,7 @@ import useSession from '@/hooks/useSession';
 import { useRouter } from 'expo-router';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 
@@ -12,7 +12,7 @@ export const SignInForm = () => {
   const router = useRouter();
   const SignupSchema = Yup.object().shape({
     cpf: Yup.string()
-    .transform((value) => value.replace(/\D/g, ''))
+      .transform((value) => value.replace(/\D/g, ''))
       .matches(/^\d{11}$/, 'CPF deve conter 11 dígitos')
       .required('Obrigatório'),
     password: Yup.string()
@@ -25,7 +25,15 @@ export const SignInForm = () => {
 
   const handleSignIn = (success: boolean) => {
     if (success) {
-      router.replace('/home');
+      Alert.alert(
+        'Sucesso',
+        'Você está logado com sucesso!',
+        [{
+          text: 'OK',
+          onPress: () => router.push('/home'),
+          style: 'cancel',
+        }]
+      );
     } else {
       setError(true);
       setTimeout(() => {
@@ -41,16 +49,16 @@ export const SignInForm = () => {
       validationSchema={SignupSchema}
     >
       {({
-          handleChange,
-          handleBlur,
-          submitForm,
-          values,
-          errors,
-          touched,
+        handleChange,
+        handleBlur,
+        submitForm,
+        values,
+        errors,
+        touched,
       }) => (
         <View style={styles.form}>
           <Text style={styles.title}>Sign-in</Text>
-          <Text style={styles.message}>Enter cpf and password</Text>
+          <Text style={styles.message}>Informe CPF e senha</Text>
           <View style={styles.inputRow}>
             <Text style={styles.label} nativeID="labelcpf">cpf</Text>
             <TextInput
@@ -66,7 +74,7 @@ export const SignInForm = () => {
             )}
           </View>
           <View style={styles.inputRow}>
-            <Text style={styles.label} nativeID="labelPwd">Password</Text>
+            <Text style={styles.label} nativeID="labelPwd">Senha</Text>
             <TextInput
               placeholder="Password"
               onChangeText={handleChange('password')}
@@ -80,9 +88,9 @@ export const SignInForm = () => {
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
           </View>
-          {error && <Text style={styles.errorText}>Wrong password or cpf</Text>}
+          {error && <Text style={styles.errorText}>CPF ou senha errados</Text>}
           <TouchableOpacity onPress={() => submitForm()} style={styles.button}>
-            <Text style={styles.buttonText}>Submit</Text>
+            <Text style={styles.buttonText}>Enviar</Text>
           </TouchableOpacity>
         </View>
       )}

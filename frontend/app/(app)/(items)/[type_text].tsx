@@ -13,13 +13,11 @@ export default function Items() {
   const router = useRouter();
   const { type_text } = useLocalSearchParams();
 
-  // Parse params with fallback values
-  const [type, text] = typeof type_text === 'string' ? type_text.split('_') : ['beers', 'Cervejas'];
+  const [type, text] = typeof type_text === 'string' ? type_text.split('_') : ['beer', 'Cervejas'];
 
   const queryProductsMutation = useQueryProducts();
   const { data, isPending, isError, error, mutateAsync: queryProducts } = queryProductsMutation;
 
-  // Define a memoized fetch function that won't change on re-renders
   const fetchProducts = useCallback(async () => {
     if (!type || !text) {
       Alert.alert(

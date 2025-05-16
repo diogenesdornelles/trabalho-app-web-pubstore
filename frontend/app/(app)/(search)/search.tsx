@@ -7,7 +7,7 @@ import { useQueryProducts } from "@/hooks/useProduct";
 import { ProductQueryProps } from "@/interfaces/Product.interface";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Picker } from '@react-native-picker/picker';
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -32,6 +32,7 @@ const SearchSchema = Yup.object().shape({
 type SearchSchemaType = Yup.InferType<typeof SearchSchema>;
 
 export default function Search() {
+    const router = useRouter()
     const {
         data,
         isPending,
@@ -46,10 +47,10 @@ export default function Search() {
             Alert.alert(
                 'Erro',
                 'Ocorreu um erro ao buscar produtos',
-                [{ text: 'OK', style: 'cancel' }]
+                [{ text: 'OK', style: 'cancel', onPress: () => router.push('/home') }]
             );
         }
-    }, [isError]);
+    }, [isError, router]);
 
     // Função simplificada de busca
     const handleSearch = async (values: SearchSchemaType) => {

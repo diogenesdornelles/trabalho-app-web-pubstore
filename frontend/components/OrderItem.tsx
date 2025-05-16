@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { OrderProps } from '@/interfaces/Order.interface';
 import { cssVar } from '@/constants/css';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import { format } from 'date-fns';
 
 
@@ -13,7 +13,6 @@ interface OrderItemProps {
 }
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
-    const router = useRouter();
     const totalItems = order.ordered_products.reduce(
         (sum, item) => sum + item.quantity,
         0
@@ -25,9 +24,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
     );
     const formattedDate = format(new Date(order.created_at), 'MMM dd, yyyy HH:mm');
 
-    const handlePress = () => {
-        router.push(`/pay/${order.id}`);
-    };
 
     return (
         <Link
@@ -40,7 +36,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
         >
             <TouchableOpacity
                 style={[styles.container, index % 2 === 0 ? styles.evenItem : styles.oddItem]}
-                onPress={handlePress}
             >
                 <View style={styles.header}>
                     <Text style={styles.orderId}>Pedido #{order.id.substring(0, 8)}</Text>

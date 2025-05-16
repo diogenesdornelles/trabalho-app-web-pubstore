@@ -63,7 +63,7 @@ export default function Orders() {
                 }}
             />
             <View style={styles.card}>
-                <Text style={styles.title}>Produtos</Text>
+                <Text style={styles.title}>Lista</Text>
                 {data ? (<>
                     <FlatList
                         style={styles.list}
@@ -74,7 +74,6 @@ export default function Orders() {
                 </>)
                     : (<Text style={styles.noProducts}>Nenhum produto encontrado</Text>)}
             </View>
-
         </Page>
     );
 }

@@ -51,19 +51,6 @@ export default function Details() {
   }, [error, refetch]);
 
   const handleAddProduct = () => {
-    if (data && !data.disponible) {
-      Alert.alert(
-        "Erro",
-        `Falha ao adicionar: produto indisponível`,
-        [
-          {
-            text: "OK",
-            style: "cancel"
-          }
-        ]
-      );
-      return
-    }
     if (state && !state.customer_id) {
       Alert.alert(
         "Erro",
@@ -77,16 +64,46 @@ export default function Details() {
       );
       return
     }
+    if (data && !data.disponible) {
+      Alert.alert(
+        "Erro",
+        `Falha ao adicionar: produto indisponível`,
+        [
+          {
+            text: "OK",
+            style: "cancel"
+          }
+        ]
+      );
+      return
+    }
+
     if (!quantity) {
       setQuantityError(true);
       setTimeout(() => setQuantityError(false), 3000);
-    } else {
-      if (data && data.id) {
-        state.addProduct({ ...data, quantity: quantity, total_price: 0, customer_id: state.customer_id });
+      return
+    }
+
+    if (data && data.id && state.customer_id) {
+      const product = { ...data, quantity: quantity, total_price: 0, customer_id: state.customer_id }
+
+      if (!state.products.some((_product) => _product.id === data.id)) {
+        state.addProduct(product);
+        Alert.alert(
+          "Sucesso",
+          `Produto ${data.name} adicionado ao carrinho com sucesso!`,
+          [{ text: "OK", style: "cancel" }]
+        );
+      } else {
+        Alert.alert(
+          "Aviso",
+          `Produto ${data.name} já consta no carrinho! Deseja atualizar a quantidade?`,
+          [{ text: "OK", style: "cancel", onPress: () => state.updateProduct(data.id, product) },
+          { text: "Cancelar", style: "cancel" }]
+        );
       }
     }
   };
-
 
   useEffect(() => {
     if (error) {

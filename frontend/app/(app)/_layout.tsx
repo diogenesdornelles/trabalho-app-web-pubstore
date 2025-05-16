@@ -76,14 +76,7 @@ export default function AppLayout() {
           tabBarIcon: () => <SimpleLineIcons name="menu" size={24} color={cssVar.color.highlight} />
         }}
       />
-      <Tabs.Screen
-        name="(details)"
-        options={{
-          href: null,
-          headerShown: false,
 
-        }}
-      />
       <Tabs.Screen
         name="(orders)"
         options={{
@@ -103,13 +96,29 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
+        name="(details)"
+        options={{
+          href: null,
+          headerShown: false,
+
+        }}
+      />
+      <Tabs.Screen
         name="(payment)"
         options={{
           href: null,
           headerShown: false,
         }}
       />
+      <Tabs.Screen
+        name="(items)"
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
     </Tabs>
+
   </ProtectedRoutes>
 }
 
