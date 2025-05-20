@@ -2,6 +2,7 @@ import Page from "@/components/Page";
 import { cssVar } from "@/constants/css";
 import { useEndSession } from "@/hooks/useEndSession";
 import useSession from "@/hooks/useSession";
+import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Account() {
@@ -11,25 +12,46 @@ export default function Account() {
     let id: string | undefined;
     let loggedAt: string | undefined;
     let cpf: string | undefined;
+    let address: string | undefined;
+    let email: string | undefined;
 
     if (authSession) {
-        ({ name, id, loggedAt, cpf } = authSession);
+        ({ name, id, loggedAt, cpf, address, email } = authSession);
     }
 
     return (
         <Page customStyle={{ opacity: 0.8, filter: 'grayscale(100%)' }} blurSettings={{ intensity: 10, tint: 'systemUltraThinMaterialDark', radius: 10 }}>
+            <Stack.Screen
+                options={{
+                    title: "Cliente",
+                    headerStyle: { backgroundColor: cssVar.color.black },
+                    headerTitleStyle: { color: cssVar.color.highlight, },
+                    animation: 'fade',
+                    headerTintColor: cssVar.color.white,
+                    headerShown: true,
+                    contentStyle: {
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'baseline',
+                        alignContent: 'center'
+
+                    },
+                }}
+            />
             <View style={styles.userInfo}>
                 <Text style={styles.title}>Informações do usuário: </Text>
                 {name && <Text style={styles.text}>Nome: {name}</Text>}
                 {id && <Text style={styles.text}>ID: {id}</Text>}
                 {cpf && <Text style={styles.text}>CPF: {cpf}</Text>}
+                {address && <Text style={styles.text}>Endereço: {address}</Text>}
+                {email && <Text style={styles.text}>E-mail: {email}</Text>}
                 {loggedAt && <Text style={styles.text}>Logado em: {new Date(loggedAt).toLocaleDateString()}</Text>}
             </View>
-                  <Text
-                    style={styles.signOut}
-                    onPress={() => endSession()}>
-                    Sair
-                  </Text>
+            <Text
+                style={styles.signOut}
+                onPress={() => endSession()}>
+                Sair
+            </Text>
         </Page>
     );
 }
@@ -73,5 +95,5 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: 'center',
         opacity: 1
-      },
+    },
 });
