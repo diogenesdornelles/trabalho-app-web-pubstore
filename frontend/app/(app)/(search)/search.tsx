@@ -3,8 +3,8 @@ import CustomBackdrop from "@/components/CustomBackdrop";
 import Page from "@/components/Page";
 import Product from "@/components/Product";
 import { cssVar } from "@/constants/css";
-import { useQueryProducts } from "@/hooks/useProduct";
-import { ProductQueryProps } from "@/interfaces/Product.interface";
+import { ProductQueryProps } from "@/domain/interfaces/Product.interface";
+import { useCreateQueryProducts } from "@/hooks/service/post/useCreateQueryProducts";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Picker } from '@react-native-picker/picker';
 import { Stack, useRouter } from "expo-router";
@@ -39,7 +39,7 @@ export default function Search() {
         isError,
         mutateAsync: queryProducts,
         reset: resetSearch
-    } = useQueryProducts();
+    } = useCreateQueryProducts();
 
     // Erro genérico de busca
     useEffect(() => {
@@ -76,7 +76,7 @@ export default function Search() {
         <Page type="view" customStyle={{}} blurSettings={{}} >
             <Stack.Screen
                 options={{
-                    title: "Busca",
+                    title: "Pesquisar",
                     headerStyle: { backgroundColor: cssVar.color.black },
                     headerTitleStyle: { color: cssVar.color.highlight, },
                     animation: 'fade',
@@ -126,7 +126,7 @@ export default function Search() {
                         description: "",
                         min_price: "",
                         max_price: "",
-                        product_type: "chopp" as ProductQueryProps["product_type"],
+                        product_type: undefined,
                     }}
                     onSubmit={handleSearch}
                     validationSchema={SearchSchema}
@@ -213,6 +213,7 @@ export default function Search() {
                                     style={[styles.input, { height: 60, borderRadius: 8 }]}
                                     dropdownIconColor={cssVar.color.white}
                                 >
+                                    <Picker.Item label="Todos" value={undefined} />
                                     <Picker.Item label="Chopp" value="chopp" />
                                     <Picker.Item label="Vinho" value="wine" />
                                     <Picker.Item label="Cerveja" value="beer" />
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
     },
     clear: {
         position: 'absolute',
-        top: 0,
+        top: 60,
         left: 10,
         borderRadius: '50%',
         borderWidth: 1,

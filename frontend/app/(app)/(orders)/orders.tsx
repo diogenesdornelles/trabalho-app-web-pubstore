@@ -4,11 +4,11 @@ import OrderItem from "@/components/OrderItem";
 import Page from "@/components/Page";
 import { cssVar } from "@/constants/css";
 import useBasketStore from "@/hooks/useBasketStore";
-import { useGetOrdersById } from "@/hooks/useOrder";
 import { Stack } from "expo-router";
 import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useEffect } from "react";
+import { useGetOrdersById } from "@/hooks/service/get/useGetOrdersById";
 
 
 export default function Orders() {

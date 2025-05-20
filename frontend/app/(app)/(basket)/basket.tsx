@@ -3,9 +3,9 @@ import ButtonUser from "@/components/ButtonUser";
 import CustomBackdrop from "@/components/CustomBackdrop";
 import Page from "@/components/Page";
 import { cssVar } from "@/constants/css";
+import { useCreateOrder } from "@/hooks/service/post/useCreateOrder";
+import { useCreateProductOrdered } from "@/hooks/service/post/useCreateProductOrdered";
 import useBasketStore from "@/hooks/useBasketStore";
-import { useCreateOrder } from "@/hooks/useOrder";
-import { useCreateProductOrdered } from "@/hooks/useProductOrdered";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -130,6 +130,8 @@ export default function Basket() {
                     animation: 'fade',
                     headerTintColor: cssVar.color.white,
                     headerShown: true,
+                    headerBackVisible: false,
+                    headerLeft: () => null,
                     contentStyle: {
                         flexDirection: 'row',
                         justifyContent: 'center',

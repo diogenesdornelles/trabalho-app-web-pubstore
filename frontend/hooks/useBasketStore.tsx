@@ -1,6 +1,6 @@
-import { ProductBasketProps } from '@/interfaces/Product.interface';
-import { BasketActionType } from '@/types/BasketAction.type';
-import { BasketStateType } from '@/types/BasketState.type';
+import { ProductBasketProps } from '@/domain/interfaces/Product.interface';
+import { BasketActionType } from '@/domain/types/BasketAction.type';
+import { BasketStateType } from '@/domain/types/BasketState.type';
 import 'react-native-get-random-values';
 import { create } from 'zustand';
 

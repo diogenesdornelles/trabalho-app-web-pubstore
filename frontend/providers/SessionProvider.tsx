@@ -1,14 +1,14 @@
+import SessionProps from "@/domain/interfaces/Session.interface";
 import useBasketStore from '@/hooks/useBasketStore';
-import { useLogin } from "@/hooks/useLogin";
-import { useStorageState } from "@/hooks/useStorageState";
-import SessionProps from "@/interfaces/Session.interface";
+import { useCreateLogin } from "@/hooks/service/post/useCreateLogin";
+import { useStorageState } from "@/hooks/service/localstorage_/useStorageState";
 import { useCallback, useEffect, useState, type PropsWithChildren } from "react";
 import AuthContext from "../context/AuthContext";
 
 
 export function SessionProvider({ children }: PropsWithChildren) {
     const [[isLoading, session], setSession] = useStorageState('sessionPubStore');
-    const queryLoginMutation = useLogin();
+    const queryLoginMutation = useCreateLogin();
     const updateCustomerId = useBasketStore((state) => state.updateCustomerId);
     const [authSession, setAuthSession] = useState<SessionProps | null>(null);
 

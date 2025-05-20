@@ -1,9 +1,9 @@
-import { LoginProps } from "@/interfaces/Login.interface";
+import { LoginProps } from "@/domain/interfaces/Login.interface";
 import { useMutation } from "@tanstack/react-query";
-import { useApi } from "./useApi";
+import { useApi } from "../../useApi";
 
 
-export function useLogin() {
+export function useCreateLogin() {
   const { login } = useApi();
   return useMutation({
     mutationFn: async (data: LoginProps) => {

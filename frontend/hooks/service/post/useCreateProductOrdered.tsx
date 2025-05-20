@@ -1,6 +1,6 @@
+import { ProductOrderedCreateProps } from "@/domain/interfaces/ProductOrdered.interface";
 import { useMutation } from "@tanstack/react-query";
-import { useApi } from "./useApi";
-import { ProductOrderedCreateProps } from "@/interfaces/ProductOrdered.interface";
+import { useApi } from "../../useApi";
 
 export function useCreateProductOrdered() {
   const { productOrdered } = useApi();

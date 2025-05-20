@@ -1,9 +1,9 @@
+import { LoginProps } from "@/domain/interfaces/Login.interface";
+import { OrderCreateProps, OrderProps } from "@/domain/interfaces/Order.interface";
+import { ProductProps, ProductQueryProps } from "@/domain/interfaces/Product.interface";
+import { ProductOrderedCreateProps, ProductOrderedProps } from "@/domain/interfaces/ProductOrdered.interface";
+import { TokenProps } from "@/domain/interfaces/Token.interface";
 import useClients from "@/hooks/useClients";
-import { LoginProps } from "@/interfaces/Login.interface";
-import { OrderCreateProps, OrderProps } from "@/interfaces/Order.interface";
-import { ProductProps, ProductQueryProps } from "@/interfaces/Product.interface";
-import { ProductOrderedCreateProps, ProductOrderedProps } from "@/interfaces/ProductOrdered.interface";
-import { TokenProps } from "@/interfaces/Token.interface";
 import { useMemo } from "react";
 
 export function useApi() {
