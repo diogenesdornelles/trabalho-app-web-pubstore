@@ -53,7 +53,7 @@ export default function AppLayout() {
         name="(search)"
         options={{
           headerShown: false,
-          title: "Search",
+          title: "Pesquisar",
           href: '/(app)/(search)/search',
           tabBarIcon: () => <AntDesign name="search1" size={24} color={cssVar.color.highlight} />
         }}
@@ -62,7 +62,7 @@ export default function AppLayout() {
         name="(basket)"
         options={{
           headerShown: false,
-          title: "Basket",
+          title: "Cesta",
           href: '/(app)/(basket)/basket',
           tabBarIcon: () => <BasketIcon />
         }}
@@ -80,7 +80,7 @@ export default function AppLayout() {
       <Tabs.Screen
         name="(orders)"
         options={{
-          title: "Orders",
+          title: "Pedidos",
           headerShown: false,
           href: '/(app)/(orders)/orders',
           tabBarIcon: () => <SimpleLineIcons name="note" size={24} color={cssVar.color.highlight} />
