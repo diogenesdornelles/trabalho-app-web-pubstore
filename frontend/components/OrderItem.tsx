@@ -1,10 +1,9 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { OrderProps } from '@/interfaces/Order.interface';
 import { cssVar } from '@/constants/css';
-import { RFValue } from 'react-native-responsive-fontsize';
+import { OrderProps } from '@/domain/interfaces/Order.interface';
 import { Link } from 'expo-router';
-import { format } from 'date-fns';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 
 interface OrderItemProps {
@@ -22,7 +21,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
         (sum, item) => sum + (item.price * item.quantity),
         0
     );
-    const formattedDate = format(new Date(order.created_at), 'MMM dd, yyyy HH:mm');
+    const formattedDate = new Date(order.created_at).toLocaleDateString('pt-BR');
 
 
     return (
@@ -85,7 +84,8 @@ const styles = StyleSheet.create({
     },
     link: {
         width: "100%",
-        textDecorationLine: "none"
+        textDecorationLine: "none",
+        padding: 10
     },
     evenItem: {
         backgroundColor: cssVar.color.darkGray,

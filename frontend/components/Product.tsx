@@ -1,12 +1,12 @@
-import { Link } from "expo-router";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { RFValue } from "react-native-responsive-fontsize";
-import { Image } from 'expo-image';
 import { cssVar } from "@/constants/css";
+import { ProductProps } from "@/domain/interfaces/Product.interface";
 import useBasketStore from "@/hooks/useBasketStore";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import { ProductProps } from "@/interfaces/Product.interface";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import { Image } from 'expo-image';
+import { Link } from "expo-router";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default function Product(item: ProductProps): React.ReactElement {
     const state = useBasketStore((state) => state);
@@ -194,11 +194,11 @@ const styles = StyleSheet.create({
     },
     tooltipContainer: {
         position: 'absolute',
-        top: RFValue(10),
-        left: RFValue(10),
+        top: RFValue(15),
+        left: RFValue(15),
         backgroundColor: 'rgba(0,0,0,0.7)',
         borderRadius: RFValue(5),
-        padding: RFValue(5),
+        padding: RFValue(10),
         zIndex: 15,
         // display: 'none', 
     },

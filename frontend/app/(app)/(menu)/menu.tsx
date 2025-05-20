@@ -1,7 +1,7 @@
 import ButtonUser from "@/components/ButtonUser";
 import Page from "@/components/Page";
 import { cssVar } from "@/constants/css";
-import { ButtonType } from "@/types/Button.type";
+import { ButtonType } from "@/domain/types/Button.type";
 import { ExternalPathString, Link, Stack } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";

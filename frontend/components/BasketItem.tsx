@@ -1,5 +1,5 @@
 import { cssVar } from "@/constants/css";
-import { ProductBasketProps } from "@/interfaces/Product.interface";
+import { ProductBasketProps } from "@/domain/interfaces/Product.interface";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from "react";

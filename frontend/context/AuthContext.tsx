@@ -1,4 +1,4 @@
-import SessionProps from "@/interfaces/Session.interface";
+import SessionProps from "@/domain/interfaces/Session.interface";
 import { createContext } from "react";
 
 // cria um contexto que define quais valores e funções estarão disponíveis globalmente no seu app

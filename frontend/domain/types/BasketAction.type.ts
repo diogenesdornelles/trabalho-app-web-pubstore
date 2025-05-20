@@ -1,4 +1,4 @@
-import { ProductBasketProps } from "@/interfaces/Product.interface"
+import { ProductBasketProps } from "@/domain/interfaces/Product.interface"
 import { BasketStateType } from "./BasketState.type"
 
 export type BasketActionType = {
