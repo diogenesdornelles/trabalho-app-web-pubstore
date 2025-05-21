@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "pubStore",
-    "slug": "pubStore",
+    "slug": "pub-store",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/splash-chopp.png",
@@ -12,10 +12,18 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.pubStore"
     },
+    "androidNavigationBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#000000"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#000000"
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/splash-chopp.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
       "package": "com.anonymous.pubStore"
     },
@@ -30,15 +38,18 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-chopp.png",
-          "imageWidth": 200,
+          "resizeMode": "contain",
           "contentFit": "cover",
-          "backgroundColor": "#fff"
+          "backgroundColor": "#000000",
+          "imageWidth": 200
         }
       ],
       [
         "expo-asset",
         {
-          "assets": ["./assets/images/"]
+          "assets": [
+            "./assets/images/"
+          ]
         }
       ]
     ],
