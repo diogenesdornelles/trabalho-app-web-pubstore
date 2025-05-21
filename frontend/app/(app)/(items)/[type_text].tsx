@@ -1,13 +1,13 @@
-import ButtonUser from "@/components/ButtonUser";
-import CustomBackdrop from "@/components/CustomBackdrop";
-import Page from "@/components/Page";
-import Product from "@/components/Product";
-import { cssVar } from "@/constants/css";
-import { ProductBasketProps } from "@/domain/interfaces/Product.interface";
-import { useCreateQueryProducts } from "@/hooks/service/post/useCreateQueryProducts";
+import ButtonUser from '@/components/ButtonUser';
+import CustomBackdrop from '@/components/CustomBackdrop';
+import Page from '@/components/Page';
+import Product from '@/components/Product';
+import { cssVar } from '@/constants/css';
+import { ProductBasketProps } from '@/domain/interfaces/Product.interface';
+import { useCreateQueryProducts } from '@/hooks/service/post/useCreateQueryProducts';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect } from "react";
-import { Alert, FlatList, StyleSheet } from "react-native";
+import { useCallback, useEffect } from 'react';
+import { Alert, FlatList, StyleSheet } from 'react-native';
 
 export default function Items() {
   const router = useRouter();
@@ -20,25 +20,23 @@ export default function Items() {
 
   const fetchProducts = useCallback(async () => {
     if (!type || !text) {
-      Alert.alert(
-        'Erro',
-        'Tipo de produto inválido',
-        [{
+      Alert.alert('Erro', 'Tipo de produto inválido', [
+        {
           text: 'OK',
           onPress: () => router.push('/home'),
           style: 'cancel',
-        }]
-      );
+        },
+      ]);
       return;
     }
 
     try {
       await queryProducts({
-        product_type: type as ProductBasketProps['type']
+        product_type: type as ProductBasketProps['type'],
       });
     } catch (error) {
       // Este catch só vai pegar erros de rede, não os erros já tratados pelo TanStack Query
-      console.error("Erro não tratado:", error);
+      console.error('Erro não tratado:', error);
     }
   }, [type, text, queryProducts, router]);
 
@@ -50,21 +48,23 @@ export default function Items() {
   // Efeito separado para lidar com erros da mutation
   useEffect(() => {
     if (isError) {
-      console.error("Erro ao buscar produtos:", error);
-      Alert.alert(
-        'Erro',
-        `Ocorreu um erro ao buscar os produtos`,
-        [{
+      console.error('Erro ao buscar produtos:', error);
+      Alert.alert('Erro', `Ocorreu um erro ao buscar os produtos`, [
+        {
           text: 'OK',
           onPress: () => router.push('/home'),
           style: 'cancel',
-        }]
-      );
+        },
+      ]);
     }
   }, [isError, error, router]);
 
   return (
-    <Page type="view" customStyle={{ opacity: .9, filter: 'grayscale(90%)' }} blurSettings={{ intensity: 50, tint: 'systemUltraThinMaterialDark', radius: 0 }}>
+    <Page
+      type="view"
+      customStyle={{ opacity: 0.9, filter: 'grayscale(90%)' }}
+      blurSettings={{ intensity: 50, tint: 'systemUltraThinMaterialDark', radius: 0 }}
+    >
       {isPending && <CustomBackdrop isOpen={true} />}
 
       <Stack.Screen
@@ -79,23 +79,21 @@ export default function Items() {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'baseline',
-            alignContent: 'center'
+            alignContent: 'center',
           },
-          headerRight: () => <ButtonUser />
+          headerRight: () => <ButtonUser />,
         }}
       />
 
       <FlatList
         style={styles.list}
         data={data}
-        keyExtractor={(product) => product.id.toString()}
+        keyExtractor={product => product.id.toString()}
         renderItem={({ item }) => <Product {...item} />}
       />
     </Page>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   button: {
@@ -104,18 +102,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     columnGap: 10,
-    marginTop: 0
+    marginTop: 0,
   },
   text: {
     color: cssVar.color.white,
-    fontSize: 20
+    fontSize: 20,
   },
   link: {
-    width: 'auto'
+    width: 'auto',
   },
   list: {
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   buttonHeader: {
     display: 'flex',
@@ -123,13 +121,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     columnGap: 10,
-    marginTop: 0
+    marginTop: 0,
   },
   textHeader: {
     color: cssVar.color.white,
-    fontSize: 20
+    fontSize: 20,
   },
   linkHeader: {
-    width: 'auto'
-  }
-})
+    width: 'auto',
+  },
+});

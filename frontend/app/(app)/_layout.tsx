@@ -1,15 +1,13 @@
-
 import ProtectedRoutes from '@/components/ProtectedRoutes';
-import { cssVar } from "@/constants/css";
+import { cssVar } from '@/constants/css';
 import useBasketStore from '@/hooks/useBasketStore';
-import AntDesign from "@expo/vector-icons/AntDesign";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { Tabs } from 'expo-router';
 import { View, StyleSheet, Text } from 'react-native';
 
-
 export default function AppLayout() {
-  const quantity = useBasketStore((state) => state.products.length);
+  const quantity = useBasketStore(state => state.products.length);
 
   const BasketIcon = () => (
     <View style={styles.iconContainer}>
@@ -25,103 +23,108 @@ export default function AppLayout() {
       )}
     </View>
   );
-  return <ProtectedRoutes>
-    <Tabs screenOptions={{
-      tabBarActiveTintColor: 'white',
-      tabBarLabelStyle: { display: 'flex', fontSize: 8, padding: 3 },
-      tabBarItemStyle: { backgroundColor: cssVar.color.black, padding: 0 },
-      tabBarStyle: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: cssVar.color.black,
-        borderTopWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-      },
-    }}>
-      <Tabs.Screen
-        name="home"
-        options={{
-          headerShown: false,
-          title: "Home",
-          href: '/(app)/home',
-          tabBarIcon: () => <SimpleLineIcons name="home" size={24} color={cssVar.color.highlight} />
+  return (
+    <ProtectedRoutes>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: 'white',
+          tabBarLabelStyle: { display: 'flex', fontSize: 8, padding: 3 },
+          tabBarItemStyle: { backgroundColor: cssVar.color.black, padding: 0 },
+          tabBarStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: cssVar.color.black,
+            borderTopWidth: 0,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="(search)"
-        options={{
-          headerShown: false,
-          title: "Pesquisar",
-          href: '/(app)/(search)/search',
-          tabBarIcon: () => <AntDesign name="search1" size={24} color={cssVar.color.highlight} />
-        }}
-      />
-      <Tabs.Screen
-        name="(basket)"
-        options={{
-          headerShown: false,
-          title: "Cesta",
-          href: '/(app)/(basket)/basket',
-          tabBarIcon: () => <BasketIcon />
-        }}
-      />
-      <Tabs.Screen
-        name="(menu)"
-        options={{
-          headerShown: false,
-          title: "Menu",
-          href: '/(app)/(menu)/menu',
-          tabBarIcon: () => <SimpleLineIcons name="menu" size={24} color={cssVar.color.highlight} />
-        }}
-      />
+      >
+        <Tabs.Screen
+          name="home"
+          options={{
+            headerShown: false,
+            title: 'Home',
+            href: '/(app)/home',
+            tabBarIcon: () => (
+              <SimpleLineIcons name="home" size={24} color={cssVar.color.highlight} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="(search)"
+          options={{
+            headerShown: false,
+            title: 'Pesquisar',
+            href: '/(app)/(search)/search',
+            tabBarIcon: () => <AntDesign name="search1" size={24} color={cssVar.color.highlight} />,
+          }}
+        />
+        <Tabs.Screen
+          name="(basket)"
+          options={{
+            headerShown: false,
+            title: 'Cesta',
+            href: '/(app)/(basket)/basket',
+            tabBarIcon: () => <BasketIcon />,
+          }}
+        />
+        <Tabs.Screen
+          name="(menu)"
+          options={{
+            headerShown: false,
+            title: 'Menu',
+            href: '/(app)/(menu)/menu',
+            tabBarIcon: () => (
+              <SimpleLineIcons name="menu" size={24} color={cssVar.color.highlight} />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="(orders)"
-        options={{
-          title: "Pedidos",
-          headerShown: false,
-          href: '/(app)/(orders)/orders',
-          tabBarIcon: () => <SimpleLineIcons name="note" size={24} color={cssVar.color.highlight} />
-
-        }}
-      />
-      <Tabs.Screen
-        name="(user)"
-        options={{
-          href: null,
-          headerShown: false,
-
-        }}
-      />
-      <Tabs.Screen
-        name="(details)"
-        options={{
-          href: null,
-          headerShown: false,
-
-        }}
-      />
-      <Tabs.Screen
-        name="(payment)"
-        options={{
-          href: null,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="(items)"
-        options={{
-          href: null,
-          headerShown: false,
-        }}
-      />
-    </Tabs>
-
-  </ProtectedRoutes>
+        <Tabs.Screen
+          name="(orders)"
+          options={{
+            title: 'Pedidos',
+            headerShown: false,
+            href: '/(app)/(orders)/orders',
+            tabBarIcon: () => (
+              <SimpleLineIcons name="note" size={24} color={cssVar.color.highlight} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="(user)"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
+        <Tabs.Screen
+          name="(details)"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
+        <Tabs.Screen
+          name="(payment)"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
+        <Tabs.Screen
+          name="(items)"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
+      </Tabs>
+    </ProtectedRoutes>
+  );
 }
-
 
 const styles = StyleSheet.create({
   iconContainer: {

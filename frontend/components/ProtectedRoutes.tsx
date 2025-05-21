@@ -1,5 +1,4 @@
-import useSession from "@/hooks/useSession";
-
+import useSession from '@/hooks/useSession';
 
 function ProtectedRoutes({ children }: { children: React.ReactNode }) {
   const { authSession } = useSession();
@@ -11,4 +10,4 @@ function ProtectedRoutes({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export default ProtectedRoutes
+export default ProtectedRoutes;

@@ -1,4 +1,3 @@
-import { BasketProps } from "@/domain/interfaces/Basket.interface";
+import { BasketProps } from '@/domain/interfaces/Basket.interface';
 
-
-export type BasketStateType = BasketProps
+export type BasketStateType = BasketProps;

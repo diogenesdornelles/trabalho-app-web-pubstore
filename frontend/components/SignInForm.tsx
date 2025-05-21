@@ -7,33 +7,27 @@ import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'reac
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 
-
 export const SignInForm = () => {
   const router = useRouter();
   const SignupSchema = Yup.object().shape({
     cpf: Yup.string()
-      .transform((value) => value.replace(/\D/g, ''))
+      .transform(value => value.replace(/\D/g, ''))
       .matches(/^\d{11}$/, 'CPF deve conter 11 dígitos')
       .required('Obrigatório'),
-    password: Yup.string()
-      .min(2, 'Muito curta!')
-      .max(50, 'Muito longa!')
-      .required('Obrigatório'),
+    password: Yup.string().min(2, 'Muito curta!').max(50, 'Muito longa!').required('Obrigatório'),
   });
   const { signIn } = useSession();
   const [error, setError] = useState(false);
 
   const handleSignIn = (success: boolean) => {
     if (success) {
-      Alert.alert(
-        'Sucesso',
-        'Você está logado com sucesso!',
-        [{
+      Alert.alert('Sucesso', 'Você está logado com sucesso!', [
+        {
           text: 'OK',
           onPress: () => router.push('/home'),
           style: 'cancel',
-        }]
-      );
+        },
+      ]);
     } else {
       setError(true);
       setTimeout(() => {
@@ -45,22 +39,17 @@ export const SignInForm = () => {
   return (
     <Formik
       initialValues={{ cpf: '', password: '' }}
-      onSubmit={async (values) => handleSignIn(await signIn(values.cpf, values.password))}
+      onSubmit={async values => handleSignIn(await signIn(values.cpf, values.password))}
       validationSchema={SignupSchema}
     >
-      {({
-        handleChange,
-        handleBlur,
-        submitForm,
-        values,
-        errors,
-        touched,
-      }) => (
+      {({ handleChange, handleBlur, submitForm, values, errors, touched }) => (
         <View style={styles.form}>
           <Text style={styles.title}>Sign-in</Text>
           <Text style={styles.message}>Informe CPF e senha</Text>
           <View style={styles.inputRow}>
-            <Text style={styles.label} nativeID="labelcpf">cpf</Text>
+            <Text style={styles.label} nativeID="labelcpf">
+              cpf
+            </Text>
             <TextInput
               placeholder="cpf"
               onChangeText={handleChange('cpf')}
@@ -69,12 +58,12 @@ export const SignInForm = () => {
               style={styles.input}
               placeholderTextColor="#aaa"
             />
-            {touched.cpf && errors.cpf && (
-              <Text style={styles.errorText}>{errors.cpf}</Text>
-            )}
+            {touched.cpf && errors.cpf && <Text style={styles.errorText}>{errors.cpf}</Text>}
           </View>
           <View style={styles.inputRow}>
-            <Text style={styles.label} nativeID="labelPwd">Senha</Text>
+            <Text style={styles.label} nativeID="labelPwd">
+              Senha
+            </Text>
             <TextInput
               placeholder="Password"
               onChangeText={handleChange('password')}

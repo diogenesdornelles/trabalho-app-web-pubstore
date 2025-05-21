@@ -1,17 +1,14 @@
-import { QueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useEndSession } from "./useEndSession";
-import { useStorageState } from "./service/localstorage_/useStorageState";
-
-
+import { QueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { useEndSession } from './useEndSession';
+import { useStorageState } from './service/localstorage_/useStorageState';
 
 export default function useClients() {
   const [[isLoading, session], setSession] = useStorageState('sessionPubStore');
   const endSession = useEndSession();
   let token: string | undefined;
 
-  if (session) 
-    ({ token } = JSON.parse(session) as { token?: string });
+  if (session) ({ token } = JSON.parse(session) as { token?: string });
 
   const queryClient = new QueryClient();
 
@@ -22,29 +19,28 @@ export default function useClients() {
 
   // Interceptor para adicionar o token no cabeçalho
   restClient.interceptors.request.use(
-    (config) => {
+    config => {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },
-    (error) => {
+    error => {
       return Promise.reject(error);
     }
   );
 
-
   restClient.interceptors.response.use(
-    (response) => response, // Retorna a resposta normalmente se não houver erro
-    (error) => {
+    response => response, // Retorna a resposta normalmente se não houver erro
+    error => {
       if (error.response) {
         const { status, data } = error.response;
 
-        if (data.statusCode === 401 || data.error === "Unauthorized") {
-          endSession()
+        if (data.statusCode === 401 || data.error === 'Unauthorized') {
+          endSession();
         }
 
-        console.error(`Erro ${status}:`, data.message || "Erro desconhecido");
+        console.error(`Erro ${status}:`, data.message || 'Erro desconhecido');
         return Promise.reject(data);
       }
     }
@@ -52,4 +48,3 @@ export default function useClients() {
 
   return { queryClient, restClient };
 }
-

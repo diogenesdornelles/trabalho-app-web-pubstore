@@ -1,22 +1,24 @@
-import ButtonUser from "@/components/ButtonUser";
-import Page from "@/components/Page";
-import { cssVar } from "@/constants/css";
-import { useEndSession } from "@/hooks/useEndSession";
-import { Link, Stack } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { RFValue } from "react-native-responsive-fontsize";
-
+import ButtonUser from '@/components/ButtonUser';
+import Page from '@/components/Page';
+import { cssVar } from '@/constants/css';
+import { useEndSession } from '@/hooks/useEndSession';
+import { Link, Stack } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Home() {
   const endSession = useEndSession();
 
   return (
-    <Page customStyle={{ opacity: 1, filter: 'grayscale(30%)' }} blurSettings={{ intensity: 100, tint: 'systemUltraThinMaterialDark', radius: 0 }}>
+    <Page
+      customStyle={{ opacity: 1, filter: 'grayscale(30%)' }}
+      blurSettings={{ intensity: 100, tint: 'systemUltraThinMaterialDark', radius: 0 }}
+    >
       <Stack.Screen
         options={{
-          title: "Home",
+          title: 'Home',
           headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight, },
+          headerTitleStyle: { color: cssVar.color.highlight },
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
@@ -24,34 +26,30 @@ export default function Home() {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'baseline',
-            alignContent: 'center'
-
+            alignContent: 'center',
           },
-          headerRight: () => <ButtonUser/>
+          headerRight: () => <ButtonUser />,
         }}
       />
       <Text style={styles.text}>PubStore</Text>
       <Link
         href={{
-          pathname: "/menu",
+          pathname: '/menu',
         }}
         style={[styles.link, { marginHorizontal: 'auto' }]}
         asChild
         key="Sign-in"
       >
-        <TouchableOpacity style={styles.button} activeOpacity={.7}>
+        <TouchableOpacity style={styles.button} activeOpacity={0.7}>
           <Text style={styles.buttonText}>Menu</Text>
         </TouchableOpacity>
       </Link>
-      <Text
-        style={styles.signOut}
-        onPress={() => endSession()}>
+      <Text style={styles.signOut} onPress={() => endSession()}>
         Sair
       </Text>
     </Page>
   );
 }
-
 
 const styles = StyleSheet.create({
   text: {
@@ -61,7 +59,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: cssVar.color.black,
     padding: 10,
-    width: '100%'
+    width: '100%',
   },
   signOut: {
     fontSize: 26,
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
     padding: 50,
     width: '100%',
     textAlign: 'center',
-    opacity: 1
+    opacity: 1,
   },
   button: {
     color: cssVar.color.white,
@@ -90,10 +88,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: cssVar.color.highlight,
     minWidth: 300,
-    marginTop: 20
+    marginTop: 20,
   },
-  link: {
-  },
+  link: {},
 
   buttonText: {
     fontSize: RFValue(16, 540), // vw padrão de 680
@@ -103,5 +100,5 @@ const styles = StyleSheet.create({
     textDecorationLine: 'none',
     paddingHorizontal: 40,
     color: cssVar.color.highlight,
-  }
-})
+  },
+});

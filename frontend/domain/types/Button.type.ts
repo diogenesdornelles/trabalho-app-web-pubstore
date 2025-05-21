@@ -1,6 +1,6 @@
-import { ProductBasketProps } from "@/domain/interfaces/Product.interface"
+import { ProductBasketProps } from '@/domain/interfaces/Product.interface';
 
 export type ButtonType = {
-    text: string,
-    type: ProductBasketProps['type']
- }
+  text: string;
+  type: ProductBasketProps['type'];
+};

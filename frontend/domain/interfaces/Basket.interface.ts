@@ -1,8 +1,7 @@
-import { ProductBasketProps } from "./Product.interface"
+import { ProductBasketProps } from './Product.interface';
 
-
-export interface BasketProps{
-    total_value: number
-    products: ProductBasketProps[]
-    customer_id: string | null
+export interface BasketProps {
+  total_value: number;
+  products: ProductBasketProps[];
+  customer_id: string | null;
 }
