@@ -1,9 +1,34 @@
 import ButtonUser from '@/components/ButtonUser';
+import CustomBackdrop from '@/components/CustomBackdrop';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
-import { Stack } from 'expo-router';
+import { useGetOrderById } from '@/hooks/service/get/useGetOrderById';
+import { Stack, useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
+import { Alert } from 'react-native';
 
 export default function Payment() {
+  const { order_id } = useLocalSearchParams();
+  const { isPending, error, data, isFetching, isRefetching, isLoading, refetch, isSuccess } =
+    useGetOrderById(order_id as string);
+
+  useEffect(() => {
+    if (error) {
+      console.error('Error fetching order details:', error);
+      Alert.alert('Erro', `Falha ao carregar detalhes`, [
+        {
+          text: 'Tentar novamente',
+          onPress: () => refetch(),
+        },
+        {
+          text: 'OK',
+          style: 'cancel',
+        },
+      ]);
+      return;
+    }
+  }, [error, refetch]);
+
   return (
     <Page
       customStyle={{
@@ -14,6 +39,7 @@ export default function Payment() {
       }}
       blurSettings={{ intensity: 10, tint: 'systemUltraThinMaterialDark', radius: 4 }}
     >
+      {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <Stack.Screen
         options={{
           title: 'Pagamento',

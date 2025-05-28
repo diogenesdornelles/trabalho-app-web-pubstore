@@ -2,7 +2,7 @@ import ButtonUser from '@/components/ButtonUser';
 import CustomBackdrop from '@/components/CustomBackdrop';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
-import { useGetProduct } from '@/hooks/service/get/useGetProduct';
+import { useGetProductById } from '@/hooks/service/get/useGetProductById';
 import useBasketStore from '@/hooks/useBasketStore';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image } from 'expo-image';
@@ -18,7 +18,7 @@ export default function Details() {
   const [quantity, setQuantity] = useState<number>(1);
   const [quantityError, setQuantityError] = useState<boolean>(false);
   const { isPending, error, data, isFetching, isRefetching, isLoading, refetch, isSuccess } =
-    useGetProduct(id as string);
+    useGetProductById(id as string);
 
   const state = useBasketStore(state => state);
 
@@ -139,6 +139,7 @@ export default function Details() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',

@@ -3,17 +3,17 @@ import CustomBackdrop from '@/components/CustomBackdrop';
 import OrderItem from '@/components/OrderItem';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
+import { useGetOrdersByCustomerId } from '@/hooks/service/get/useGetOrdersByCustomerId';
 import useBasketStore from '@/hooks/useBasketStore';
 import { Stack } from 'expo-router';
+import { useEffect } from 'react';
 import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useEffect } from 'react';
-import { useGetOrdersById } from '@/hooks/service/get/useGetOrdersById';
 
 export default function Orders() {
   const state = useBasketStore(state => state);
   const { isPending, error, data, isFetching, isRefetching, isLoading, refetch, isSuccess } =
-    useGetOrdersById(state.customer_id as string);
+    useGetOrdersByCustomerId(state.customer_id as string);
 
   useEffect(() => {
     if (error) {

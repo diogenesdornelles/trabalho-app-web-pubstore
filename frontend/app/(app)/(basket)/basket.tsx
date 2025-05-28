@@ -129,7 +129,7 @@ export default function Basket() {
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
       <Stack.Screen
         options={{
-          title: 'Carrinho',
+          title: 'Cesta',
           headerStyle: { backgroundColor: cssVar.color.black },
           headerTitleStyle: { color: cssVar.color.highlight },
           animation: 'fade',

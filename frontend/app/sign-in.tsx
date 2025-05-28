@@ -12,7 +12,7 @@ export default function SignIn() {
     >
       <Stack.Screen
         options={{
-          title: 'Sign-in',
+          title: 'Logar',
           headerStyle: { backgroundColor: cssVar.color.black },
           headerTitleStyle: { color: cssVar.color.highlight },
           animation: 'fade',

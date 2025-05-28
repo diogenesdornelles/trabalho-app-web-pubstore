@@ -7,6 +7,7 @@ import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import ToolTip from './ToolTip';
 
 export default function Product(item: ProductProps): React.ReactElement {
   const state = useBasketStore(state => state);
@@ -99,9 +100,7 @@ export default function Product(item: ProductProps): React.ReactElement {
           <SimpleLineIcons name="basket" size={RFValue(24)} color={cssVar.color.highlight} />
         </TouchableOpacity>
       )}
-      <View style={styles.tooltipContainer}>
-        <Text style={styles.tooltipText}>Ver detalhes</Text>
-      </View>
+      <ToolTip text="Ver detalhes" top={15} left={15} />
     </View>
   );
 }
@@ -193,20 +192,5 @@ const styles = StyleSheet.create({
   link: {
     width: '100%',
     textDecorationLine: 'none',
-  },
-  tooltipContainer: {
-    position: 'absolute',
-    top: RFValue(15),
-    left: RFValue(15),
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    borderRadius: RFValue(5),
-    padding: RFValue(10),
-    zIndex: 15,
-    // display: 'none',
-  },
-  tooltipText: {
-    color: 'white',
-    fontSize: RFValue(10),
-    fontWeight: 'bold',
   },
 });

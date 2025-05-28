@@ -4,7 +4,6 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-
 interface OrderItemProps {
   order: OrderProps;
   index: number;
@@ -19,50 +18,62 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
   );
   const formattedDate = new Date(order.created_at).toLocaleDateString('pt-BR');
 
+  const getOrderStatus = (sts: string) => {
+    switch (sts) {
+      case 'paid':
+        return 'Pago';
+      case 'pending':
+        return 'Pendente';
+      default:
+        return 'Cancelado';
+    }
+  };
+
   return (
-    <Link
-      href={{
-        pathname: '/(app)/(payment)/[order_id]',
-        params: { order_id: order.id },
-      }}
-      style={[styles.link, { marginHorizontal: 'auto', marginBottom: 30 }]}
-      asChild
-    >
-      <TouchableOpacity
-        style={[styles.container, index % 2 === 0 ? styles.evenItem : styles.oddItem]}
-      >
-        <View style={styles.header}>
-          <Text style={styles.orderId}>Pedido #{order.id.substring(0, 8)}</Text>
-          <Text style={styles.date}>{formattedDate}</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.orderId}>Pedido #{order.id.substring(0, 8)}</Text>
+        <Text style={styles.date}>{formattedDate}</Text>
+      </View>
+      <View style={styles.details}>
+        <View style={styles.detailRow}>
+          <Text style={styles.label}>Items:</Text>
+          <Text style={styles.value}>{totalItems}</Text>
         </View>
 
-        <View style={styles.details}>
-          <View style={styles.detailRow}>
-            <Text style={styles.label}>Items:</Text>
-            <Text style={styles.value}>{totalItems}</Text>
-          </View>
+        <View style={styles.detailRow}>
+          <Text style={styles.label}>Total:</Text>
+          <Text style={styles.value}>${totalPrice.toFixed(2)}</Text>
+        </View>
 
-          <View style={styles.detailRow}>
-            <Text style={styles.label}>Total:</Text>
-            <Text style={styles.value}>${totalPrice.toFixed(2)}</Text>
-          </View>
-
-          <View style={styles.statusContainer}>
-            <Text style={styles.label}>Status:</Text>
-            <View
-              style={[
-                styles.statusBadge,
-                order.payment_status === 'paid' ? styles.paidStatus : styles.pendingStatus,
-              ]}
-            >
-              <Text style={styles.statusText}>
-                {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)}
-              </Text>
-            </View>
+        <View style={styles.statusContainer}>
+          <Text style={styles.label}>Status:</Text>
+          <View
+            style={[
+              styles.statusBadge,
+              order.payment_status === 'paid' ? styles.paidStatus : styles.pendingStatus,
+            ]}
+          >
+            <Text style={styles.statusText}>{getOrderStatus(order.payment_status)}</Text>
           </View>
         </View>
-      </TouchableOpacity>
-    </Link>
+      </View>
+      {order.payment_status === 'pending' && (
+        <Link
+          href={{
+            pathname: '/(app)/(payment)/[order_id]',
+            params: { order_id: order.id },
+          }}
+          style={[styles.link, { marginHorizontal: 'auto', marginBottom: 30 }]}
+          asChild
+          onPress={e => e.stopPropagation()}
+        >
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Pagar</Text>
+          </TouchableOpacity>
+        </Link>
+      )}
+    </View>
   );
 };
 
@@ -82,7 +93,7 @@ const styles = StyleSheet.create({
   link: {
     width: '100%',
     textDecorationLine: 'none',
-    padding: 10,
+    padding: 15,
   },
   evenItem: {
     backgroundColor: cssVar.color.darkGray,
@@ -133,7 +144,7 @@ const styles = StyleSheet.create({
   statusBadge: {
     paddingVertical: 4,
     paddingHorizontal: 12,
-    borderRadius: 12,
+    borderRadius: 5,
   },
   paidStatus: {
     backgroundColor: '#2E7D32',
@@ -145,6 +156,22 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
     color: cssVar.color.white,
     fontWeight: 'bold',
+  },
+  button: {
+    backgroundColor: cssVar.color.black,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: cssVar.color.highlight,
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: RFValue(16, 540),
+    fontWeight: 'bold',
+    color: cssVar.color.highlight,
   },
 });
 
