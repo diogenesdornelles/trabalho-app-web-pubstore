@@ -6,10 +6,7 @@ import { Stack } from 'expo-router';
 
 export default function SignIn() {
   return (
-    <Page
-      customStyle={{ opacity: 0.8, filter: 'grayscale(80%)' }}
-      blurSettings={{ intensity: 10, tint: 'systemUltraThinMaterialDark', radius: 4 }}
-    >
+    <Page>
       <Stack.Screen
         options={{
           title: 'Logar',

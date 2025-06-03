@@ -9,12 +9,11 @@ import { cssVar } from '@/constants/css';
 
 export default function RootLayout() {
   const { queryClient } = useClients();
-  // Configurar a NavigationBar para Android
+
   useEffect(() => {
     if (Platform.OS === 'android') {
-      // Definir a cor de fundo para preto
       NavigationBar.setBackgroundColorAsync(cssVar.color.black);
-      // Definir a cor dos botões para combinar com seu tema
+
       NavigationBar.setButtonStyleAsync('light');
     }
   }, []);

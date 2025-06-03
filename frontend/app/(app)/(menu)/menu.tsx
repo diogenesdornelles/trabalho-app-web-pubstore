@@ -31,7 +31,7 @@ export default function Menu() {
   ];
 
   return (
-    <Page type="scrollView" customStyle={{}} blurSettings={{}}>
+    <Page type="scrollView">
       <Stack.Screen
         options={{
           title: 'Menu',
@@ -40,6 +40,9 @@ export default function Menu() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -56,12 +59,12 @@ export default function Menu() {
               pathname: '/(app)/(items)/[type_text]' as ExternalPathString,
               params: { type_text: `${button.type}_${button.text}` },
             }}
-            style={[styles.link, { marginHorizontal: 'auto' }]}
+            style={[styles.menuLink, { marginHorizontal: 'auto' }]}
             asChild
             key={`${button.text}-${i}`}
           >
-            <TouchableOpacity style={styles.button} activeOpacity={0.7}>
-              <Text style={styles.buttonText}>{button.text}</Text>
+            <TouchableOpacity style={styles.menuButton} activeOpacity={0.7}>
+              <Text style={styles.menuButtonText}>{button.text}</Text>
             </TouchableOpacity>
           </Link>
         );
@@ -71,7 +74,7 @@ export default function Menu() {
 }
 
 const styles = StyleSheet.create({
-  button: {
+  menuButton: {
     color: cssVar.color.white,
     fontSize: RFValue(16, 540), // vw padrão de 680
     fontWeight: 'bold',
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     minWidth: 300,
     marginTop: 20,
   },
-  buttonText: {
+  menuButtonText: {
     fontSize: RFValue(16, 540), // vw padrão de 680
     fontWeight: 'bold',
     textAlign: 'center',
@@ -96,26 +99,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     color: cssVar.color.highlight,
   },
-  text: {
-    color: cssVar.color.white,
-    fontSize: 20,
-  },
-  link: {
-    width: 'auto',
-  },
-  buttonHeader: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    columnGap: 10,
-    marginTop: 0,
-  },
-  textHeader: {
-    color: cssVar.color.white,
-    fontSize: 20,
-  },
-  linkHeader: {
+  menuLink: {
     width: 'auto',
   },
 });

@@ -9,8 +9,9 @@ import { Alert } from 'react-native';
 
 export default function Payment() {
   const { order_id } = useLocalSearchParams();
-  const { isPending, error, data, isFetching, isRefetching, isLoading, refetch, isSuccess } =
-    useGetOrderById(order_id as string);
+  const { isPending, error, isFetching, isRefetching, isLoading, refetch } = useGetOrderById(
+    order_id as string
+  );
 
   useEffect(() => {
     if (error) {
@@ -30,15 +31,7 @@ export default function Payment() {
   }, [error, refetch]);
 
   return (
-    <Page
-      customStyle={{
-        display: 'flex',
-        flexDirection: 'row',
-        opacity: 0.8,
-        filter: 'grayscale(80%)',
-      }}
-      blurSettings={{ intensity: 10, tint: 'systemUltraThinMaterialDark', radius: 4 }}
-    >
+    <Page>
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <Stack.Screen
         options={{
@@ -48,6 +41,9 @@ export default function Payment() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',

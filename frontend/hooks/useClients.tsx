@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEndSession } from './useEndSession';
-import { useStorageState } from './service/localstorage_/useStorageState';
+import { useStorageState } from './service/ls/useStorageState';
 
 export default function useClients() {
   const [[isLoading, session], setSession] = useStorageState('sessionPubStore');
@@ -13,11 +13,10 @@ export default function useClients() {
   const queryClient = new QueryClient();
 
   const restClient = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_API_URL, // URL base da API para mobile
-    timeout: 10000, // Tempo limite de 10 segundos
+    baseURL: process.env.EXPO_PUBLIC_API_URL,
+    timeout: 10000,
   });
 
-  // Interceptor para adicionar o token no cabeçalho
   restClient.interceptors.request.use(
     config => {
       if (token) {
@@ -31,7 +30,7 @@ export default function useClients() {
   );
 
   restClient.interceptors.response.use(
-    response => response, // Retorna a resposta normalmente se não houver erro
+    response => response,
     error => {
       if (error.response) {
         const { status, data } = error.response;

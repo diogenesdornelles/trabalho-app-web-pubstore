@@ -35,17 +35,14 @@ export default function Items() {
         product_type: type as ProductBasketProps['type'],
       });
     } catch (error) {
-      // Este catch só vai pegar erros de rede, não os erros já tratados pelo TanStack Query
       console.error('Erro não tratado:', error);
     }
   }, [type, text, queryProducts, router]);
 
-  // Efeito para fazer a chamada inicial - executa apenas uma vez quando o componente monta
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Efeito separado para lidar com erros da mutation
   useEffect(() => {
     if (isError) {
       console.error('Erro ao buscar produtos:', error);
@@ -60,11 +57,7 @@ export default function Items() {
   }, [isError, error, router]);
 
   return (
-    <Page
-      type="view"
-      customStyle={{ opacity: 0.9, filter: 'grayscale(90%)' }}
-      blurSettings={{ intensity: 50, tint: 'systemUltraThinMaterialDark', radius: 0 }}
-    >
+    <Page>
       {isPending && <CustomBackdrop isOpen={true} />}
 
       <Stack.Screen
@@ -75,6 +68,9 @@ export default function Items() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -86,7 +82,7 @@ export default function Items() {
       />
 
       <FlatList
-        style={styles.list}
+        style={styles.itemsList}
         data={data}
         keyExtractor={product => product.id.toString()}
         renderItem={({ item }) => <Product {...item} />}
@@ -96,38 +92,8 @@ export default function Items() {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    columnGap: 10,
-    marginTop: 0,
-  },
-  text: {
-    color: cssVar.color.white,
-    fontSize: 20,
-  },
-  link: {
-    width: 'auto',
-  },
-  list: {
+  itemsList: {
     marginTop: 20,
     marginBottom: 20,
-  },
-  buttonHeader: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    columnGap: 10,
-    marginTop: 0,
-  },
-  textHeader: {
-    color: cssVar.color.white,
-    fontSize: 20,
-  },
-  linkHeader: {
-    width: 'auto',
   },
 });

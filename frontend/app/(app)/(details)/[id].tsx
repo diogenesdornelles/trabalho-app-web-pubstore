@@ -8,7 +8,15 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image } from 'expo-image';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Dropdown from 'react-native-input-select';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -17,7 +25,7 @@ export default function Details() {
   const router = useRouter();
   const [quantity, setQuantity] = useState<number>(1);
   const [quantityError, setQuantityError] = useState<boolean>(false);
-  const { isPending, error, data, isFetching, isRefetching, isLoading, refetch, isSuccess } =
+  const { isPending, error, data, isFetching, isRefetching, isLoading, refetch } =
     useGetProductById(id as string);
 
   const state = useBasketStore(state => state);
@@ -130,7 +138,12 @@ export default function Details() {
   };
 
   return data && data.id ? (
-    <Page type="scrollView" customStyle={{}}>
+    <Page>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           title: getHeaderTitle(),
@@ -140,6 +153,8 @@ export default function Details() {
           headerTintColor: cssVar.color.white,
           headerShown: true,
           headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -150,29 +165,29 @@ export default function Details() {
         }}
       />
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
-      <ScrollView style={styles.card}>
-        <Image source={{ uri: data.source }} style={styles.image} contentFit="contain" />
-        <View style={styles.info}>
-          <Text style={styles.name}>{data.name}</Text>
-          <Text style={styles.description}>{data.description}</Text>
-          <Text style={styles.type}>Tipo: {data.type}</Text>
-          <Text style={styles.type}>Teor alcoólico: {data.alcohol_content}%</Text>
-          {data.ibu > 0 && <Text style={styles.type}>IBU: {data.ibu}</Text>}
-          <Text style={styles.type}>Volume: {data.volume}ml</Text>
-          <View style={styles.detailRow}>
-            <Text style={styles.label}>Preço:</Text>
-            <Text style={styles.price}>R$ {data.price.toFixed(2)}</Text>
+      <ScrollView style={styles.detailsCard}>
+        <Image source={{ uri: data.source }} style={styles.detailsImage} contentFit="contain" />
+        <View style={styles.detailsInfo}>
+          <Text style={styles.detailsName}>{data.name}</Text>
+          <Text style={styles.detailsDescription}>{data.description}</Text>
+          <Text style={styles.detailsText}>Tipo: {data.type}</Text>
+          <Text style={styles.detailsText}>Teor alcoólico: {data.alcohol_content}%</Text>
+          {data.ibu > 0 && <Text style={styles.detailsText}>IBU: {data.ibu}</Text>}
+          <Text style={styles.detailsText}>Volume: {data.volume}ml</Text>
+          <View style={styles.detailsRow}>
+            <Text style={styles.detailsLabel}>Preço:</Text>
+            <Text style={styles.detailsPrice}>R$ {data.price.toFixed(2)}</Text>
           </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.label}>Quantidade:</Text>
-            <Text style={styles.quantity}>{quantity}</Text>
+          <View style={styles.detailsRow}>
+            <Text style={styles.detailsLabel}>Quantidade:</Text>
+            <Text style={styles.detailsQuantity}>{quantity}</Text>
           </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.label}>Total:</Text>
-            <Text style={styles.totalPrice}>R$ {(data.price * quantity).toFixed(2)}</Text>
+          <View style={styles.detailsRow}>
+            <Text style={styles.detailsLabel}>Total:</Text>
+            <Text style={styles.detailsTotalPrice}>R$ {(data.price * quantity).toFixed(2)}</Text>
           </View>
         </View>
-        <View style={styles.dropdownContainer}>
+        <View style={styles.detailsDropdownContainer}>
           <Dropdown
             label="Quantidade"
             placeholder="Selecione a quantidade..."
@@ -208,15 +223,19 @@ export default function Details() {
             selectedItemStyle={{ color: cssVar.color.white }}
           />
         </View>
-        <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={handleAddProduct}>
-          <Text style={styles.buttonText}>Adicionar ao Carrinho</Text>
+        <TouchableOpacity
+          style={styles.detailsButton}
+          activeOpacity={0.7}
+          onPress={handleAddProduct}
+        >
+          <Text style={styles.detailsButtonText}>Adicionar ao Carrinho</Text>
         </TouchableOpacity>
       </ScrollView>
     </Page>
   ) : null;
 }
 const styles = StyleSheet.create({
-  card: {
+  detailsCard: {
     width: '100%',
     height: '90%',
     flex: 1,
@@ -231,63 +250,63 @@ const styles = StyleSheet.create({
     paddingTop: 7,
     paddingBottom: 10,
   },
-  image: {
+  detailsImage: {
     width: '100%',
     height: 200,
   },
-  info: {
+  detailsInfo: {
     padding: 15,
   },
-  name: {
+  detailsName: {
     fontSize: RFValue(18),
     fontWeight: 'bold',
     color: cssVar.color.white,
     marginBottom: 8,
     textAlign: 'center',
   },
-  description: {
+  detailsDescription: {
     fontSize: RFValue(14),
     color: cssVar.color.veryLightGray,
     marginBottom: 10,
     textAlign: 'center',
   },
-  type: {
+  detailsText: {
     fontSize: RFValue(14),
     fontWeight: '600',
     color: cssVar.color.veryLightGray,
     marginBottom: 10,
     textAlign: 'center',
   },
-  detailRow: {
+  detailsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 5,
   },
-  label: {
+  detailsLabel: {
     fontSize: RFValue(14),
     color: cssVar.color.veryLightGray,
     fontWeight: '600',
   },
-  price: {
+  detailsPrice: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
     color: cssVar.color.greenLight,
   },
-  quantity: {
+  detailsQuantity: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
     color: cssVar.color.orange,
   },
-  totalPrice: {
+  detailsTotalPrice: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
     color: cssVar.color.blue,
   },
-  dropdownContainer: {
+  detailsDropdownContainer: {
     paddingHorizontal: 15,
     paddingVertical: 10,
   },
-  button: {
+  detailsButton: {
     backgroundColor: cssVar.color.highlight,
     paddingVertical: 12,
     alignItems: 'center',
@@ -295,19 +314,15 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     borderRadius: 5,
   },
-  buttonText: {
+  detailsButtonText: {
     color: cssVar.color.black,
     fontSize: RFValue(16),
     fontWeight: 'bold',
   },
-  text: {
-    color: cssVar.color.white,
-    fontSize: 20,
-  },
-  link: {
+  detailsLink: {
     width: 'auto',
   },
-  buttonHeader: {
+  detailsButtonHeader: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -315,11 +330,11 @@ const styles = StyleSheet.create({
     columnGap: 10,
     marginTop: 0,
   },
-  textHeader: {
+  detailsTextHeader: {
     color: cssVar.color.white,
     fontSize: 20,
   },
-  linkHeader: {
+  detailsLinkHeader: {
     width: 'auto',
   },
 });

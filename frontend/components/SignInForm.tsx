@@ -43,11 +43,11 @@ export const SignInForm = () => {
       validationSchema={SignupSchema}
     >
       {({ handleChange, handleBlur, submitForm, values, errors, touched }) => (
-        <View style={styles.form}>
-          <Text style={styles.title}>Sign-in</Text>
-          <Text style={styles.message}>Informe CPF e senha</Text>
-          <View style={styles.inputRow}>
-            <Text style={styles.label} nativeID="labelcpf">
+        <View style={styles.signFormContainer}>
+          <Text style={styles.signFormTitle}>Sign-in</Text>
+          <Text style={styles.signFormMessage}>Informe CPF e senha</Text>
+          <View style={styles.signFormInputRow}>
+            <Text style={styles.signFormLabel} nativeID="labelcpf">
               cpf
             </Text>
             <TextInput
@@ -55,13 +55,15 @@ export const SignInForm = () => {
               onChangeText={handleChange('cpf')}
               onBlur={handleBlur('cpf')}
               value={values.cpf}
-              style={styles.input}
+              style={styles.signFormInput}
               placeholderTextColor="#aaa"
             />
-            {touched.cpf && errors.cpf && <Text style={styles.errorText}>{errors.cpf}</Text>}
+            {touched.cpf && errors.cpf && (
+              <Text style={styles.signFormErrorText}>{errors.cpf}</Text>
+            )}
           </View>
-          <View style={styles.inputRow}>
-            <Text style={styles.label} nativeID="labelPwd">
+          <View style={styles.signFormInputRow}>
+            <Text style={styles.signFormLabel} nativeID="labelPwd">
               Senha
             </Text>
             <TextInput
@@ -69,17 +71,17 @@ export const SignInForm = () => {
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
-              style={styles.input}
+              style={styles.signFormInput}
               secureTextEntry
               placeholderTextColor="#aaa"
             />
             {touched.password && errors.password && (
-              <Text style={styles.errorText}>{errors.password}</Text>
+              <Text style={styles.signFormErrorText}>{errors.password}</Text>
             )}
           </View>
-          {error && <Text style={styles.errorText}>CPF ou senha errados</Text>}
-          <TouchableOpacity onPress={() => submitForm()} style={styles.button}>
-            <Text style={styles.buttonText}>Enviar</Text>
+          {error && <Text style={styles.signFormErrorText}>CPF ou senha errados</Text>}
+          <TouchableOpacity onPress={() => submitForm()} style={styles.signFormButton}>
+            <Text style={styles.signFormButtonText}>Enviar</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -88,7 +90,7 @@ export const SignInForm = () => {
 };
 
 const styles = StyleSheet.create({
-  form: {
+  signFormContainer: {
     backgroundColor: cssVar.color.white,
     width: '90%',
     padding: 20,
@@ -101,27 +103,27 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
-  title: {
+  signFormTitle: {
     fontSize: RFValue(24, 540),
     fontWeight: 'bold',
     marginBottom: 10,
     color: cssVar.color.gray,
   },
-  message: {
+  signFormMessage: {
     fontSize: RFValue(14, 540),
     color: cssVar.color.semiGray,
     marginBottom: 20,
   },
-  inputRow: {
+  signFormInputRow: {
     width: '100%',
     marginBottom: 15,
   },
-  label: {
+  signFormLabel: {
     fontSize: RFValue(14, 540),
     color: cssVar.color.gray,
     marginBottom: 5,
   },
-  input: {
+  signFormInput: {
     backgroundColor: cssVar.color.black,
     color: cssVar.color.white,
     width: '100%',
@@ -131,12 +133,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
-  errorText: {
+  signFormErrorText: {
     color: cssVar.color.red,
     marginTop: 5,
     textAlign: 'center',
   },
-  button: {
+  signFormButton: {
     backgroundColor: cssVar.color.black,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  buttonText: {
+  signFormButtonText: {
     fontSize: RFValue(16, 540),
     fontWeight: 'bold',
     color: cssVar.color.highlight,

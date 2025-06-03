@@ -20,10 +20,7 @@ export default function Account() {
   }
 
   return (
-    <Page
-      customStyle={{ opacity: 0.8, filter: 'grayscale(100%)' }}
-      blurSettings={{ intensity: 10, tint: 'systemUltraThinMaterialDark', radius: 10 }}
-    >
+    <Page>
       <Stack.Screen
         options={{
           title: 'Cliente',
@@ -32,6 +29,9 @@ export default function Account() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -41,17 +41,17 @@ export default function Account() {
         }}
       />
       <View style={styles.userInfo}>
-        <Text style={styles.title}>Informações do usuário: </Text>
-        {name && <Text style={styles.text}>Nome: {name}</Text>}
-        {id && <Text style={styles.text}>ID: {id}</Text>}
-        {cpf && <Text style={styles.text}>CPF: {cpf}</Text>}
-        {address && <Text style={styles.text}>Endereço: {address}</Text>}
-        {email && <Text style={styles.text}>E-mail: {email}</Text>}
+        <Text style={styles.userText}>Informações do usuário: </Text>
+        {name && <Text style={styles.userText}>Nome: {name}</Text>}
+        {id && <Text style={styles.userText}>ID: {id}</Text>}
+        {cpf && <Text style={styles.userText}>CPF: {cpf}</Text>}
+        {address && <Text style={styles.userText}>Endereço: {address}</Text>}
+        {email && <Text style={styles.userText}>E-mail: {email}</Text>}
         {loggedAt && (
-          <Text style={styles.text}>Logado em: {new Date(loggedAt).toLocaleDateString()}</Text>
+          <Text style={styles.userText}>Logado em: {new Date(loggedAt).toLocaleDateString()}</Text>
         )}
       </View>
-      <Text style={styles.signOut} onPress={() => endSession()}>
+      <Text style={styles.userSignOut} onPress={() => endSession()}>
         Sair
       </Text>
     </Page>
@@ -73,19 +73,19 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: '100%',
   },
-  title: {
+  userTitle: {
     color: cssVar.color.highlight,
     fontSize: 26,
     fontWeight: '600',
     marginBottom: 10,
     textAlign: 'center',
   },
-  text: {
+  userText: {
     color: cssVar.color.white,
     fontSize: 18,
     marginVertical: 4,
   },
-  signOut: {
+  userSignOut: {
     fontSize: 26,
     position: 'absolute',
     color: cssVar.color.white,

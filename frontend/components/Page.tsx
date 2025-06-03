@@ -3,7 +3,7 @@ import Container from '@/components/Container';
 import { ViewStyle } from 'react-native';
 import { BlurTint } from 'expo-blur';
 
-interface Props {
+interface PageProps {
   customStyle?: ViewStyle;
   blurSettings?: {
     intensity?: number;
@@ -21,7 +21,7 @@ export default function Page({
   customStyle,
   blurSettings,
   onLayoutRootView,
-}: Props) {
+}: PageProps) {
   return (
     <Container type={type ? type : 'view'} onLayoutRootView={onLayoutRootView}>
       <ImageBackground customStyle={customStyle} blurSettings={blurSettings} />

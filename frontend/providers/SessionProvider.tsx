@@ -1,7 +1,7 @@
 import SessionProps from '@/domain/interfaces/Session.interface';
 import useBasketStore from '@/hooks/useBasketStore';
 import { useCreateLogin } from '@/hooks/service/post/useCreateLogin';
-import { useStorageState } from '@/hooks/service/localstorage_/useStorageState';
+import { useStorageState } from '@/hooks/service/ls/useStorageState';
 import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 import AuthContext from '../context/AuthContext';
 
@@ -11,20 +11,16 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const updateCustomerId = useBasketStore(state => state.updateCustomerId);
   const [authSession, setAuthSession] = useState<SessionProps | null>(null);
 
-  // load session form local storage
   useEffect(() => {
-    // if there is a session saved in memory
     if (session) {
       try {
         const parsedSession = JSON.parse(session);
         const customer_id = parsedSession?.id;
         if (customer_id) {
-          // inject cust. id on basket store
           updateCustomerId(customer_id);
         }
         const token = parsedSession?.token;
         if (token) {
-          // set the recovered session from ls to local session context
           setAuthSession(parsedSession);
         }
       } catch (error) {

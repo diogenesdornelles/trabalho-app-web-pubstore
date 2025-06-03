@@ -55,7 +55,6 @@ export function useApi() {
         return data;
       },
       getMany: async (product: ProductQueryProps): Promise<ProductProps[]> => {
-        console.log(restClient.defaults.baseURL);
         const { data } = await restClient.get('products/many', { params: product });
         return data;
       },
@@ -67,7 +66,6 @@ export function useApi() {
     () =>
       async ({ cpf, password }: LoginProps): Promise<TokenProps> => {
         try {
-          alert(restClient.defaults.baseURL);
           const response = await restClient.post('login', { cpf, password });
           return response.data;
         } catch (error) {

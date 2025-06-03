@@ -16,16 +16,13 @@ interface BaseProductProps {
   source: string;
 }
 
-// foi inserido na cesta
 export interface ProductBasketProps extends BaseProductProps {
   customer_id: string | null;
   total_price: number;
 }
 
-// Chega do db
 export interface ProductProps extends BaseProductProps {}
 
-// dados para o filtro
 export interface ProductQueryProps {
   name?: string;
   description?: string;

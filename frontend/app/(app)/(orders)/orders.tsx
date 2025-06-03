@@ -12,7 +12,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Orders() {
   const state = useBasketStore(state => state);
-  const { isPending, error, data, isFetching, isRefetching, isLoading, refetch, isSuccess } =
+  const { isPending, error, data, isFetching, isRefetching, isLoading, refetch } =
     useGetOrdersByCustomerId(state.customer_id as string);
 
   useEffect(() => {
@@ -35,15 +35,7 @@ export default function Orders() {
   }, [error, refetch]);
 
   return (
-    <Page
-      customStyle={{
-        display: 'flex',
-        flexDirection: 'row',
-        opacity: 0.8,
-        filter: 'grayscale(80%)',
-      }}
-      blurSettings={{ intensity: 10, tint: 'systemUltraThinMaterialDark', radius: 4 }}
-    >
+    <Page>
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <Stack.Screen
         options={{
@@ -53,6 +45,9 @@ export default function Orders() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -62,19 +57,19 @@ export default function Orders() {
           headerRight: () => <ButtonUser />,
         }}
       />
-      <View style={styles.card}>
-        <Text style={styles.title}>Lista</Text>
+      <View style={styles.ordersCard}>
+        <Text style={styles.ordersTitle}>Lista</Text>
         {data ? (
           <>
             <FlatList
-              style={styles.list}
+              style={styles.ordersList}
               data={data}
               keyExtractor={product => product.id.toString()}
               renderItem={({ item, index }) => <OrderItem order={item} index={index} />}
             />
           </>
         ) : (
-          <Text style={styles.noProducts}>Nenhum produto encontrado</Text>
+          <Text style={styles.ordersNoOrders}>Nenhum produto encontrado</Text>
         )}
       </View>
     </Page>
@@ -82,7 +77,7 @@ export default function Orders() {
 }
 
 const styles = StyleSheet.create({
-  card: {
+  ordersCard: {
     width: '100%',
     flex: 1,
     maxHeight: '95%',
@@ -97,50 +92,22 @@ const styles = StyleSheet.create({
     padding: 2,
     paddingTop: 4,
   },
-  list: {
+  ordersList: {
     marginTop: 10,
     marginBottom: 10,
   },
-  title: {
+  ordersTitle: {
     fontSize: RFValue(24),
     fontWeight: 'bold',
     color: cssVar.color.highlight,
     marginBottom: 0,
     textAlign: 'center',
   },
-  noProducts: {
+  ordersNoOrders: {
     fontSize: RFValue(14),
     color: cssVar.color.veryLightGray,
     alignSelf: 'center',
     fontWeight: '600',
     marginTop: 100,
-  },
-  button: {
-    backgroundColor: cssVar.color.highlight,
-    paddingVertical: 12,
-    alignItems: 'center',
-    margin: 15,
-    marginBottom: 40,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: cssVar.color.black,
-    fontSize: RFValue(16),
-    fontWeight: 'bold',
-  },
-  buttonHeader: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    columnGap: 10,
-    marginTop: 0,
-  },
-  textHeader: {
-    color: cssVar.color.white,
-    fontSize: 20,
-  },
-  linkHeader: {
-    width: 'auto',
   },
 });

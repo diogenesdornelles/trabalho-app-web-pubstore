@@ -10,10 +10,7 @@ export default function Home() {
   const endSession = useEndSession();
 
   return (
-    <Page
-      customStyle={{ opacity: 1, filter: 'grayscale(30%)' }}
-      blurSettings={{ intensity: 100, tint: 'systemUltraThinMaterialDark', radius: 0 }}
-    >
+    <Page>
       <Stack.Screen
         options={{
           title: 'Home',
@@ -22,6 +19,9 @@ export default function Home() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -31,20 +31,20 @@ export default function Home() {
           headerRight: () => <ButtonUser />,
         }}
       />
-      <Text style={styles.text}>PubStore</Text>
+      <Text style={styles.homeText}>PubStore</Text>
       <Link
         href={{
           pathname: '/menu',
         }}
-        style={[styles.link, { marginHorizontal: 'auto' }]}
+        style={[styles.homeLink, { marginHorizontal: 'auto' }]}
         asChild
         key="Sign-in"
       >
-        <TouchableOpacity style={styles.button} activeOpacity={0.7}>
-          <Text style={styles.buttonText}>Menu</Text>
+        <TouchableOpacity style={styles.homeButton} activeOpacity={0.7}>
+          <Text style={styles.homeButtonText}>Menu</Text>
         </TouchableOpacity>
       </Link>
-      <Text style={styles.signOut} onPress={() => endSession()}>
+      <Text style={styles.homeSignOut} onPress={() => endSession()}>
         Sair
       </Text>
     </Page>
@@ -52,7 +52,7 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  text: {
+  homeText: {
     color: cssVar.color.white,
     fontSize: RFValue(30, 540), // vw padrão de 680
     fontWeight: 'bold',
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '100%',
   },
-  signOut: {
+  homeSignOut: {
     fontSize: 26,
     position: 'absolute',
     color: cssVar.color.white,
@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     opacity: 1,
   },
-  button: {
+  homeLink: {},
+  homeButton: {
     color: cssVar.color.white,
     fontSize: RFValue(16, 540), // vw padrão de 680
     fontWeight: 'bold',
@@ -90,9 +91,7 @@ const styles = StyleSheet.create({
     minWidth: 300,
     marginTop: 20,
   },
-  link: {},
-
-  buttonText: {
+  homeButtonText: {
     fontSize: RFValue(16, 540), // vw padrão de 680
     fontWeight: 'bold',
     textAlign: 'center',

@@ -8,15 +8,15 @@ export default function ButtonUser() {
   const { authSession } = useSession();
   const router = useRouter();
   return (
-    <Link style={styles.linkHeader} href="/account" asChild>
+    <Link style={styles.buttonUserLinkHeader} href="/account" asChild>
       <TouchableOpacity
         activeOpacity={0.7}
-        style={styles.buttonHeader}
+        style={styles.buttonUserHeader}
         hitSlop={20}
         onPressIn={() => router.push('/account')}
       >
         {authSession && (
-          <Text style={styles.textHeader}>{authSession ? authSession.name : ''}</Text>
+          <Text style={styles.buttonUserTextHeader}>{authSession ? authSession.name : ''}</Text>
         )}
         {authSession ? (
           <Feather name="user-check" size={24} color="white" />
@@ -29,7 +29,7 @@ export default function ButtonUser() {
 }
 
 const styles = StyleSheet.create({
-  buttonHeader: {
+  buttonUserHeader: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
     columnGap: 10,
     marginTop: 0,
   },
-  textHeader: {
+  buttonUserTextHeader: {
     color: cssVar.color.white,
     fontSize: 20,
   },
-  linkHeader: {
+  buttonUserLinkHeader: {
     width: 'auto',
   },
 });

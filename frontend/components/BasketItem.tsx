@@ -20,7 +20,6 @@ export default function BasketItem({
   removeProduct,
   updateProduct,
 }: BasketItemProps) {
-  // Funções de manipulação permanecem inalteradas
   const handleIncrement = () => {
     updateProduct(product.id, {
       ...product,
@@ -64,20 +63,20 @@ export default function BasketItem({
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.index}>{index + 1}</Text>
-      <Image source={{ uri: product.source }} style={styles.image} />
+    <View style={styles.basketItemContainer}>
+      <Text style={styles.basketItemIndex}>{index + 1}</Text>
+      <Image source={{ uri: product.source }} style={styles.basketItemImage} />
 
-      <View style={styles.info}>
-        <Text style={styles.name}>{product.name}</Text>
-        <Text style={styles.quantity}>Quantidade: {product.quantity}</Text>
-        <Text style={styles.price}>Preço: R$ {product.price.toFixed(2)}</Text>
-        <Text style={styles.totalPrice}>Total: R$ {product.total_price.toFixed(2)}</Text>
+      <View style={styles.basketItemInfo}>
+        <Text style={styles.basketItemName}>{product.name}</Text>
+        <Text style={styles.basketItemQuantity}>Quantidade: {product.quantity}</Text>
+        <Text style={styles.basketItemPrice}>Preço: R$ {product.price.toFixed(2)}</Text>
+        <Text style={styles.basketItemTotalPrice}>Total: R$ {product.total_price.toFixed(2)}</Text>
       </View>
 
-      <View style={styles.actions}>
+      <View style={styles.basketItemActions}>
         {/* Linha superior: Ver detalhes */}
-        <View style={styles.actionRow}>
+        <View style={styles.basketItemActionRow}>
           <Link
             href={{
               pathname: '/(app)/(details)/[id]',
@@ -86,28 +85,28 @@ export default function BasketItem({
             asChild
             onPress={e => e.stopPropagation()}
           >
-            <TouchableOpacity style={styles.viewButton} activeOpacity={0.7}>
+            <TouchableOpacity style={styles.basketItemViewButton} activeOpacity={0.7}>
               <AntDesign name="infocirlceo" size={24} color={cssVar.color.black} />
-              <Text style={styles.actionText}>Ver</Text>
+              <Text style={styles.basketItemActionText}>Ver</Text>
             </TouchableOpacity>
           </Link>
         </View>
 
         {/* Linha do meio: Botões de quantidade */}
-        <View style={styles.actionRow}>
+        <View style={styles.basketItemActionRow}>
           <TouchableOpacity
             onPress={handleDecrement}
-            style={styles.quantityButton}
+            style={styles.basketItemQuantityButton}
             testID="decrement-button"
           >
             <AntDesign name="minuscircleo" size={20} color={cssVar.color.darkLime} />
           </TouchableOpacity>
 
-          <Text style={styles.quantityValue}>{product.quantity}</Text>
+          <Text style={styles.basketItemQuantityValue}>{product.quantity}</Text>
 
           <TouchableOpacity
             onPress={handleIncrement}
-            style={styles.quantityButton}
+            style={styles.basketItemQuantityButton}
             testID="increment-button"
           >
             <AntDesign name="pluscircleo" size={20} color={cssVar.color.darkLime} />
@@ -115,14 +114,14 @@ export default function BasketItem({
         </View>
 
         {/* Linha inferior: Remover */}
-        <View style={styles.actionRow}>
+        <View style={styles.basketItemActionRow}>
           <TouchableOpacity
             onPress={handleRemove}
-            style={styles.removeButton}
+            style={styles.basketItemRemoveButton}
             testID="remove-button"
           >
             <Ionicons name="trash" size={20} color={cssVar.color.red} />
-            <Text style={styles.removeText}>Remover</Text>
+            <Text style={styles.basketItemRemoveText}>Remover</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -131,7 +130,7 @@ export default function BasketItem({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  basketItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: RFValue(10),
@@ -144,86 +143,85 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  index: {
+  basketItemIndex: {
     fontSize: RFValue(16),
     fontWeight: 'bold',
     marginRight: RFValue(10),
     width: RFValue(20),
     textAlign: 'center',
   },
-  image: {
+  basketItemImage: {
     width: RFValue(50),
     height: RFValue(50),
     borderRadius: 5,
     marginRight: RFValue(10),
   },
-  info: {
+  basketItemInfo: {
     flex: 1,
     marginRight: RFValue(10),
   },
-  name: {
+  basketItemName: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
     marginBottom: RFValue(5),
   },
-  quantity: {
+  basketItemQuantity: {
     fontSize: RFValue(12),
     color: '#555',
   },
-  price: {
+  basketItemPrice: {
     fontSize: RFValue(12),
     color: '#555',
   },
-  totalPrice: {
+  basketItemTotalPrice: {
     fontSize: RFValue(12),
     fontWeight: 'bold',
     color: '#333',
     marginTop: RFValue(5),
   },
-  // Estilos reorganizados para actions
-  actions: {
+  basketItemActions: {
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     width: RFValue(80),
     height: '100%',
   },
-  actionRow: {
+  basketItemActionRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginVertical: RFValue(4),
     width: '100%',
   },
-  viewButton: {
+  basketItemViewButton: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: RFValue(2),
     paddingHorizontal: RFValue(4),
     borderRadius: RFValue(4),
   },
-  actionText: {
+  basketItemActionText: {
     fontSize: RFValue(14),
     marginLeft: RFValue(4),
     color: cssVar.color.black,
   },
-  quantityButton: {
+  basketItemQuantityButton: {
     padding: RFValue(4),
     borderRadius: RFValue(4),
   },
-  quantityValue: {
+  basketItemQuantityValue: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
     marginHorizontal: RFValue(8),
     minWidth: RFValue(20),
     textAlign: 'center',
   },
-  removeButton: {
+  basketItemRemoveButton: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: RFValue(4),
     borderRadius: RFValue(4),
   },
-  removeText: {
+  basketItemRemoveText: {
     fontSize: RFValue(10),
     marginLeft: RFValue(4),
     color: cssVar.color.red,

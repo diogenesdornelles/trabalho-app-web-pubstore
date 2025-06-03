@@ -65,24 +65,33 @@ export default function Product(item: ProductProps): React.ReactElement {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.productWrapper}>
       <Link
         href={{
           pathname: '/(app)/(details)/[id]',
           params: { id: item.id },
         }}
-        style={[styles.link, { marginBottom: 30 }]}
+        style={[styles.productLink, { marginBottom: 30 }]}
         asChild
       >
-        <TouchableOpacity style={styles.container} activeOpacity={0.7} disabled={!item.disponible}>
-          <Image source={item.source} style={styles.image} contentFit="scale-down" />
-          <View style={styles.textContainer}>
-            <Text style={styles.name}>{item.name}</Text>
+        <TouchableOpacity
+          style={styles.productContainer}
+          activeOpacity={0.7}
+          disabled={!item.disponible}
+        >
+          <Image source={item.source} style={styles.productImage} contentFit="scale-down" />
+          <View style={styles.productTextContainer}>
+            <Text style={styles.productName}>{item.name}</Text>
           </View>
-          <View style={styles.footer}>
-            <Text style={styles.value}>R$ {item.price.toFixed(2)}</Text>
-            <Text style={styles.type}>{item.type}</Text>
-            <Text style={[styles.status, item.disponible ? styles.available : styles.unavailable]}>
+          <View style={styles.productFooter}>
+            <Text style={styles.productValue}>R$ {item.price.toFixed(2)}</Text>
+            <Text style={styles.productType}>{item.type}</Text>
+            <Text
+              style={[
+                styles.productStatus,
+                item.disponible ? styles.productAvailable : styles.productUnavailable,
+              ]}
+            >
               {item.disponible ? 'Disponível' : 'Indisponível'}
             </Text>
           </View>
@@ -90,11 +99,11 @@ export default function Product(item: ProductProps): React.ReactElement {
       </Link>
       {item.disponible && (
         <TouchableOpacity
-          style={styles.basketButton}
+          style={styles.productBasketButton}
           onPress={handleAddToBasket}
           activeOpacity={0.7}
         >
-          <View style={styles.plusBadge}>
+          <View style={styles.productPlusBadge}>
             <AntDesign name="plus" size={RFValue(12)} color="white" />
           </View>
           <SimpleLineIcons name="basket" size={RFValue(24)} color={cssVar.color.highlight} />
@@ -106,20 +115,20 @@ export default function Product(item: ProductProps): React.ReactElement {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
+  productWrapper: {
     position: 'relative',
     width: '100%',
     alignItems: 'center',
     marginVertical: RFValue(8),
   },
-  basketButton: {
+  productBasketButton: {
     position: 'absolute',
     top: RFValue(10),
     right: RFValue(10),
     zIndex: 10,
     padding: RFValue(8),
   },
-  plusBadge: {
+  productPlusBadge: {
     position: 'absolute',
     top: RFValue(0),
     right: RFValue(0),
@@ -131,7 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 20,
   },
-  container: {
+  productContainer: {
     width: '95%',
     backgroundColor: cssVar.color.backgroundDark,
     borderRadius: 5,
@@ -143,53 +152,53 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  image: {
+  productImage: {
     width: '100%',
     height: RFValue(120),
     borderRadius: 5,
   },
-  textContainer: {
+  productTextContainer: {
     marginTop: RFValue(10),
     alignItems: 'center',
   },
-  name: {
+  productName: {
     fontSize: RFValue(16),
     fontWeight: 'bold',
     color: cssVar.color.white,
   },
-  footer: {
+  productFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     marginTop: RFValue(10),
   },
-  value: {
+  productValue: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
     color: cssVar.color.greenLight,
   },
-  type: {
+  productType: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
     color: cssVar.color.yellow,
   },
-  status: {
+  productStatus: {
     fontSize: RFValue(12),
     fontWeight: 'bold',
     paddingVertical: RFValue(4),
     paddingHorizontal: RFValue(8),
     borderRadius: 5,
   },
-  available: {
+  productAvailable: {
     color: cssVar.color.white,
     backgroundColor: cssVar.color.greenMedium,
   },
-  unavailable: {
+  productUnavailable: {
     color: cssVar.color.white,
     backgroundColor: cssVar.color.darkRed,
   },
-  link: {
+  productLink: {
     width: '100%',
     textDecorationLine: 'none',
   },

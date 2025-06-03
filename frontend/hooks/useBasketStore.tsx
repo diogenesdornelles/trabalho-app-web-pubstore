@@ -4,7 +4,6 @@ import { BasketStateType } from '@/domain/types/BasketState.type';
 import 'react-native-get-random-values';
 import { create } from 'zustand';
 
-// armazena e gerencia o estado da cesta
 const useBasketStore = create<BasketStateType & BasketActionType>(set => ({
   customer_id: null,
   total_value: 0.0,
@@ -12,14 +11,13 @@ const useBasketStore = create<BasketStateType & BasketActionType>(set => ({
   addProduct: (product: ProductBasketProps) =>
     set(state => {
       if (state.products.some(_product => _product.id === product.id)) {
-        // Se o produto já existe, atualiza a quantidade e o preço total
         const updatedProducts = state.products.map(_product => {
           if (_product.id === product.id) {
             return {
               ..._product,
-              quantity: (_product.quantity || 0) + (product.quantity || 1), // Incrementa a quantidade
+              quantity: (_product.quantity || 0) + (product.quantity || 1),
               total_price:
-                (_product.price || 0) * ((_product.quantity || 0) + (product.quantity || 1)), // Atualiza o preço total
+                (_product.price || 0) * ((_product.quantity || 0) + (product.quantity || 1)),
             };
           }
           return _product;
@@ -33,7 +31,7 @@ const useBasketStore = create<BasketStateType & BasketActionType>(set => ({
           total_value: updatedTotal,
         };
       }
-      // Se o produto não existe, adiciona um novo produto
+
       const newProduct: ProductBasketProps = {
         ...product,
         quantity: product.quantity ? product.quantity : 1,

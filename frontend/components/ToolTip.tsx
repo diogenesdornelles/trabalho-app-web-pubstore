@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     borderRadius: RFValue(5),
     padding: RFValue(7),
     zIndex: 15,
-    // display: 'none',
   },
   tooltipText: {
     color: 'white',

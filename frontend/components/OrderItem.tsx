@@ -30,31 +30,33 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.orderId}>Pedido #{order.id.substring(0, 8)}</Text>
-        <Text style={styles.date}>{formattedDate}</Text>
+    <View style={styles.orderItemContainer}>
+      <View style={styles.orderItemHeader}>
+        <Text style={styles.orderItemOrderId}>Pedido #{order.id.substring(0, 8)}</Text>
+        <Text style={styles.orderItemDate}>{formattedDate}</Text>
       </View>
-      <View style={styles.details}>
-        <View style={styles.detailRow}>
-          <Text style={styles.label}>Items:</Text>
-          <Text style={styles.value}>{totalItems}</Text>
+      <View style={styles.orderItemDetails}>
+        <View style={styles.orderItemDetailRow}>
+          <Text style={styles.orderItemLabel}>Items:</Text>
+          <Text style={styles.orderItemValue}>{totalItems}</Text>
         </View>
 
-        <View style={styles.detailRow}>
-          <Text style={styles.label}>Total:</Text>
-          <Text style={styles.value}>${totalPrice.toFixed(2)}</Text>
+        <View style={styles.orderItemDetailRow}>
+          <Text style={styles.orderItemLabel}>Total:</Text>
+          <Text style={styles.orderItemValue}>${totalPrice.toFixed(2)}</Text>
         </View>
 
-        <View style={styles.statusContainer}>
-          <Text style={styles.label}>Status:</Text>
+        <View style={styles.orderItemStatusContainer}>
+          <Text style={styles.orderItemLabel}>Status:</Text>
           <View
             style={[
-              styles.statusBadge,
-              order.payment_status === 'paid' ? styles.paidStatus : styles.pendingStatus,
+              styles.orderItemStatusBadge,
+              order.payment_status === 'paid'
+                ? styles.orderItemPaidStatus
+                : styles.orderItemPendingStatus,
             ]}
           >
-            <Text style={styles.statusText}>{getOrderStatus(order.payment_status)}</Text>
+            <Text style={styles.orderItemStatusText}>{getOrderStatus(order.payment_status)}</Text>
           </View>
         </View>
       </View>
@@ -64,12 +66,12 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
             pathname: '/(app)/(payment)/[order_id]',
             params: { order_id: order.id },
           }}
-          style={[styles.link, { marginHorizontal: 'auto', marginBottom: 30 }]}
+          style={[styles.orderItemLink, { marginHorizontal: 'auto', marginBottom: 30 }]}
           asChild
           onPress={e => e.stopPropagation()}
         >
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Pagar</Text>
+          <TouchableOpacity style={styles.orderItemButton}>
+            <Text style={styles.orderItemButtonText}>Pagar</Text>
           </TouchableOpacity>
         </Link>
       )}
@@ -78,7 +80,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  orderItemContainer: {
     marginVertical: 8,
     marginHorizontal: 12,
     borderRadius: 8,
@@ -90,18 +92,18 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  link: {
+  orderItemLink: {
     width: '100%',
     textDecorationLine: 'none',
     padding: 15,
   },
-  evenItem: {
+  orderItemEvenItem: {
     backgroundColor: cssVar.color.darkGray,
   },
-  oddItem: {
+  orderItemOddItem: {
     backgroundColor: cssVar.color.black,
   },
-  header: {
+  orderItemHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -110,54 +112,54 @@ const styles = StyleSheet.create({
     borderBottomColor: cssVar.color.highlight + '30',
     paddingBottom: 8,
   },
-  orderId: {
+  orderItemOrderId: {
     fontSize: RFValue(16),
     fontWeight: 'bold',
     color: cssVar.color.highlight,
   },
-  date: {
+  orderItemDate: {
     fontSize: RFValue(12),
     color: cssVar.color.veryLightGray,
   },
-  details: {
+  orderItemDetails: {
     gap: 8,
   },
-  detailRow: {
+  orderItemDetailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  label: {
+  orderItemLabel: {
     fontSize: RFValue(14),
     color: cssVar.color.veryLightGray,
   },
-  value: {
+  orderItemValue: {
     fontSize: RFValue(14),
     color: cssVar.color.white,
     fontWeight: '600',
   },
-  statusContainer: {
+  orderItemStatusContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 4,
   },
-  statusBadge: {
+  orderItemStatusBadge: {
     paddingVertical: 4,
     paddingHorizontal: 12,
     borderRadius: 5,
   },
-  paidStatus: {
+  orderItemPaidStatus: {
     backgroundColor: '#2E7D32',
   },
-  pendingStatus: {
+  orderItemPendingStatus: {
     backgroundColor: '#FF8F00',
   },
-  statusText: {
+  orderItemStatusText: {
     fontSize: RFValue(12),
     color: cssVar.color.white,
     fontWeight: 'bold',
   },
-  button: {
+  orderItemButton: {
     backgroundColor: cssVar.color.black,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  buttonText: {
+  orderItemButtonText: {
     fontSize: RFValue(16, 540),
     fontWeight: 'bold',
     color: cssVar.color.highlight,

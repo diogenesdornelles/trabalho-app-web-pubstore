@@ -18,14 +18,12 @@ export default function Basket() {
   const queryCreateProdutOrderedMutation = useCreateProductOrdered();
 
   const {
-    data: orderData,
     isPending: isPendingOrderData,
     mutateAsync: createOrder,
     isError: isErrorOrderData,
     error: errorOrderData,
   } = queryCreateOrderMutation;
   const {
-    data: productData,
     isPending: isPendingProductData,
     mutateAsync: createProductOrdered,
     isError: isErrorProductData,
@@ -51,7 +49,6 @@ export default function Basket() {
       return;
     }
     try {
-      // Cria o pedido e aguarda a resposta
       const orderResponse = await createOrder({
         customer_id: state.customer_id,
       });
@@ -59,7 +56,6 @@ export default function Basket() {
       console.log('Order created successfully:', orderResponse);
 
       if (state.products.length > 0) {
-        // Usa diretamente o mutateAsync como Promise para cada produto
         const productPromises = state.products.map(product =>
           createProductOrdered({
             product_id: product.id,
@@ -68,7 +64,6 @@ export default function Basket() {
           })
         );
 
-        // Aguarda todas as promessas concluírem
         await Promise.all(productPromises);
 
         Alert.alert(
@@ -117,15 +112,7 @@ export default function Basket() {
   }, [isErrorProductData, errorProductData]);
 
   return (
-    <Page
-      customStyle={{
-        display: 'flex',
-        flexDirection: 'row',
-        opacity: 0.8,
-        filter: 'grayscale(80%)',
-      }}
-      blurSettings={{ intensity: 10, tint: 'systemUltraThinMaterialDark', radius: 4 }}
-    >
+    <Page>
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
       <Stack.Screen
         options={{
@@ -146,12 +133,12 @@ export default function Basket() {
           headerRight: () => <ButtonUser />,
         }}
       />
-      <View style={styles.card}>
-        <Text style={styles.title}>Produtos</Text>
+      <View style={styles.basketCard}>
+        <Text style={styles.basketTitle}>Produtos</Text>
         {state.products.length > 0 ? (
           <>
             <FlatList
-              style={styles.list}
+              style={styles.basketList}
               data={state.products}
               keyExtractor={product => product.id.toString()}
               renderItem={({ item, index }) => (
@@ -163,16 +150,22 @@ export default function Basket() {
                 />
               )}
             />
-            <View style={styles.totalContainer}>
-              <Text style={styles.totalLabel}>Total:</Text>
-              <Text style={styles.totalValue}>R$ {state.total_value?.toFixed(2) || '0,00'}</Text>
+            <View style={styles.basketTotalContainer}>
+              <Text style={styles.basketTotalLabel}>Total:</Text>
+              <Text style={styles.basketTotalValue}>
+                R$ {state.total_value?.toFixed(2) || '0,00'}
+              </Text>
             </View>
-            <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={handleMakeOrder}>
-              <Text style={styles.buttonText}>Fazer Pedido</Text>
+            <TouchableOpacity
+              style={styles.basketButton}
+              activeOpacity={0.7}
+              onPress={handleMakeOrder}
+            >
+              <Text style={styles.basketButtonText}>Fazer Pedido</Text>
             </TouchableOpacity>
           </>
         ) : (
-          <Text style={styles.noProducts}>Nenhum produto encontrado</Text>
+          <Text style={styles.basketNoProducts}>Nenhum produto encontrado</Text>
         )}
       </View>
     </Page>
@@ -180,7 +173,7 @@ export default function Basket() {
 }
 
 const styles = StyleSheet.create({
-  card: {
+  basketCard: {
     width: '100%',
     flex: 1,
     maxHeight: '95%',
@@ -195,25 +188,25 @@ const styles = StyleSheet.create({
     padding: 2,
     paddingTop: 4,
   },
-  list: {
+  basketList: {
     marginTop: 10,
     marginBottom: 10,
   },
-  title: {
+  basketTitle: {
     fontSize: RFValue(24),
     fontWeight: 'bold',
     color: cssVar.color.highlight,
     marginBottom: 0,
     textAlign: 'center',
   },
-  noProducts: {
+  basketNoProducts: {
     fontSize: RFValue(14),
     color: cssVar.color.veryLightGray,
     alignSelf: 'center',
     fontWeight: '600',
     marginTop: 100,
   },
-  button: {
+  basketButton: {
     backgroundColor: cssVar.color.highlight,
     paddingVertical: 12,
     alignItems: 'center',
@@ -221,12 +214,12 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     borderRadius: 5,
   },
-  buttonText: {
+  basketButtonText: {
     color: cssVar.color.black,
     fontSize: RFValue(16),
     fontWeight: 'bold',
   },
-  buttonHeader: {
+  basketButtonHeader: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -234,14 +227,14 @@ const styles = StyleSheet.create({
     columnGap: 10,
     marginTop: 0,
   },
-  textHeader: {
+  basketTextHeader: {
     color: cssVar.color.white,
     fontSize: 20,
   },
-  linkHeader: {
+  basketLinkHeader: {
     width: 'auto',
   },
-  totalContainer: {
+  basketTotalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -251,12 +244,12 @@ const styles = StyleSheet.create({
     borderTopColor: cssVar.color.highlight + '40',
     marginHorizontal: 10,
   },
-  totalLabel: {
+  basketTotalLabel: {
     fontSize: RFValue(18),
     fontWeight: 'bold',
     color: cssVar.color.veryLightGray,
   },
-  totalValue: {
+  basketTotalValue: {
     fontSize: RFValue(20),
     fontWeight: 'bold',
     color: cssVar.color.highlight,

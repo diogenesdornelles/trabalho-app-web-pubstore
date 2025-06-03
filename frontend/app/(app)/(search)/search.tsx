@@ -10,7 +10,16 @@ import { Picker } from '@react-native-picker/picker';
 import { Stack, useRouter } from 'expo-router';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
-import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 
@@ -41,7 +50,6 @@ export default function Search() {
     reset: resetSearch,
   } = useCreateQueryProducts();
 
-  // Erro genérico de busca
   useEffect(() => {
     if (isError) {
       Alert.alert('Erro', 'Ocorreu um erro ao buscar produtos', [
@@ -50,26 +58,27 @@ export default function Search() {
     }
   }, [isError, router]);
 
-  // Função simplificada de busca
   const handleSearch = async (values: SearchSchemaType) => {
-    // Prepara valores para a API
     const searchParams = {
       ...values,
       min_price: values.min_price ? parseFloat(values.min_price) : undefined,
       max_price: values.max_price ? parseFloat(values.max_price) : undefined,
     };
 
-    // Remove campos vazios
     const filteredParams = Object.fromEntries(
       Object.entries(searchParams).filter(([_, value]) => value !== undefined && value !== '')
     );
 
-    // Executa a busca
     await queryProducts(filteredParams as ProductQueryProps);
   };
 
   return (
-    <Page type="view" customStyle={{}} blurSettings={{}}>
+    <Page>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           title: 'Pesquisar',
@@ -78,6 +87,9 @@ export default function Search() {
           animation: 'fade',
           headerTintColor: cssVar.color.white,
           headerShown: true,
+          headerLeft: () => null,
+          headerBackVisible: false,
+          gestureEnabled: false,
           contentStyle: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -92,17 +104,17 @@ export default function Search() {
 
       {data && (
         <>
-          <View style={styles.clear}>
+          <View style={styles.searchClear}>
             <TouchableOpacity activeOpacity={0.7} onPress={resetSearch}>
               <MaterialIcons name="clear" size={30} color="white" />
             </TouchableOpacity>
           </View>
 
           {data.length === 0 ? (
-            <Text style={styles.title}>Nenhum produto encontrado</Text>
+            <Text style={styles.searchTitle}>Nenhum produto encontrado</Text>
           ) : (
             <FlatList
-              style={styles.list}
+              style={styles.searchList}
               data={data}
               keyExtractor={product => product.id.toString()}
               renderItem={({ item }) => <Product {...item} />}
@@ -125,75 +137,77 @@ export default function Search() {
           validationSchema={SearchSchema}
         >
           {({ handleChange, handleBlur, submitForm, values, errors, touched, setFieldValue }) => (
-            <View style={styles.form}>
-              <Text style={styles.title}>Buscar Produtos</Text>
+            <View style={styles.searchForm}>
+              <Text style={styles.searchTitle}>Buscar Produtos</Text>
 
-              <View style={styles.inputRow}>
-                <Text style={styles.label}>Nome</Text>
+              <View style={styles.searchInputRow}>
+                <Text style={styles.searchLabel}>Nome</Text>
                 <TextInput
                   placeholder="Nome"
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
                   value={values.name}
-                  style={styles.input}
+                  style={styles.searchInput}
                   placeholderTextColor="#aaa"
                 />
-                {touched.name && errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+                {touched.name && errors.name && (
+                  <Text style={styles.searchErrorText}>{errors.name}</Text>
+                )}
               </View>
 
-              <View style={styles.inputRow}>
-                <Text style={styles.label}>Descrição</Text>
+              <View style={styles.searchInputRow}>
+                <Text style={styles.searchLabel}>Descrição</Text>
                 <TextInput
                   placeholder="Descrição"
                   onChangeText={handleChange('description')}
                   onBlur={handleBlur('description')}
                   value={values.description}
-                  style={styles.input}
+                  style={styles.searchInput}
                   placeholderTextColor="#aaa"
                 />
                 {touched.description && errors.description && (
-                  <Text style={styles.errorText}>{errors.description}</Text>
+                  <Text style={styles.searchErrorText}>{errors.description}</Text>
                 )}
               </View>
 
-              <View style={styles.inputRow}>
-                <Text style={styles.label}>Preço mínimo</Text>
+              <View style={styles.searchInputRow}>
+                <Text style={styles.searchLabel}>Preço mínimo</Text>
                 <TextInput
                   placeholder="Preço mínimo"
                   keyboardType="numeric"
                   onChangeText={handleChange('min_price')}
                   onBlur={handleBlur('min_price')}
                   value={values.min_price}
-                  style={styles.input}
+                  style={styles.searchInput}
                   placeholderTextColor="#aaa"
                 />
                 {touched.min_price && errors.min_price && (
-                  <Text style={styles.errorText}>{errors.min_price}</Text>
+                  <Text style={styles.searchErrorText}>{errors.min_price}</Text>
                 )}
               </View>
 
-              <View style={styles.inputRow}>
-                <Text style={styles.label}>Preço máximo</Text>
+              <View style={styles.searchInputRow}>
+                <Text style={styles.searchLabel}>Preço máximo</Text>
                 <TextInput
                   placeholder="Preço máximo"
                   keyboardType="numeric"
                   onChangeText={handleChange('max_price')}
                   onBlur={handleBlur('max_price')}
                   value={values.max_price}
-                  style={styles.input}
+                  style={styles.searchInput}
                   placeholderTextColor="#aaa"
                 />
                 {touched.max_price && errors.max_price && (
-                  <Text style={styles.errorText}>{errors.max_price}</Text>
+                  <Text style={styles.searchErrorText}>{errors.max_price}</Text>
                 )}
               </View>
 
-              <View style={styles.inputRow}>
-                <Text style={styles.label}>Tipo de Produto</Text>
+              <View style={styles.searchInputRow}>
+                <Text style={styles.searchLabel}>Tipo de Produto</Text>
                 <Picker
                   selectedValue={values.product_type}
                   onValueChange={value => setFieldValue('product_type', value)}
-                  style={[styles.input, { height: 60, borderRadius: 8 }]}
+                  style={[styles.searchInput, { height: 60, borderRadius: 8 }]}
                   dropdownIconColor={cssVar.color.white}
                 >
                   <Picker.Item label="Todos" value={undefined} />
@@ -204,11 +218,11 @@ export default function Search() {
                   <Picker.Item label="Whiskey" value="whiskey" />
                 </Picker>
                 {touched.product_type && errors.product_type && (
-                  <Text style={styles.errorText}>{errors.product_type}</Text>
+                  <Text style={styles.searchErrorText}>{errors.product_type}</Text>
                 )}
               </View>
-              <TouchableOpacity onPress={submitForm} style={styles.button}>
-                <Text style={styles.buttonText}>Buscar</Text>
+              <TouchableOpacity onPress={submitForm} style={styles.searchButton}>
+                <Text style={styles.searchButtonText}>Buscar</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -219,7 +233,7 @@ export default function Search() {
 }
 
 const styles = StyleSheet.create({
-  form: {
+  searchForm: {
     backgroundColor: cssVar.color.white,
     width: '100%',
     padding: 10,
@@ -232,7 +246,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
-  clear: {
+  searchClear: {
     position: 'absolute',
     top: 60,
     left: 10,
@@ -245,26 +259,26 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
   },
-  list: {
+  searchList: {
     marginTop: 10,
     marginBottom: 10,
   },
-  title: {
+  searchTitle: {
     fontSize: RFValue(24, 540),
     fontWeight: 'bold',
     marginBottom: 10,
     color: cssVar.color.gray,
   },
-  inputRow: {
+  searchInputRow: {
     width: '100%',
     marginBottom: 15,
   },
-  label: {
+  searchLabel: {
     fontSize: RFValue(14, 540),
     color: cssVar.color.gray,
     marginBottom: 5,
   },
-  input: {
+  searchInput: {
     backgroundColor: cssVar.color.backgroundDark,
     color: cssVar.color.white,
     width: '100%',
@@ -274,12 +288,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
-  errorText: {
+  searchErrorText: {
     color: cssVar.color.red,
     marginTop: 5,
     textAlign: 'center',
   },
-  button: {
+  searchButton: {
     backgroundColor: cssVar.color.black,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -290,12 +304,12 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  buttonText: {
+  searchButtonText: {
     fontSize: RFValue(16, 540),
     fontWeight: 'bold',
     color: cssVar.color.highlight,
   },
-  buttonHeader: {
+  searchButtonHeader: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -303,11 +317,11 @@ const styles = StyleSheet.create({
     columnGap: 10,
     marginTop: 0,
   },
-  textHeader: {
+  searchTextHeader: {
     color: cssVar.color.white,
     fontSize: 20,
   },
-  linkHeader: {
+  searchLinkHeader: {
     width: 'auto',
   },
 });

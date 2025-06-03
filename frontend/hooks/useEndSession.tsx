@@ -1,20 +1,21 @@
-import { useRouter } from 'expo-router';
 import { Alert } from 'react-native';
 import useSession from './useSession';
+import { useRouter } from 'expo-router';
 
 export function useEndSession(): () => void {
   const { signOut } = useSession();
   const router = useRouter();
   const endSession = () => {
-    Alert.alert('Erro', 'Session closed. Please log in again.', [
+    Alert.alert('Opss!', 'A sessão terminou. Por favor, faça login novamente', [
       {
         text: 'OK',
-        onPress: () => router.push('/home'),
+        onPress: () => {
+          signOut();
+          router.push('/sign-in');
+        },
         style: 'cancel',
       },
     ]);
-    signOut();
-    router.push('/login');
   };
   return endSession;
 }
