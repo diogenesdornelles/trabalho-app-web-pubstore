@@ -1,10 +1,10 @@
 import ButtonUser from '@/components/ButtonUser';
 import Page from '@/components/Page';
+import ButtonMenu from '@/components/ButtonMenu';
 import { cssVar } from '@/constants/css';
 import { ButtonType } from '@/domain/types/Button.type';
-import { ExternalPathString, Link, Stack } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
+import { Stack } from 'expo-router';
+import { StatusBar, StyleSheet, FlatList } from 'react-native';
 
 export default function Menu() {
   const buttons: ButtonType[] = [
@@ -30,8 +30,17 @@ export default function Menu() {
     },
   ];
 
+  const renderButton = ({ item, index }: { item: ButtonType; index: number }) => (
+    <ButtonMenu item={item} index={index} />
+  );
+
   return (
-    <Page type="scrollView">
+    <Page>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           title: 'Menu',
@@ -52,54 +61,29 @@ export default function Menu() {
           headerRight: () => <ButtonUser />,
         }}
       />
-      {buttons.map((button, i) => {
-        return (
-          <Link
-            href={{
-              pathname: '/(app)/(items)/[type_text]' as ExternalPathString,
-              params: { type_text: `${button.type}_${button.text}` },
-            }}
-            style={[styles.menuLink, { marginHorizontal: 'auto' }]}
-            asChild
-            key={`${button.text}-${i}`}
-          >
-            <TouchableOpacity style={styles.menuButton} activeOpacity={0.7}>
-              <Text style={styles.menuButtonText}>{button.text}</Text>
-            </TouchableOpacity>
-          </Link>
-        );
-      })}
+      <FlatList
+        data={buttons}
+        renderItem={renderButton}
+        keyExtractor={(item, index) => `${item.text}-${index}`}
+        style={styles.menuList}
+        contentContainerStyle={styles.menuListContent}
+        showsVerticalScrollIndicator={true}
+        bounces={true}
+      />
     </Page>
   );
 }
 
 const styles = StyleSheet.create({
-  menuButton: {
-    color: cssVar.color.white,
-    fontSize: RFValue(16, 540), // vw padrão de 680
-    fontWeight: 'bold',
-    textAlign: 'center',
-    justifyContent: 'center',
+  menuList: {
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+  menuListContent: {
     alignItems: 'center',
-    backgroundColor: cssVar.color.background,
-    padding: 8,
-    textDecorationLine: 'none',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: cssVar.color.highlight,
-    minWidth: 300,
-    marginTop: 20,
-  },
-  menuButtonText: {
-    fontSize: RFValue(16, 540), // vw padrão de 680
-    fontWeight: 'bold',
-    textAlign: 'center',
-    padding: 8,
-    textDecorationLine: 'none',
-    paddingHorizontal: 40,
-    color: cssVar.color.highlight,
-  },
-  menuLink: {
-    width: 'auto',
+    paddingVertical: 20,
+    flexGrow: 1,
+    justifyContent: 'center',
   },
 });

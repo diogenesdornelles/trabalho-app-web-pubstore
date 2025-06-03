@@ -5,7 +5,7 @@ import { cssVar } from '@/constants/css';
 import { useGetOrderById } from '@/hooks/service/get/useGetOrderById';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 
 export default function Payment() {
   const { order_id } = useLocalSearchParams();
@@ -32,6 +32,11 @@ export default function Payment() {
 
   return (
     <Page>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <Stack.Screen
         options={{

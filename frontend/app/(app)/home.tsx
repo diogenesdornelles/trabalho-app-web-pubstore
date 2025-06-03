@@ -3,7 +3,7 @@ import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
 import { useEndSession } from '@/hooks/useEndSession';
 import { Link, Stack } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StatusBar, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Home() {
@@ -11,6 +11,11 @@ export default function Home() {
 
   return (
     <Page>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           title: 'Home',

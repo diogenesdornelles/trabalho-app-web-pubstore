@@ -2,6 +2,7 @@ import ImageBackground from '@/components/ImageBackground';
 import Container from '@/components/Container';
 import { ViewStyle } from 'react-native';
 import { BlurTint } from 'expo-blur';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PageProps {
   customStyle?: ViewStyle;
@@ -23,9 +24,11 @@ export default function Page({
   onLayoutRootView,
 }: PageProps) {
   return (
-    <Container type={type ? type : 'view'} onLayoutRootView={onLayoutRootView}>
-      <ImageBackground customStyle={customStyle} blurSettings={blurSettings} />
-      {children}
-    </Container>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Container type={type ? type : 'view'} onLayoutRootView={onLayoutRootView}>
+        <ImageBackground customStyle={customStyle} blurSettings={blurSettings} />
+        {children}
+      </Container>
+    </SafeAreaView>
   );
 }

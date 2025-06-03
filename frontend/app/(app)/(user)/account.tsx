@@ -3,7 +3,7 @@ import { cssVar } from '@/constants/css';
 import { useEndSession } from '@/hooks/useEndSession';
 import useSession from '@/hooks/useSession';
 import { Stack } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 
 export default function Account() {
   const { authSession } = useSession();
@@ -21,6 +21,11 @@ export default function Account() {
 
   return (
     <Page>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           title: 'Cliente',

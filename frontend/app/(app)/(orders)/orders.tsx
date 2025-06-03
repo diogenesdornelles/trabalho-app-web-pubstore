@@ -7,7 +7,7 @@ import { useGetOrdersByCustomerId } from '@/hooks/service/get/useGetOrdersByCust
 import useBasketStore from '@/hooks/useBasketStore';
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Orders() {
@@ -36,6 +36,11 @@ export default function Orders() {
 
   return (
     <Page>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <Stack.Screen
         options={{

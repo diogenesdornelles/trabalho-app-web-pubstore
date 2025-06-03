@@ -8,7 +8,7 @@ import { useCreateProductOrdered } from '@/hooks/service/post/useCreateProductOr
 import useBasketStore from '@/hooks/useBasketStore';
 import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Basket() {
@@ -114,6 +114,11 @@ export default function Basket() {
   return (
     <Page>
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           title: 'Cesta',

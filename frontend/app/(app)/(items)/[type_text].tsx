@@ -7,7 +7,7 @@ import { ProductBasketProps } from '@/domain/interfaces/Product.interface';
 import { useCreateQueryProducts } from '@/hooks/service/post/useCreateQueryProducts';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect } from 'react';
-import { Alert, FlatList, StyleSheet } from 'react-native';
+import { Alert, FlatList, StatusBar, StyleSheet } from 'react-native';
 
 export default function Items() {
   const router = useRouter();
@@ -59,7 +59,11 @@ export default function Items() {
   return (
     <Page>
       {isPending && <CustomBackdrop isOpen={true} />}
-
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={cssVar.color.black}
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           title: typeof text === 'string' ? text : 'Bebidas',
