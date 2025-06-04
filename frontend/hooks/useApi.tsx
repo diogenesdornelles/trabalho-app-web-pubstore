@@ -28,6 +28,11 @@ export function useApi() {
         const { data } = await restClient.post('orders', order);
         return data;
       },
+      deleteOne: async (order_id: string): Promise<OrderProps> => {
+        const { data } = await restClient.delete(`orders/delete_one/${order_id}`);
+
+        return data;
+      },
     }),
     [restClient]
   );

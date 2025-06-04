@@ -4,7 +4,9 @@ import ButtonMenu from '@/components/ButtonMenu';
 import { cssVar } from '@/constants/css';
 import { ButtonType } from '@/domain/types/Button.type';
 import { Stack } from 'expo-router';
-import { StatusBar, StyleSheet, FlatList } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { useMemo } from 'react';
 
 export default function Menu() {
   const buttons: ButtonType[] = [
@@ -30,8 +32,29 @@ export default function Menu() {
     },
   ];
 
+  const screenOptions = useMemo(
+    () => ({
+      title: 'Menu',
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    []
+  );
+
   const renderButton = ({ item, index }: { item: ButtonType; index: number }) => (
-    <ButtonMenu item={item} index={index} />
+    <ButtonMenu item={item} index={index} key={`${item.text}-${index}-${item.type}`} />
   );
 
   return (
@@ -41,34 +64,13 @@ export default function Menu() {
         backgroundColor={cssVar.color.black}
         translucent={false}
       />
-      <Stack.Screen
-        options={{
-          title: 'Menu',
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerLeft: () => null,
-          headerBackVisible: false,
-          gestureEnabled: false,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
-      <FlatList
+      <Stack.Screen options={screenOptions} />
+      <FlashList
         data={buttons}
         renderItem={renderButton}
-        keyExtractor={(item, index) => `${item.text}-${index}`}
-        style={styles.menuList}
+        keyExtractor={(item, index) => `${item.text}-${index}-${item.type}`}
+        estimatedItemSize={80}
         contentContainerStyle={styles.menuListContent}
-        showsVerticalScrollIndicator={true}
-        bounces={true}
       />
     </Page>
   );

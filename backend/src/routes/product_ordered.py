@@ -26,7 +26,7 @@ async def create_one(
 ) -> ORJSONResponse:
     """Busca produto por ID"""
     repo = ProductOrderedRepository(db_session)
-    result = await repo.create(order)
+    result = await repo.create_one(order)
     if result:
         return ORJSONResponse(
             content=result.model_dump(mode="json"),

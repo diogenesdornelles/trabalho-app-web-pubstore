@@ -31,16 +31,16 @@ class AbstractRepository(ABC, Generic[In, Db, Out]):
         pass
 
     @abstractmethod
-    async def create(self, data: In) -> Out:
+    async def create_one(self, data: In) -> Out:
         """Create a new record"""
         pass
 
     @abstractmethod
-    async def update(self, item_id: str, data: In) -> Out:
+    async def update_one(self, item_id: str, data: In) -> Out:
         """Update an existing record"""
         pass
 
     @abstractmethod
-    async def delete(self, item_id: str) -> None:
+    async def delete_one(self, item_id: str) -> Out:
         """Delete a record"""
         pass

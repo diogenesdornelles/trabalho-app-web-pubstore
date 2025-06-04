@@ -1,15 +1,18 @@
 import { cssVar } from '@/constants/css';
 import { OrderProps } from '@/domain/interfaces/Order.interface';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useDeleteOrder } from '@/hooks/service/delete/useDeleteOrder';
 interface OrderItemProps {
   order: OrderProps;
   index: number;
 }
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
+  const { mutate, isPending, isSuccess, isError } = useDeleteOrder();
   const totalItems = order.ordered_products.reduce((sum, item) => sum + item.quantity, 0);
 
   const totalPrice = order.ordered_products.reduce(
@@ -29,11 +32,51 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
     }
   };
 
+  useEffect(() => {
+    if (isError) {
+      Alert.alert('Erro', `Ocorreu um erro ao deletar seu pedido`, [
+        {
+          text: 'OK',
+          style: 'cancel',
+        },
+      ]);
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (isPending) {
+      Alert.alert('Processando', 'Deletando pedido. Por favor, aguarde.');
+    }
+  }, [isPending]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      Alert.alert('Sucesso', 'Seu pedido foi deletado.');
+    }
+  }, [isSuccess]);
+
+  const handleRemove = () => {
+    Alert.alert('Remover Produto', `Deseja remover Pedido n. ${order.id.substring(0, 8)}?`, [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {
+        text: 'Deletar',
+        onPress: () => mutate(order.id),
+        style: 'destructive',
+      },
+    ]);
+  };
+
   return (
     <View style={styles.orderItemContainer}>
       <View style={styles.orderItemHeader}>
         <Text style={styles.orderItemOrderId}>Pedido #{order.id.substring(0, 8)}</Text>
         <Text style={styles.orderItemDate}>{formattedDate}</Text>
+        <TouchableOpacity onPress={handleRemove} style={styles.orderItemRemoveButton}>
+          <Ionicons name="trash" size={24} color={cssVar.color.red} />
+        </TouchableOpacity>
       </View>
       <View style={styles.orderItemDetails}>
         <View style={styles.orderItemDetailRow}>
@@ -174,6 +217,12 @@ const styles = StyleSheet.create({
     fontSize: RFValue(16, 540),
     fontWeight: 'bold',
     color: cssVar.color.highlight,
+  },
+  orderItemRemoveButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: RFValue(4),
+    borderRadius: RFValue(4),
   },
 });
 

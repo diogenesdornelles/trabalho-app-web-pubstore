@@ -6,14 +6,14 @@ import Entypo from '@expo/vector-icons/Entypo';
 import * as Font from 'expo-font';
 import { Link, Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
-  duration: 1000,
+  duration: 100,
   fade: true,
 });
 
@@ -27,7 +27,7 @@ export default function Index() {
       try {
         await Font.loadAsync(Entypo.font);
 
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 100));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -36,6 +36,27 @@ export default function Index() {
     }
     prepare();
   }, []);
+
+  const screenOptions = useMemo(
+    () => ({
+      title: 'Pub Store',
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    []
+  );
 
   const onLayoutRootView = useCallback(() => {
     if (appIsReady) {
@@ -55,26 +76,7 @@ export default function Index() {
       customStyle={{ opacity: 0.9, filter: 'grayscale(90%)' }}
       blurSettings={{ intensity: 50, tint: 'systemUltraThinMaterialDark', radius: 5 }}
     >
-      <Stack.Screen
-        options={{
-          title: 'Pub Store',
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerLeft: () => null,
-          headerBackVisible: false,
-          gestureEnabled: false,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
+      <Stack.Screen options={screenOptions} />
       <Link
         href={{
           pathname: '/sign-in',

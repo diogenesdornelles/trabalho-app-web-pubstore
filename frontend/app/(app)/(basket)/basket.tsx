@@ -7,8 +7,9 @@ import { useCreateOrder } from '@/hooks/service/post/useCreateOrder';
 import { useCreateProductOrdered } from '@/hooks/service/post/useCreateProductOrdered';
 import useBasketStore from '@/hooks/useBasketStore';
 import { Stack, useRouter } from 'expo-router';
-import { useEffect } from 'react';
-import { Alert, FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useMemo } from 'react';
+import { Alert, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Basket() {
@@ -111,6 +112,27 @@ export default function Basket() {
     }
   }, [isErrorProductData, errorProductData]);
 
+  const screenOptions = useMemo(
+    () => ({
+      title: 'Cesta',
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    []
+  );
+
   return (
     <Page>
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
@@ -119,33 +141,16 @@ export default function Basket() {
         backgroundColor={cssVar.color.black}
         translucent={false}
       />
-      <Stack.Screen
-        options={{
-          title: 'Cesta',
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerBackVisible: false,
-          headerLeft: () => null,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
+      <Stack.Screen options={screenOptions} />
       <View style={styles.basketCard}>
         <Text style={styles.basketTitle}>Produtos</Text>
         {state.products.length > 0 ? (
           <>
-            <FlatList
-              style={styles.basketList}
+            <FlashList
               data={state.products}
-              keyExtractor={product => product.id.toString()}
+              keyExtractor={(product, index) =>
+                `${product.id}-${index}-${product.quantity}-${product.name}`
+              }
               renderItem={({ item, index }) => (
                 <BasketItem
                   product={item}
@@ -154,6 +159,8 @@ export default function Basket() {
                   updateProduct={state.updateProduct}
                 />
               )}
+              estimatedItemSize={125}
+              contentContainerStyle={styles.basketListContent}
             />
             <View style={styles.basketTotalContainer}>
               <Text style={styles.basketTotalLabel}>Total:</Text>
@@ -181,7 +188,6 @@ const styles = StyleSheet.create({
   basketCard: {
     width: '100%',
     flex: 1,
-    maxHeight: '95%',
     backgroundColor: cssVar.color.darkGray,
     borderRadius: 0,
     shadowColor: cssVar.color.black,
@@ -193,9 +199,9 @@ const styles = StyleSheet.create({
     padding: 2,
     paddingTop: 4,
   },
-  basketList: {
-    marginTop: 10,
-    marginBottom: 10,
+  basketListContent: {
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   basketTitle: {
     fontSize: RFValue(24),

@@ -33,14 +33,20 @@ export default function Product(item: ProductProps): React.ReactElement {
     const existingProduct = state.products.find(_product => _product.id === item.id);
 
     if (!existingProduct) {
-      state.addProduct({
-        ...item,
-        quantity: 1,
-        total_price: 0,
-        customer_id: state.customer_id,
-      });
       Alert.alert('Sucesso', `Produto ${item.name} adicionado ao carrinho com sucesso!`, [
-        { text: 'OK', style: 'cancel' },
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'OK',
+          style: 'default',
+          onPress: () => {
+            state.addProduct({
+              ...item,
+              quantity: 1,
+              total_price: 0,
+              customer_id: state.customer_id,
+            });
+          },
+        },
       ]);
     } else {
       Alert.alert(

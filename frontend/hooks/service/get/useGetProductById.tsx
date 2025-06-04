@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useApi } from '../../useApi';
 
 // Hook para buscar um produto específico pelo ID
-export function useGetProductById(id: string) {
+export function useGetProductById(product_id: string) {
   const { product } = useApi();
   return useQuery({
-    queryFn: () => product.getOne(id),
-    queryKey: ['product', 'get', id],
+    queryFn: () => product.getOne(product_id),
+    queryKey: ['product', 'get', product_id],
   });
 }

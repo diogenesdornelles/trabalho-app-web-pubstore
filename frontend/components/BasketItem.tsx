@@ -86,8 +86,7 @@ export default function BasketItem({
             onPress={e => e.stopPropagation()}
           >
             <TouchableOpacity style={styles.basketItemViewButton} activeOpacity={0.7}>
-              <AntDesign name="infocirlceo" size={24} color={cssVar.color.black} />
-              <Text style={styles.basketItemActionText}>Ver</Text>
+              <AntDesign name="infocirlceo" size={30} color={cssVar.color.black} />
             </TouchableOpacity>
           </Link>
         </View>
@@ -99,7 +98,7 @@ export default function BasketItem({
             style={styles.basketItemQuantityButton}
             testID="decrement-button"
           >
-            <AntDesign name="minuscircleo" size={20} color={cssVar.color.darkLime} />
+            <AntDesign name="minuscircleo" size={24} color={cssVar.color.darkLime} />
           </TouchableOpacity>
 
           <Text style={styles.basketItemQuantityValue}>{product.quantity}</Text>
@@ -109,7 +108,7 @@ export default function BasketItem({
             style={styles.basketItemQuantityButton}
             testID="increment-button"
           >
-            <AntDesign name="pluscircleo" size={20} color={cssVar.color.darkLime} />
+            <AntDesign name="pluscircleo" size={24} color={cssVar.color.darkLime} />
           </TouchableOpacity>
         </View>
 
@@ -120,8 +119,7 @@ export default function BasketItem({
             style={styles.basketItemRemoveButton}
             testID="remove-button"
           >
-            <Ionicons name="trash" size={20} color={cssVar.color.red} />
-            <Text style={styles.basketItemRemoveText}>Remover</Text>
+            <Ionicons name="trash" size={30} color={cssVar.color.red} />
           </TouchableOpacity>
         </View>
       </View>
@@ -142,6 +140,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 2,
+    minHeight: RFValue(100),
+    maxHeight: RFValue(150),
   },
   basketItemIndex: {
     fontSize: RFValue(16),
@@ -199,11 +199,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: RFValue(4),
     borderRadius: RFValue(4),
   },
-  basketItemActionText: {
-    fontSize: RFValue(14),
-    marginLeft: RFValue(4),
-    color: cssVar.color.black,
-  },
   basketItemQuantityButton: {
     padding: RFValue(4),
     borderRadius: RFValue(4),
@@ -220,10 +215,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: RFValue(4),
     borderRadius: RFValue(4),
-  },
-  basketItemRemoveText: {
-    fontSize: RFValue(10),
-    marginLeft: RFValue(4),
-    color: cssVar.color.red,
   },
 });

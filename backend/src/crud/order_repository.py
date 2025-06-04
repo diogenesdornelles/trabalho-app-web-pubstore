@@ -46,13 +46,16 @@ class OrderRepository(AbstractRepository[OrderIn, OrderDBModel, OrderOut]):
         )
 
         result = await self.db_session.execute(stmt)
-        orders: list[OrderDBModel] = result.unique().scalars().all()
+        orders: list[OrderDBModel] = list(result.unique().scalars().all())
 
-        return [OrderOut.model_validate(order) for order in orders if len(order.ordered_products) > 0]
+        return [
+            OrderOut.model_validate(order)
+            for order in orders
+            if len(order.ordered_products) > 0
+        ]
 
-    async def create(self, data: OrderIn) -> OrderOut:
-        """Create a new order
-        """
+    async def create_one(self, data: OrderIn) -> OrderOut:
+        """Create a new order"""
         try:
             # Criar objeto Order com model
             new_order = OrderDBModel(customer_id=data.customer_id)
@@ -80,8 +83,27 @@ class OrderRepository(AbstractRepository[OrderIn, OrderDBModel, OrderOut]):
                 status_code=500, detail=f"Erro ao criar pedido: {str(e)}"
             ) from e
 
-    async def update(self, item_id: str, data: OrderIn) -> OrderOut:
+    async def update_one(self, item_id: str, data: OrderIn) -> OrderOut:
+        """Update an order by id"""
         raise NotImplementedError("Not implemented method")
 
-    async def delete(self, item_id: str) -> None:
-        raise NotImplementedError("Not implemented method")
+    async def delete_one(self, item_id: str) -> OrderOut:
+        """Delete an order by id"""
+        if not item_id:
+            raise HTTPException(status_code=400, detail="id is required")
+        try:
+            stmt = select(OrderDBModel).where(
+                OrderDBModel.id == UUID(item_id, version=4)
+            )
+            result = await self.db_session.execute(stmt)
+            order: OrderDBModel | None = result.scalar_one_or_none()
+            if not order:
+                raise HTTPException(status_code=404, detail="Order not found")
+            await self.db_session.delete(order)
+            await self.db_session.commit()
+            return OrderOut.model_validate(order)
+        except Exception as e:
+            await self.db_session.rollback()
+            raise HTTPException(
+                status_code=500, detail=f"Erro ao deletar pedido: {str(e)}"
+            ) from e

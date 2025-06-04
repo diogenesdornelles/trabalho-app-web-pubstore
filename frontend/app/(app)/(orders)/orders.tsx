@@ -6,8 +6,9 @@ import { cssVar } from '@/constants/css';
 import { useGetOrdersByCustomerId } from '@/hooks/service/get/useGetOrdersByCustomerId';
 import useBasketStore from '@/hooks/useBasketStore';
 import { Stack } from 'expo-router';
-import { useEffect } from 'react';
-import { Alert, FlatList, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo } from 'react';
+import { Alert, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Orders() {
@@ -34,6 +35,31 @@ export default function Orders() {
     }
   }, [error, refetch]);
 
+  const screenOptions = useMemo(
+    () => ({
+      title: 'Pedidos',
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    []
+  );
+
+  const renderOrderItem = ({ item, index }: { item: any; index: number }) => (
+    <OrderItem order={item} index={index} />
+  );
+
   return (
     <Page>
       <StatusBar
@@ -42,39 +68,21 @@ export default function Orders() {
         translucent={false}
       />
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
-      <Stack.Screen
-        options={{
-          title: 'Pedidos',
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerLeft: () => null,
-          headerBackVisible: false,
-          gestureEnabled: false,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
+      <Stack.Screen options={screenOptions} />
       <View style={styles.ordersCard}>
         <Text style={styles.ordersTitle}>Lista</Text>
-        {data ? (
-          <>
-            <FlatList
-              style={styles.ordersList}
-              data={data}
-              keyExtractor={product => product.id.toString()}
-              renderItem={({ item, index }) => <OrderItem order={item} index={index} />}
-            />
-          </>
+        {data && data.length > 0 ? (
+          <FlashList
+            data={data}
+            keyExtractor={(order, index) =>
+              `${order.id}-${index}-${order.created_at.toString()}-${order.ordered_products.length}`
+            }
+            renderItem={renderOrderItem}
+            estimatedItemSize={150}
+            contentContainerStyle={styles.ordersListContent}
+          />
         ) : (
-          <Text style={styles.ordersNoOrders}>Nenhum produto encontrado</Text>
+          <Text style={styles.ordersNoOrders}>Nenhum pedido encontrado</Text>
         )}
       </View>
     </Page>
@@ -85,7 +93,6 @@ const styles = StyleSheet.create({
   ordersCard: {
     width: '100%',
     flex: 1,
-    maxHeight: '95%',
     backgroundColor: cssVar.color.darkGray,
     borderRadius: 0,
     shadowColor: cssVar.color.black,
@@ -97,9 +104,9 @@ const styles = StyleSheet.create({
     padding: 2,
     paddingTop: 4,
   },
-  ordersList: {
-    marginTop: 10,
-    marginBottom: 10,
+  ordersListContent: {
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   ordersTitle: {
     fontSize: RFValue(24),

@@ -7,7 +7,7 @@ import useBasketStore from '@/hooks/useBasketStore';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image } from 'expo-image';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   Alert,
   ScrollView,
@@ -76,15 +76,21 @@ export default function Details() {
     if (data && data.id && state.customer_id) {
       const existingProduct = state.products.find(_product => _product.id === data.id);
       if (!existingProduct) {
-        const newProduct = {
-          ...data,
-          quantity: quantity,
-          total_price: 0,
-          customer_id: state.customer_id,
-        };
-        state.addProduct(newProduct);
         Alert.alert('Sucesso', `Produto ${data.name} adicionado ao carrinho com sucesso!`, [
-          { text: 'OK', style: 'cancel' },
+          { text: 'Cancelar', style: 'cancel', onPress: () => {} },
+          {
+            text: 'OK',
+            style: 'cancel',
+            onPress: () => {
+              const newProduct = {
+                ...data,
+                quantity: quantity,
+                total_price: 0,
+                customer_id: state.customer_id,
+              };
+              state.addProduct(newProduct);
+            },
+          },
         ]);
       } else {
         const updatedProduct = {
@@ -97,12 +103,12 @@ export default function Details() {
           'Aviso',
           `Produto ${data.name} já consta no carrinho! Deseja atualizar a quantidade?`,
           [
+            { text: 'Cancelar', style: 'cancel' },
             {
               text: 'OK',
               style: 'default',
               onPress: () => state.updateProduct(data.id, updatedProduct),
             },
-            { text: 'Cancelar', style: 'cancel' },
           ]
         );
       }
@@ -121,7 +127,7 @@ export default function Details() {
     }
   }, [error, router]);
 
-  const getHeaderTitle = (): string => {
+  const getHeaderTitle = useCallback((): string => {
     if (data && data.name) {
       const nameParts = data.name.split(' ');
       if (nameParts.length > 2) {
@@ -135,7 +141,28 @@ export default function Details() {
       }
     }
     return '';
-  };
+  }, [data]);
+
+  const screenOptions = useMemo(
+    () => ({
+      title: getHeaderTitle(),
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    [getHeaderTitle]
+  );
 
   return data && data.id ? (
     <Page>
@@ -144,26 +171,7 @@ export default function Details() {
         backgroundColor={cssVar.color.black}
         translucent={false}
       />
-      <Stack.Screen
-        options={{
-          title: getHeaderTitle(),
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerLeft: () => null,
-          headerBackVisible: false,
-          gestureEnabled: false,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
+      <Stack.Screen options={screenOptions} />
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <ScrollView style={styles.detailsCard}>
         <Image source={{ uri: data.source }} style={styles.detailsImage} contentFit="contain" />

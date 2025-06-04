@@ -4,7 +4,7 @@ import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
 import { useGetOrderById } from '@/hooks/service/get/useGetOrderById';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Alert, StatusBar } from 'react-native';
 
 export default function Payment() {
@@ -30,6 +30,27 @@ export default function Payment() {
     }
   }, [error, refetch]);
 
+  const screenOptions = useMemo(
+    () => ({
+      title: 'Pagamento',
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    []
+  );
+
   return (
     <Page>
       <StatusBar
@@ -38,26 +59,7 @@ export default function Payment() {
         translucent={false}
       />
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
-      <Stack.Screen
-        options={{
-          title: 'Pagamento',
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerLeft: () => null,
-          headerBackVisible: false,
-          gestureEnabled: false,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
+      <Stack.Screen options={screenOptions} />
     </Page>
   );
 }

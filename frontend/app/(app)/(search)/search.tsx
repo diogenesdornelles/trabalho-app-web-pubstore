@@ -9,10 +9,9 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Picker } from '@react-native-picker/picker';
 import { Stack, useRouter } from 'expo-router';
 import { Formik } from 'formik';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Alert,
-  FlatList,
   StatusBar,
   StyleSheet,
   Text,
@@ -22,6 +21,7 @@ import {
 } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
+import { FlashList } from '@shopify/flash-list';
 
 const SearchSchema = Yup.object().shape({
   name: Yup.string().notRequired(),
@@ -72,6 +72,27 @@ export default function Search() {
     await queryProducts(filteredParams as ProductQueryProps);
   };
 
+  const screenOptions = useMemo(
+    () => ({
+      title: 'Pesquisar',
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    []
+  );
+
   return (
     <Page>
       <StatusBar
@@ -79,27 +100,7 @@ export default function Search() {
         backgroundColor={cssVar.color.black}
         translucent={false}
       />
-      <Stack.Screen
-        options={{
-          title: 'Pesquisar',
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerLeft: () => null,
-          headerBackVisible: false,
-          gestureEnabled: false,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
-
+      <Stack.Screen options={screenOptions} />
       {isPending && <CustomBackdrop isOpen={true} />}
 
       {data && (
@@ -113,11 +114,12 @@ export default function Search() {
           {data.length === 0 ? (
             <Text style={styles.searchTitle}>Nenhum produto encontrado</Text>
           ) : (
-            <FlatList
-              style={styles.searchList}
+            <FlashList
               data={data}
-              keyExtractor={product => product.id.toString()}
+              keyExtractor={(product, index) => `${product.id}-${index}-${product.price}`}
               renderItem={({ item }) => <Product {...item} />}
+              estimatedItemSize={200}
+              contentContainerStyle={styles.searchListContent}
             />
           )}
         </>
@@ -259,9 +261,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
   },
-  searchList: {
-    marginTop: 10,
-    marginBottom: 10,
+  searchListContent: {
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   searchTitle: {
     fontSize: RFValue(24, 540),

@@ -73,11 +73,11 @@ class ProductRepository(AbstractRepository[ProductIn, ProductDBModel, ProductOut
             raise HTTPException(status_code=404, detail="No products found")
         return [ProductOut.model_validate(product) for product in products]
 
-    async def create(self, data: ProductIn) -> ProductOut:
+    async def create_one(self, data: ProductIn) -> ProductOut:
         raise NotImplementedError("Not implemented method")
 
-    async def update(self, item_id: str, data: ProductIn) -> ProductOut:
+    async def update_one(self, item_id: str, data: ProductIn) -> ProductOut:
         raise NotImplementedError("Not implemented method")
 
-    async def delete(self, item_id: str) -> None:
+    async def delete_one(self, item_id: str) -> ProductOut:
         raise NotImplementedError("Not implemented method")

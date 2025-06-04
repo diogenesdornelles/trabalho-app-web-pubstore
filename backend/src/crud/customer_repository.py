@@ -1,4 +1,5 @@
 """Repositório para clientes"""
+
 from uuid import UUID
 
 from fastapi import HTTPException
@@ -41,11 +42,11 @@ class CustomerRepository(AbstractRepository[CustomerIn, CustomerDBModel, Custome
             raise HTTPException(status_code=404, detail="Customer not found")
         return CustomerInDB.model_validate(customer)
 
-    async def create(self, data: CustomerIn) -> CustomerOut:
+    async def create_one(self, data: CustomerIn) -> CustomerOut:
         raise NotImplementedError("Not implemented method")
 
-    async def update(self, item_id: str, data: CustomerIn) -> CustomerOut:
+    async def update_one(self, item_id: str, data: CustomerIn) -> CustomerOut:
         raise NotImplementedError("Not implemented method")
 
-    async def delete(self, item_id: str) -> None:
+    async def delete_one(self, item_id: str) -> CustomerOut:
         raise NotImplementedError("Not implemented method")

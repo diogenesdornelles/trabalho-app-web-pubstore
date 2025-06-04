@@ -33,6 +33,7 @@ class ProductOrderedIn(ProductOrderedBase):
 
 class ProductOrderedInDB(ProductOrderedIn):
     """Validador de produto pedido no Db"""
+
     id: UUID4 = Field(description="Product id")
     product_id: UUID4 = Field(description="Product id")
     order_id: UUID4 = Field(description="Order id")

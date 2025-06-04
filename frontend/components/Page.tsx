@@ -3,6 +3,7 @@ import Container from '@/components/Container';
 import { ViewStyle } from 'react-native';
 import { BlurTint } from 'expo-blur';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useMemo } from 'react';
 
 interface PageProps {
   customStyle?: ViewStyle;
@@ -23,11 +24,12 @@ export default function Page({
   blurSettings,
   onLayoutRootView,
 }: PageProps) {
+  const memoizedChildren = useMemo(() => children, [children]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container type={type ? type : 'view'} onLayoutRootView={onLayoutRootView}>
         <ImageBackground customStyle={customStyle} blurSettings={blurSettings} />
-        {children}
+        {memoizedChildren}
       </Container>
     </SafeAreaView>
   );

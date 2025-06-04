@@ -6,8 +6,9 @@ import { cssVar } from '@/constants/css';
 import { ProductBasketProps } from '@/domain/interfaces/Product.interface';
 import { useCreateQueryProducts } from '@/hooks/service/post/useCreateQueryProducts';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect } from 'react';
-import { Alert, FlatList, StatusBar, StyleSheet } from 'react-native';
+import { useCallback, useEffect, useMemo } from 'react';
+import { Alert, StatusBar, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 
 export default function Items() {
   const router = useRouter();
@@ -56,6 +57,27 @@ export default function Items() {
     }
   }, [isError, error, router]);
 
+  const screenOptions = useMemo(
+    () => ({
+      title: typeof text === 'string' ? text : 'Bebidas',
+      headerStyle: { backgroundColor: cssVar.color.black },
+      headerTitleStyle: { color: cssVar.color.highlight },
+      animation: 'fade' as const,
+      headerTintColor: cssVar.color.white,
+      headerShown: true,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      contentStyle: {
+        flexDirection: 'row' as const,
+        justifyContent: 'center' as const,
+        alignItems: 'baseline' as const,
+        alignContent: 'center' as const,
+      },
+      headerRight: () => <ButtonUser />,
+    }),
+    [text]
+  );
+
   return (
     <Page>
       {isPending && <CustomBackdrop isOpen={true} />}
@@ -64,32 +86,14 @@ export default function Items() {
         backgroundColor={cssVar.color.black}
         translucent={false}
       />
-      <Stack.Screen
-        options={{
-          title: typeof text === 'string' ? text : 'Bebidas',
-          headerStyle: { backgroundColor: cssVar.color.black },
-          headerTitleStyle: { color: cssVar.color.highlight },
-          animation: 'fade',
-          headerTintColor: cssVar.color.white,
-          headerShown: true,
-          headerLeft: () => null,
-          headerBackVisible: false,
-          gestureEnabled: false,
-          contentStyle: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-            alignContent: 'center',
-          },
-          headerRight: () => <ButtonUser />,
-        }}
-      />
+      <Stack.Screen options={screenOptions} />
 
-      <FlatList
-        style={styles.itemsList}
+      <FlashList
         data={data}
-        keyExtractor={product => product.id.toString()}
+        keyExtractor={(product, index) => `${product.id}-${index}-${product.name}`}
         renderItem={({ item }) => <Product {...item} />}
+        estimatedItemSize={200}
+        contentContainerStyle={styles.itemsList}
       />
     </Page>
   );
@@ -97,7 +101,7 @@ export default function Items() {
 
 const styles = StyleSheet.create({
   itemsList: {
-    marginTop: 20,
-    marginBottom: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
 });

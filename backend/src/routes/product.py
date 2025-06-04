@@ -68,7 +68,10 @@ async def get_many(
 
 @product_router.get("/get_one/{product_id}", response_model=ProductOut)
 async def get_one(
-    product_id: Annotated[str, Path(regex="^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")],
+    product_id: Annotated[
+        str,
+        Path(regex="^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"),
+    ],
     db_session: DBSessionDep,
 ) -> ORJSONResponse:
     """Busca produto por ID"""

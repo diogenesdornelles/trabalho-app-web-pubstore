@@ -30,7 +30,7 @@ class Customer(Base):
     name = Column(String(50), nullable=False)
     cpf = Column(String(11), unique=True, index=True, nullable=False)
     email = Column(String(60), unique=True, index=True, nullable=False)
-    address = Column(String(160) , nullable=False)
+    address = Column(String(160), nullable=False)
     password = Column(String(128))
     created_at = Column(
         DateTime(timezone=True),

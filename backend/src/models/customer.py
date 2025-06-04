@@ -24,7 +24,7 @@ class CustomerBase(BaseModel):
     name: str = Field(..., min_length=3, description="Customer name")
     cpf: Annotated[str, AfterValidator(is_valid_cpf)]
     address: str = Field(..., description="Customer address")
-    email: EmailStr= Field(..., description="Customer email")
+    email: EmailStr = Field(..., description="Customer email")
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -35,6 +35,7 @@ class CustomerIn(CustomerBase):
     Args:
         CustomerBase (BaseModel): Classe core de Customer
     """
+
     password: str = Field(..., description="Customer password")
 
 

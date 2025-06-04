@@ -2,7 +2,6 @@
 Module that contain a class to validate CPF client
 """
 
-
 import re
 
 
@@ -12,7 +11,7 @@ def is_valid_cpf(cpf: str) -> str:
     :return: bool.
     :rtype: bool.
     """
-    cpf = re.sub(r'[^0-9]', '', cpf)
+    cpf = re.sub(r"[^0-9]", "", cpf)
     result: bool = True
     if len(cpf) != 11 or not cpf.isnumeric():
         result = False

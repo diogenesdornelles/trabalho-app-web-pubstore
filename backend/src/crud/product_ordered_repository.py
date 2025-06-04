@@ -21,7 +21,7 @@ class ProductOrderedRepository(
         """Get all customers"""
         raise NotImplementedError("Not implemented method")
 
-    async def create(self, data: ProductOrderedIn) -> ProductOrderedOut:
+    async def create_one(self, data: ProductOrderedIn) -> ProductOrderedOut:
         """
         Create a new order
         """
@@ -50,7 +50,7 @@ class ProductOrderedRepository(
                 "order_id": new_prod_ordered.order_id,
                 "name": new_prod_ordered.name,
                 "description": new_prod_ordered.description,
-                "price": float(new_prod_ordered.price),
+                "price": float(getattr(new_prod_ordered, "price", 0)),
                 "type": (
                     new_prod_ordered.type.value
                     if hasattr(new_prod_ordered.type, "value")
@@ -68,8 +68,8 @@ class ProductOrderedRepository(
                 status_code=500, detail=f"Error on create order: {str(e)}"
             ) from e
 
-    async def update(self, item_id: str, data: ProductOrderedIn) -> ProductOrderedOut:
+    async def update_one(self, item_id: str, data: ProductOrderedIn) -> ProductOrderedOut:
         raise NotImplementedError("Not implemented method")
 
-    async def delete(self, item_id: str) -> None:
+    async def delete_one(self, item_id: str) -> ProductOrderedOut:
         raise NotImplementedError("Not implemented method")
