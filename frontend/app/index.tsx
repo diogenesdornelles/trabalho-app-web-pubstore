@@ -1,12 +1,12 @@
-import ButtonUser from '@/components/ButtonUser';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
+import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 import useSession from '@/hooks/useSession';
 import Entypo from '@expo/vector-icons/Entypo';
 import * as Font from 'expo-font';
 import { Link, Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -21,6 +21,9 @@ export default function Index() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { authSession } = useSession();
   const router = useRouter();
+  const screenOptions = useDefaultScreenOptions({ 
+    title: 'Pub Store' 
+  });
 
   useEffect(() => {
     async function prepare() {
@@ -36,27 +39,6 @@ export default function Index() {
     }
     prepare();
   }, []);
-
-  const screenOptions = useMemo(
-    () => ({
-      title: 'Pub Store',
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-      headerRight: () => <ButtonUser />,
-    }),
-    []
-  );
 
   const onLayoutRootView = useCallback(() => {
     if (appIsReady) {

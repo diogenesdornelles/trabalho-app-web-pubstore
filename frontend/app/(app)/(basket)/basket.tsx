@@ -1,5 +1,4 @@
 import BasketItem from '@/components/BasketItem';
-import ButtonUser from '@/components/ButtonUser';
 import CustomBackdrop from '@/components/CustomBackdrop';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
@@ -7,16 +6,22 @@ import { useCreateOrder } from '@/hooks/service/post/useCreateOrder';
 import { useCreateProductOrdered } from '@/hooks/service/post/useCreateProductOrdered';
 import useBasketStore from '@/hooks/useBasketStore';
 import { Stack, useRouter } from 'expo-router';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Alert, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function Basket() {
   const state = useBasketStore(state => state);
+  const queryClient = useQueryClient()
   const router = useRouter();
   const queryCreateOrderMutation = useCreateOrder();
   const queryCreateProdutOrderedMutation = useCreateProductOrdered();
+  const screenOptions = useDefaultScreenOptions({
+    title: 'Cesta',
+  });
 
   const {
     isPending: isPendingOrderData,
@@ -35,18 +40,24 @@ export default function Basket() {
     if (state.products.length === 0) {
       Alert.alert(
         'Sem produtos',
-        'Por favor, adicione produtos ao seu carrinho antes de fazer um pedido.'
+        'Por favor, adicione produtos ao seu carrinho antes de fazer um pedido.',
+        [
+          {
+            text: 'OK',
+            style: 'default',
+          },
+        ]
       );
       return;
     }
 
-    if (isPendingOrderData || isPendingProductData) {
-      Alert.alert('Processando', 'Seu pedido está sendo processado. Por favor, aguarde.');
-      return;
-    }
-
     if (!state.customer_id) {
-      Alert.alert('Sem cliente', 'Por favor, selecione um cliente antes de fazer um pedido.');
+      Alert.alert('Sem cliente', 'Por favor, selecione um cliente antes de fazer um pedido.', [
+        {
+          text: 'OK',
+          style: 'default',
+        },
+      ]);
       return;
     }
     try {
@@ -65,22 +76,32 @@ export default function Basket() {
           })
         );
 
-        await Promise.all(productPromises);
+        const result = await Promise.all(productPromises);
 
-        Alert.alert(
-          'Sucesso',
-          'Seu pedido foi realizado com sucesso! Faça o pagamento para concluir o pedido.',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                router.push('/home');
-                state.clear();
+        if (result && result.length > 0) {
+          console.log('Products ordered successfully:', result);
+          queryClient.invalidateQueries({
+            queryKey: ['orders'],
+            exact: false,
+          });
+
+          Alert.alert(
+            'Sucesso',
+            'Seu pedido foi realizado com sucesso! Faça o pagamento para concluir o pedido.',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  router.push('/orders');
+                  state.clear();
+                },
+                style: 'default',
               },
-              style: 'default',
-            },
-          ]
-        );
+            ]
+          );
+        } else {
+          Alert.alert('Erro', 'Falha ao processar seu pedido. Por favor, tente novamente.');
+        }
       }
     } catch (error) {
       console.error('Error during order process:', error);
@@ -111,27 +132,6 @@ export default function Basket() {
       ]);
     }
   }, [isErrorProductData, errorProductData]);
-
-  const screenOptions = useMemo(
-    () => ({
-      title: 'Cesta',
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-      headerRight: () => <ButtonUser />,
-    }),
-    []
-  );
 
   return (
     <Page>

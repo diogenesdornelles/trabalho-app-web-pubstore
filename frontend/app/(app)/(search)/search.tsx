@@ -1,4 +1,3 @@
-import ButtonUser from '@/components/ButtonUser';
 import CustomBackdrop from '@/components/CustomBackdrop';
 import Page from '@/components/Page';
 import Product from '@/components/Product';
@@ -9,7 +8,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Picker } from '@react-native-picker/picker';
 import { Stack, useRouter } from 'expo-router';
 import { Formik } from 'formik';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import {
   Alert,
   StatusBar,
@@ -22,6 +21,7 @@ import {
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 import { FlashList } from '@shopify/flash-list';
+import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 
 const SearchSchema = Yup.object().shape({
   name: Yup.string().notRequired(),
@@ -50,6 +50,10 @@ export default function Search() {
     reset: resetSearch,
   } = useCreateQueryProducts();
 
+  const screenOptions = useDefaultScreenOptions({
+    title: 'Pesquisar',
+  });
+
   useEffect(() => {
     if (isError) {
       Alert.alert('Erro', 'Ocorreu um erro ao buscar produtos', [
@@ -71,27 +75,6 @@ export default function Search() {
 
     await queryProducts(filteredParams as ProductQueryProps);
   };
-
-  const screenOptions = useMemo(
-    () => ({
-      title: 'Pesquisar',
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-      headerRight: () => <ButtonUser />,
-    }),
-    []
-  );
 
   return (
     <Page>

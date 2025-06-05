@@ -1,35 +1,16 @@
-import ButtonUser from '@/components/ButtonUser';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
+import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 import { useEndSession } from '@/hooks/useEndSession';
 import { Link, Stack } from 'expo-router';
-import { useMemo } from 'react';
 import { StatusBar, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Home() {
   const endSession = useEndSession();
-
-  const screenOptions = useMemo(
-    () => ({
-      title: 'Home',
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-      headerRight: () => <ButtonUser />,
-    }),
-    []
-  );
+  const screenOptions = useDefaultScreenOptions({
+    title: 'Home',
+  });
 
   return (
     <Page>
@@ -62,7 +43,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   homeText: {
     color: cssVar.color.white,
-    fontSize: RFValue(30, 540), // vw padrão de 680
+    fontSize: RFValue(30, 540),
     fontWeight: 'bold',
     textAlign: 'center',
     backgroundColor: cssVar.color.black,

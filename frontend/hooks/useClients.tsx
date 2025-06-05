@@ -1,16 +1,13 @@
-import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEndSession } from './useEndSession';
 import { useStorageState } from './service/ls/useStorageState';
 
-export default function useClients() {
+export default function useRestClient() {
   const [[isLoading, session], setSession] = useStorageState('sessionPubStore');
   const endSession = useEndSession();
   let token: string | undefined;
 
   if (session) ({ token } = JSON.parse(session) as { token?: string });
-
-  const queryClient = new QueryClient();
 
   const restClient = axios.create({
     baseURL: process.env.EXPO_PUBLIC_API_URL,
@@ -45,5 +42,5 @@ export default function useClients() {
     }
   );
 
-  return { queryClient, restClient };
+  return { restClient };
 }

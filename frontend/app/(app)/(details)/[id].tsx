@@ -1,13 +1,13 @@
-import ButtonUser from '@/components/ButtonUser';
 import CustomBackdrop from '@/components/CustomBackdrop';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
 import { useGetProductById } from '@/hooks/service/get/useGetProductById';
 import useBasketStore from '@/hooks/useBasketStore';
+import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image } from 'expo-image';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   ScrollView,
@@ -27,6 +27,9 @@ export default function Details() {
   const [quantityError, setQuantityError] = useState<boolean>(false);
   const { isPending, error, data, isFetching, isRefetching, isLoading, refetch } =
     useGetProductById(id as string);
+  const screenOptions = useDefaultScreenOptions({
+    title: 'Detalhes',
+  });
 
   const state = useBasketStore(state => state);
 
@@ -126,43 +129,6 @@ export default function Details() {
       ]);
     }
   }, [error, router]);
-
-  const getHeaderTitle = useCallback((): string => {
-    if (data && data.name) {
-      const nameParts = data.name.split(' ');
-      if (nameParts.length > 2) {
-        return `${nameParts[0]} ${nameParts[1]} ${nameParts[2]}`;
-      }
-      if (nameParts.length === 2) {
-        return `${nameParts[0]} ${nameParts[1]}`;
-      }
-      if (nameParts.length === 1) {
-        return nameParts[0];
-      }
-    }
-    return '';
-  }, [data]);
-
-  const screenOptions = useMemo(
-    () => ({
-      title: getHeaderTitle(),
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-      headerRight: () => <ButtonUser />,
-    }),
-    [getHeaderTitle]
-  );
 
   return data && data.id ? (
     <Page>

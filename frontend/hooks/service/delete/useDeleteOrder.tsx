@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 import useBasketStore from '@/hooks/useBasketStore';
 import { useApi } from '@/hooks/useApi';
 
@@ -19,10 +18,9 @@ export function useDeleteOrder() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['orders', 'getByCustomer', state.customer_id],
+        queryKey: ['orders', 'getByCustomer'],
         exact: false,
       });
-
       queryClient.refetchQueries({
         queryKey: ['orders', 'getByCustomer', state.customer_id],
       });

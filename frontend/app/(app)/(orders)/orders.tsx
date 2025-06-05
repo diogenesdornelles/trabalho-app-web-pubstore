@@ -1,4 +1,3 @@
-import ButtonUser from '@/components/ButtonUser';
 import CustomBackdrop from '@/components/CustomBackdrop';
 import OrderItem from '@/components/OrderItem';
 import Page from '@/components/Page';
@@ -6,15 +5,23 @@ import { cssVar } from '@/constants/css';
 import { useGetOrdersByCustomerId } from '@/hooks/service/get/useGetOrdersByCustomerId';
 import useBasketStore from '@/hooks/useBasketStore';
 import { Stack } from 'expo-router';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Alert, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 
 export default function Orders() {
   const state = useBasketStore(state => state);
   const { isPending, error, data, isFetching, isRefetching, isLoading, refetch } =
     useGetOrdersByCustomerId(state.customer_id as string);
+  const screenOptions = useDefaultScreenOptions({
+    title: 'Pedidos',
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   useEffect(() => {
     if (error) {
@@ -34,27 +41,6 @@ export default function Orders() {
       );
     }
   }, [error, refetch]);
-
-  const screenOptions = useMemo(
-    () => ({
-      title: 'Pedidos',
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-      headerRight: () => <ButtonUser />,
-    }),
-    []
-  );
 
   const renderOrderItem = ({ item, index }: { item: any; index: number }) => (
     <OrderItem order={item} index={index} />

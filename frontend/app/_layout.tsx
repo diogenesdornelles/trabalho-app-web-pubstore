@@ -1,15 +1,14 @@
-import useClients from '@/hooks/useClients';
 import { SessionProvider } from '@/providers/SessionProvider';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { cssVar } from '@/constants/css';
 
-export default function RootLayout() {
-  const { queryClient } = useClients();
+const queryClient = new QueryClient();
 
+export default function RootLayout() {
   useEffect(() => {
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync(cssVar.color.black);

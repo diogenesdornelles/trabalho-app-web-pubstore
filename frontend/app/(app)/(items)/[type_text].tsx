@@ -1,13 +1,11 @@
-import ButtonUser from '@/components/ButtonUser';
 import CustomBackdrop from '@/components/CustomBackdrop';
 import Page from '@/components/Page';
 import Product from '@/components/Product';
-import { cssVar } from '@/constants/css';
 import { ProductBasketProps } from '@/domain/interfaces/Product.interface';
 import { useCreateQueryProducts } from '@/hooks/service/post/useCreateQueryProducts';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useMemo } from 'react';
-import { Alert, StatusBar, StyleSheet } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useEffect } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 export default function Items() {
@@ -57,49 +55,27 @@ export default function Items() {
     }
   }, [isError, error, router]);
 
-  const screenOptions = useMemo(
-    () => ({
-      title: typeof text === 'string' ? text : 'Bebidas',
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-      headerRight: () => <ButtonUser />,
-    }),
-    [text]
-  );
-
   return (
     <Page>
       {isPending && <CustomBackdrop isOpen={true} />}
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
-      <Stack.Screen options={screenOptions} />
-
-      <FlashList
-        data={data}
-        keyExtractor={(product, index) => `${product.id}-${index}-${product.name}`}
-        renderItem={({ item }) => <Product {...item} />}
-        estimatedItemSize={200}
-        contentContainerStyle={styles.itemsList}
-      />
+      <View style={styles.itemsContainer}>
+        <FlashList
+          data={data}
+          keyExtractor={(product, index) => `${product.id}-${index}-${product.name}`}
+          renderItem={({ item }) => <Product {...item} />}
+          estimatedItemSize={200}
+          contentContainerStyle={styles.itemsList}
+        />
+      </View>
     </Page>
   );
 }
 
 const styles = StyleSheet.create({
+  itemsContainer: {
+    flex: 1,
+    width: '100%',
+  },
   itemsList: {
     paddingTop: 20,
     paddingBottom: 20,
