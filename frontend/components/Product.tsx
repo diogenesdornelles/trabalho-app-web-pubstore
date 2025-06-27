@@ -13,7 +13,6 @@ export default function Product(item: ProductProps): React.ReactElement {
   const state = useBasketStore(state => state);
 
   const handleAddToBasket = (e: any) => {
-    // Evitar que o evento se propague para o TouchableOpacity pai
     e.stopPropagation();
 
     if (!item.disponible) {
@@ -115,7 +114,7 @@ export default function Product(item: ProductProps): React.ReactElement {
           <SimpleLineIcons name="basket" size={RFValue(24)} color={cssVar.color.highlight} />
         </TouchableOpacity>
       )}
-      <ToolTip text="Ver detalhes" top={15} left={15} />
+      <ToolTip text="Detalhes" top={15} left={15} />
     </View>
   );
 }

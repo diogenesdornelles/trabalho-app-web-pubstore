@@ -1,9 +1,9 @@
 import ImageBackground from '@/components/ImageBackground';
 import Container from '@/components/Container';
-import { ViewStyle } from 'react-native';
+import { StatusBar, ViewStyle } from 'react-native';
 import { BlurTint } from 'expo-blur';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMemo } from 'react';
+import { cssVar } from '@/constants/css';
 
 interface PageProps {
   customStyle?: ViewStyle;
@@ -13,6 +13,7 @@ interface PageProps {
     radius?: number;
   };
   children?: React.ReactNode;
+  header: React.ReactNode;
   type?: 'view' | 'scrollView';
   onLayoutRootView?: () => void;
 }
@@ -21,16 +22,16 @@ export default function Page({
   children,
   type = 'view',
   customStyle,
+  header,
   blurSettings,
   onLayoutRootView,
 }: PageProps) {
   const memoizedChildren = useMemo(() => children, [children]);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Container type={type ? type : 'view'} onLayoutRootView={onLayoutRootView}>
-        <ImageBackground customStyle={customStyle} blurSettings={blurSettings} />
-        {memoizedChildren}
-      </Container>
-    </SafeAreaView>
+    <Container header={header} type={type ? type : 'view'} onLayoutRootView={onLayoutRootView}>
+      <StatusBar backgroundColor={cssVar.color.black} barStyle="light-content" />
+      <ImageBackground customStyle={customStyle} blurSettings={blurSettings} />
+      {memoizedChildren}
+    </Container>
   );
 }

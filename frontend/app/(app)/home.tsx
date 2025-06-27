@@ -1,25 +1,16 @@
+import CustomHeader from '@/components/CustomHeader';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
-import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 import { useEndSession } from '@/hooks/useEndSession';
-import { Link, Stack } from 'expo-router';
-import { StatusBar, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Link } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Home() {
   const endSession = useEndSession();
-  const screenOptions = useDefaultScreenOptions({
-    title: 'Home',
-  });
 
   return (
-    <Page>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
-      <Stack.Screen options={screenOptions} />
+    <Page header={<CustomHeader title="Home" />} type="view">
       <Text style={styles.homeText}>PubStore</Text>
       <Link
         href={{

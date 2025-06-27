@@ -1,10 +1,9 @@
+import CustomHeader from '@/components/CustomHeader';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
 import { useEndSession } from '@/hooks/useEndSession';
 import useSession from '@/hooks/useSession';
-import { Stack } from 'expo-router';
-import { useMemo } from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import {  StyleSheet, Text, View } from 'react-native';
 
 export default function Account() {
   const { authSession } = useSession();
@@ -15,38 +14,13 @@ export default function Account() {
   let cpf: string | undefined;
   let address: string | undefined;
   let email: string | undefined;
-  const screenOptions = useMemo(
-    () => ({
-      title: 'Conta',
-      headerStyle: { backgroundColor: cssVar.color.black },
-      headerTitleStyle: { color: cssVar.color.highlight },
-      animation: 'fade' as const,
-      headerTintColor: cssVar.color.white,
-      headerShown: true,
-      headerBackVisible: false,
-      headerLeft: () => null,
-      contentStyle: {
-        flexDirection: 'row' as const,
-        justifyContent: 'center' as const,
-        alignItems: 'baseline' as const,
-        alignContent: 'center' as const,
-      },
-    }),
-    []
-  );
 
   if (authSession) {
     ({ name, id, loggedAt, cpf, address, email } = authSession);
   }
 
   return (
-    <Page>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
-      <Stack.Screen options={screenOptions} />
+    <Page header={<CustomHeader title="Conta" />} type="view">
       <View style={styles.userInfo}>
         <Text style={styles.userText}>Informações do usuário: </Text>
         {name && <Text style={styles.userText}>Nome: {name}</Text>}

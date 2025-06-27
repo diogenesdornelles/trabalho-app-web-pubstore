@@ -1,10 +1,13 @@
 import { View, ScrollView, StyleSheet } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Container({
   children,
+  header,
   type = 'view',
   onLayoutRootView,
 }: {
+  header: React.ReactNode;
   children: React.ReactNode;
   type?: 'view' | 'scrollView';
   onLayoutRootView?: () => void;
@@ -12,13 +15,15 @@ export default function Container({
   if (type === 'view') {
     return (
       <View style={styles.container} onLayout={onLayoutRootView}>
-        {children}
+        <View style={styles.header}>{header}</View>
+        <View style={styles.body}>{children}</View>
       </View>
     );
   } else {
     return (
       <ScrollView contentContainerStyle={styles.container} onLayout={onLayoutRootView}>
-        {children}
+        <View style={styles.header}>{header}</View>
+        <View style={styles.body}>{children}</View>
       </ScrollView>
     );
   }
@@ -27,10 +32,18 @@ export default function Container({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  header: {
+    height: RFValue(75),
+    backgroundColor: '#000',
+    width: '100%',
+  },
+  body: {
+    width: '100%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%',
   },
 });

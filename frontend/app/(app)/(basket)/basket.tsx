@@ -5,23 +5,21 @@ import { cssVar } from '@/constants/css';
 import { useCreateOrder } from '@/hooks/service/post/useCreateOrder';
 import { useCreateProductOrdered } from '@/hooks/service/post/useCreateProductOrdered';
 import useBasketStore from '@/hooks/useBasketStore';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
-import { useQueryClient } from '@tanstack/react-query'
+
+import { useQueryClient } from '@tanstack/react-query';
+import CustomHeader from '@/components/CustomHeader';
 
 export default function Basket() {
   const state = useBasketStore(state => state);
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const router = useRouter();
   const queryCreateOrderMutation = useCreateOrder();
   const queryCreateProdutOrderedMutation = useCreateProductOrdered();
-  const screenOptions = useDefaultScreenOptions({
-    title: 'Cesta',
-  });
 
   const {
     isPending: isPendingOrderData,
@@ -134,14 +132,8 @@ export default function Basket() {
   }, [isErrorProductData, errorProductData]);
 
   return (
-    <Page>
+    <Page header={<CustomHeader title="Cesta" />} type="view">
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
-      <Stack.Screen options={screenOptions} />
       <View style={styles.basketCard}>
         <Text style={styles.basketTitle}>Produtos</Text>
         {state.products.length > 0 ? (

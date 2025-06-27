@@ -7,7 +7,6 @@ from sqlalchemy import Boolean, Column, DateTime
 from sqlalchemy import Enum as SqlEnum
 from sqlalchemy import Integer, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import UUID
-
 from src.models.product import TypeEnum
 from src.schemas.base import Base
 

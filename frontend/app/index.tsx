@@ -1,14 +1,14 @@
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
-import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 import useSession from '@/hooks/useSession';
 import Entypo from '@expo/vector-icons/Entypo';
 import * as Font from 'expo-font';
-import { Link, Stack, useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import CustomHeader from '@/components/CustomHeader';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,9 +21,6 @@ export default function Index() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { authSession } = useSession();
   const router = useRouter();
-  const screenOptions = useDefaultScreenOptions({ 
-    title: 'Pub Store' 
-  });
 
   useEffect(() => {
     async function prepare() {
@@ -54,11 +51,12 @@ export default function Index() {
 
   return (
     <Page
+      header={<CustomHeader title="Pub Store" />}
+      type="view"
       onLayoutRootView={onLayoutRootView}
       customStyle={{ opacity: 0.9, filter: 'grayscale(90%)' }}
       blurSettings={{ intensity: 50, tint: 'systemUltraThinMaterialDark', radius: 5 }}
     >
-      <Stack.Screen options={screenOptions} />
       <Link
         href={{
           pathname: '/sign-in',

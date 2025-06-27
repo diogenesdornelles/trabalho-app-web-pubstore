@@ -55,8 +55,7 @@
     "uuid": "^11.1.0",
     "yup": "^1.6.1",
     "zustand": "^5.0.3",
-    "@shopify/flash-list": "1.7.6",
-    "expo-dev-client": "~5.1.8"
+    "@shopify/flash-list": "1.7.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

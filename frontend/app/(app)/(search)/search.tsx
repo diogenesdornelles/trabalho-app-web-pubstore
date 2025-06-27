@@ -6,22 +6,14 @@ import { ProductQueryProps } from '@/domain/interfaces/Product.interface';
 import { useCreateQueryProducts } from '@/hooks/service/post/useCreateQueryProducts';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Picker } from '@react-native-picker/picker';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
-import {
-  Alert,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 import { FlashList } from '@shopify/flash-list';
-import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
+import CustomHeader from '@/components/CustomHeader';
 
 const SearchSchema = Yup.object().shape({
   name: Yup.string().notRequired(),
@@ -50,10 +42,6 @@ export default function Search() {
     reset: resetSearch,
   } = useCreateQueryProducts();
 
-  const screenOptions = useDefaultScreenOptions({
-    title: 'Pesquisar',
-  });
-
   useEffect(() => {
     if (isError) {
       Alert.alert('Erro', 'Ocorreu um erro ao buscar produtos', [
@@ -77,15 +65,8 @@ export default function Search() {
   };
 
   return (
-    <Page>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
-      <Stack.Screen options={screenOptions} />
+    <Page header={<CustomHeader title="Pesquisar" />} type="view">
       {isPending && <CustomBackdrop isOpen={true} />}
-
       {data && (
         <>
           <View style={styles.searchClear}>

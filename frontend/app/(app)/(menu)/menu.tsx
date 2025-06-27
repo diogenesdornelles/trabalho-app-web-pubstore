@@ -1,16 +1,12 @@
 import Page from '@/components/Page';
 import ButtonMenu from '@/components/ButtonMenu';
-import { cssVar } from '@/constants/css';
 import { ButtonType } from '@/domain/types/Button.type';
-import { Stack } from 'expo-router';
-import { StatusBar, StyleSheet, View } from 'react-native';
+
+import { StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
+import CustomHeader from '@/components/CustomHeader';
 
 export default function Menu() {
-  const screenOptions = useDefaultScreenOptions({
-    title: 'Menu',
-  });
   const buttons: ButtonType[] = [
     {
       text: 'Chopps',
@@ -39,13 +35,7 @@ export default function Menu() {
   );
 
   return (
-    <Page>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
-      <Stack.Screen options={screenOptions} />
+    <Page header={<CustomHeader title="Menu" />} type="view">
       <View style={styles.menuContainer}>
         <FlashList
           data={buttons}

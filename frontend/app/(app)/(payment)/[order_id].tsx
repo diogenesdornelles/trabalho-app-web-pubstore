@@ -1,20 +1,16 @@
 import CustomBackdrop from '@/components/CustomBackdrop';
+import CustomHeader from '@/components/CustomHeader';
 import Page from '@/components/Page';
-import { cssVar } from '@/constants/css';
 import { useGetOrderById } from '@/hooks/service/get/useGetOrderById';
-import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert, StatusBar } from 'react-native';
+import { Alert } from 'react-native';
 
 export default function Payment() {
   const { order_id } = useLocalSearchParams();
   const { isPending, error, isFetching, isRefetching, isLoading, refetch } = useGetOrderById(
     order_id as string
   );
-  const screenOptions = useDefaultScreenOptions({
-    title: 'Pagamento',
-  });
 
   useEffect(() => {
     if (error) {
@@ -34,14 +30,8 @@ export default function Payment() {
   }, [error, refetch]);
 
   return (
-    <Page>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
+    <Page header={<CustomHeader title="Detalhes" />} type="view">
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
-      <Stack.Screen options={screenOptions} />
     </Page>
   );
 }

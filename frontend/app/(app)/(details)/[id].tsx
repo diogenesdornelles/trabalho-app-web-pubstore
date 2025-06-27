@@ -1,22 +1,14 @@
 import CustomBackdrop from '@/components/CustomBackdrop';
+import CustomHeader from '@/components/CustomHeader';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
 import { useGetProductById } from '@/hooks/service/get/useGetProductById';
 import useBasketStore from '@/hooks/useBasketStore';
-import { useDefaultScreenOptions } from '@/hooks/useDefaultScreenOptions';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image } from 'expo-image';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import {
-  Alert,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Dropdown from 'react-native-input-select';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -27,9 +19,6 @@ export default function Details() {
   const [quantityError, setQuantityError] = useState<boolean>(false);
   const { isPending, error, data, isFetching, isRefetching, isLoading, refetch } =
     useGetProductById(id as string);
-  const screenOptions = useDefaultScreenOptions({
-    title: 'Detalhes',
-  });
 
   const state = useBasketStore(state => state);
 
@@ -131,13 +120,7 @@ export default function Details() {
   }, [error, router]);
 
   return data && data.id ? (
-    <Page>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={cssVar.color.black}
-        translucent={false}
-      />
-      <Stack.Screen options={screenOptions} />
+    <Page header={<CustomHeader title="Detalhes" />} type="view">
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <ScrollView style={styles.detailsCard}>
         <Image source={{ uri: data.source }} style={styles.detailsImage} contentFit="contain" />

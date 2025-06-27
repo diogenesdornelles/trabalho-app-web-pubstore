@@ -7,6 +7,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
+import CustomHeader from '@/components/CustomHeader';
 
 export default function Items() {
   const router = useRouter();
@@ -56,7 +57,7 @@ export default function Items() {
   }, [isError, error, router]);
 
   return (
-    <Page>
+    <Page header={<CustomHeader title="Produtos" />} type="view">
       {isPending && <CustomBackdrop isOpen={true} />}
       <View style={styles.itemsContainer}>
         <FlashList
