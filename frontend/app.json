@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/splash-chopp.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
@@ -37,18 +37,21 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-chopp.png",
-          "resizeMode": "contain",
-          "contentFit": "cover",
           "backgroundColor": "#000000",
-          "imageWidth": 200
+          "resizeMode": "contain",
+          "imageResizeMode": "contain",
+          "imageHeight": 200,
+          "imageWidth": 200,
+          "dark": {
+            "image": "./assets/images/splash-chopp.png",
+            "backgroundColor": "#000000"
+          }
         }
       ],
       [
         "expo-asset",
         {
-          "assets": [
-            "./assets/images/"
-          ]
+          "assets": ["./assets/images/"]
         }
       ]
     ],
