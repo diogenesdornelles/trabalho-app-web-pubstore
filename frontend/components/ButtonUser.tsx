@@ -19,9 +19,9 @@ export default function ButtonUser() {
           <Text style={styles.buttonUserTextHeader}>{authSession ? authSession.name : ''}</Text>
         )}
         {authSession ? (
-          <Feather name="user-check" size={24} color="white" />
+          <Feather name="user-check" size={25} color="white" />
         ) : (
-          <Feather name="user-minus" size={24} color="white" />
+          <Feather name="user-minus" size={25} color="white" />
         )}
       </TouchableOpacity>
     </Link>
@@ -31,11 +31,11 @@ export default function ButtonUser() {
 const styles = StyleSheet.create({
   buttonUserHeader: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
     columnGap: 10,
-    marginTop: 0,
+    marginRight: 10,
   },
   buttonUserTextHeader: {
     color: cssVar.color.white,

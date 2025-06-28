@@ -5,6 +5,7 @@ import { ButtonType } from '@/domain/types/Button.type';
 import { StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import CustomHeader from '@/components/CustomHeader';
+import ButtonUser from '@/components/ButtonUser';
 
 export default function Menu() {
   const buttons: ButtonType[] = [
@@ -35,7 +36,7 @@ export default function Menu() {
   );
 
   return (
-    <Page header={<CustomHeader title="Menu" />} type="view">
+    <Page header={<CustomHeader title="Menu" right={<ButtonUser />} />} type="view">
       <View style={styles.menuContainer}>
         <FlashList
           data={buttons}

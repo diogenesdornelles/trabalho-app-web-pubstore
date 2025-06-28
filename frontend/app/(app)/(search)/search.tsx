@@ -9,11 +9,20 @@ import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 import { FlashList } from '@shopify/flash-list';
 import CustomHeader from '@/components/CustomHeader';
+import ButtonUser from '@/components/ButtonUser';
 
 const SearchSchema = Yup.object().shape({
   name: Yup.string().notRequired(),
@@ -65,10 +74,10 @@ export default function Search() {
   };
 
   return (
-    <Page header={<CustomHeader title="Pesquisar" />} type="view">
+    <Page header={<CustomHeader title="Pesquisar" right={<ButtonUser />} />} type="view">
       {isPending && <CustomBackdrop isOpen={true} />}
       {data && (
-        <>
+        <View style={{ flex: 1, width: '100%' }}>
           <View style={styles.searchClear}>
             <TouchableOpacity activeOpacity={0.7} onPress={resetSearch}>
               <MaterialIcons name="clear" size={30} color="white" />
@@ -86,7 +95,7 @@ export default function Search() {
               contentContainerStyle={styles.searchListContent}
             />
           )}
-        </>
+        </View>
       )}
 
       {!data && (
@@ -188,7 +197,11 @@ export default function Search() {
                 )}
               </View>
               <TouchableOpacity onPress={submitForm} style={styles.searchButton}>
-                <Text style={styles.searchButtonText}>Buscar</Text>
+                {!isPending ? (
+                  <Text style={styles.searchButtonText}>Buscar</Text>
+                ) : (
+                  <ActivityIndicator size="large" color={cssVar.color.highlight} animating={true} />
+                )}
               </TouchableOpacity>
             </View>
           )}
@@ -228,6 +241,8 @@ const styles = StyleSheet.create({
   searchListContent: {
     paddingTop: 10,
     paddingBottom: 10,
+
+    width: '100%',
   },
   searchTitle: {
     fontSize: RFValue(24, 540),

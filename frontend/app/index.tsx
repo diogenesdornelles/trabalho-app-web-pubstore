@@ -51,7 +51,7 @@ export default function Index() {
 
   return (
     <Page
-      header={<CustomHeader title="Pub Store" />}
+      header={<CustomHeader title="Pub Store" backOptions={{ show: false }} />}
       type="view"
       onLayoutRootView={onLayoutRootView}
       customStyle={{ opacity: 0.9, filter: 'grayscale(90%)' }}

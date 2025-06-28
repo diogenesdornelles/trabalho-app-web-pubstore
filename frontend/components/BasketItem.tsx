@@ -79,7 +79,7 @@ export default function BasketItem({
         <View style={styles.basketItemActionRow}>
           <Link
             href={{
-              pathname: '/(app)/(details)/[id]',
+              pathname: '/(app)/(menu)/(items)/(details)/[id]',
               params: { id: product.id },
             }}
             asChild

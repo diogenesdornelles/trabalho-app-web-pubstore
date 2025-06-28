@@ -8,7 +8,7 @@ export default function ButtonMenu({ item, index }: { item: ButtonType; index: n
   return (
     <Link
       href={{
-        pathname: '/(app)/(items)/[type_text]' as ExternalPathString,
+        pathname: '/(app)/(menu)/(items)/[type_text]' as ExternalPathString,
         params: { type_text: `${item.type}_${item.text}` },
       }}
       style={styles.buttonMenuLink}

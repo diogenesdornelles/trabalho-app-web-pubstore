@@ -1,3 +1,4 @@
+import ButtonUser from '@/components/ButtonUser';
 import CustomHeader from '@/components/CustomHeader';
 import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
@@ -10,7 +11,10 @@ export default function Home() {
   const endSession = useEndSession();
 
   return (
-    <Page header={<CustomHeader title="Home" />} type="view">
+    <Page
+      header={<CustomHeader title="Home" right={<ButtonUser />} backOptions={{ show: false }} />}
+      type="view"
+    >
       <Text style={styles.homeText}>PubStore</Text>
       <Link
         href={{

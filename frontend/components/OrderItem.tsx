@@ -106,7 +106,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
       {order.payment_status === 'pending' && (
         <Link
           href={{
-            pathname: '/(app)/(payment)/[order_id]',
+            pathname: '/(app)/(orders)/(payment)/[order_id]',
             params: { order_id: order.id },
           }}
           style={[styles.orderItemLink, { marginHorizontal: 'auto', marginBottom: 30 }]}

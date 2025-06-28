@@ -73,7 +73,7 @@ export default function Product(item: ProductProps): React.ReactElement {
     <View style={styles.productWrapper}>
       <Link
         href={{
-          pathname: '/(app)/(details)/[id]',
+          pathname: '/(app)/(menu)/(items)/(details)/[id]',
           params: { id: item.id },
         }}
         style={[styles.productLink, { marginBottom: 30 }]}

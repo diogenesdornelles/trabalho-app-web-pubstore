@@ -3,7 +3,15 @@ import useSession from '@/hooks/useSession';
 import { useRouter } from 'expo-router';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 
@@ -16,8 +24,8 @@ export const SignInForm = () => {
       .required('Obrigatório'),
     password: Yup.string().min(2, 'Muito curta!').max(50, 'Muito longa!').required('Obrigatório'),
   });
-  const { signIn } = useSession();
-  const [error, setError] = useState(false);
+  const { signIn, isLoading, isLoggingIn, loginError } = useSession();
+  const [error, setError] = useState('');
 
   const handleSignIn = (success: boolean) => {
     if (success) {
@@ -29,9 +37,9 @@ export const SignInForm = () => {
         },
       ]);
     } else {
-      setError(true);
+      setError(loginError?.message || 'Erro ao fazer login');
       setTimeout(() => {
-        setError(false);
+        setError('');
       }, 3000);
     }
   };
@@ -79,9 +87,13 @@ export const SignInForm = () => {
               <Text style={styles.signFormErrorText}>{errors.password}</Text>
             )}
           </View>
-          {error && <Text style={styles.signFormErrorText}>CPF ou senha errados</Text>}
+          {error && <Text style={styles.signFormErrorText}>{error}</Text>}
           <TouchableOpacity onPress={() => submitForm()} style={styles.signFormButton}>
-            <Text style={styles.signFormButtonText}>Enviar</Text>
+            {!isLoading && !isLoggingIn ? (
+              <Text style={styles.signFormButtonText}>Enviar</Text>
+            ) : (
+              <ActivityIndicator size="large" color={cssVar.color.highlight} animating={true} />
+            )}
           </TouchableOpacity>
         </View>
       )}

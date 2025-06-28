@@ -7,12 +7,13 @@ import { useCreateProductOrdered } from '@/hooks/service/post/useCreateProductOr
 import useBasketStore from '@/hooks/useBasketStore';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import { useQueryClient } from '@tanstack/react-query';
 import CustomHeader from '@/components/CustomHeader';
+import ButtonUser from '@/components/ButtonUser';
 
 export default function Basket() {
   const state = useBasketStore(state => state);
@@ -132,7 +133,7 @@ export default function Basket() {
   }, [isErrorProductData, errorProductData]);
 
   return (
-    <Page header={<CustomHeader title="Cesta" />} type="view">
+    <Page header={<CustomHeader title="Cesta" right={<ButtonUser />} />} type="view">
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
       <View style={styles.basketCard}>
         <Text style={styles.basketTitle}>Produtos</Text>
@@ -165,7 +166,11 @@ export default function Basket() {
               activeOpacity={0.7}
               onPress={handleMakeOrder}
             >
-              <Text style={styles.basketButtonText}>Fazer Pedido</Text>
+              {isPendingOrderData || isPendingOrderData ? (
+                <ActivityIndicator size="large" color={cssVar.color.highlight} animating={true} />
+              ) : (
+                <Text style={styles.basketButtonText}>Fazer Pedido</Text>
+              )}
             </TouchableOpacity>
           </>
         ) : (
