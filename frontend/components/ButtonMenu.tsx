@@ -1,6 +1,6 @@
 import { cssVar } from '@/constants/css';
 import { ButtonType } from '@/domain/types/Button.type';
-import { ExternalPathString, Link } from 'expo-router';
+import { Link } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -8,7 +8,7 @@ export default function ButtonMenu({ item, index }: { item: ButtonType; index: n
   return (
     <Link
       href={{
-        pathname: '/(app)/(menu)/(items)/[type_text]' as ExternalPathString,
+        pathname: '/menu/items/[type_text]',
         params: { type_text: `${item.type}_${item.text}` },
       }}
       style={styles.buttonMenuLink}

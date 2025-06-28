@@ -241,7 +241,6 @@ const styles = StyleSheet.create({
   searchListContent: {
     paddingTop: 10,
     paddingBottom: 10,
-
     width: '100%',
   },
   searchTitle: {

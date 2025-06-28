@@ -1,5 +1,6 @@
-import { ImageBackground as ImageBackground_, StyleSheet, ViewStyle } from 'react-native';
+import { ImageBackground as ImageBackground_, StyleSheet, View, ViewStyle } from 'react-native';
 import { BlurTint, BlurView } from 'expo-blur';
+import { cssVar } from '@/constants/css';
 
 interface Props {
   customStyle?: ViewStyle;
@@ -24,6 +25,7 @@ export default function ImageBackground({ customStyle, blurSettings }: Props) {
         intensity={blurSettings?.intensity ?? 50}
         tint={blurSettings?.tint ?? 'default'}
       />
+      <View style={styles.blackView}></View>
     </>
   );
 }
@@ -44,5 +46,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: -2,
+  },
+  blackView: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: cssVar.color.black,
+    width: '100%',
+    height: '100%',
+    zIndex: -3,
   },
 });

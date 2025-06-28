@@ -1,5 +1,9 @@
 import { LoginProps } from '@/domain/interfaces/Login.interface';
-import { OrderCreateProps, OrderProps } from '@/domain/interfaces/Order.interface';
+import {
+  OrderCreateProps,
+  OrderProps,
+  OrderUpdateProps,
+} from '@/domain/interfaces/Order.interface';
 import { ProductProps, ProductQueryProps } from '@/domain/interfaces/Product.interface';
 import {
   ProductOrderedCreateProps,
@@ -26,6 +30,12 @@ export function useApi() {
 
       createOne: async (order: OrderCreateProps): Promise<OrderProps> => {
         const { data } = await restClient.post('orders', order);
+        return data;
+      },
+
+      updateOne: async (order_id: string, order: OrderUpdateProps): Promise<OrderProps> => {
+        const { data } = await restClient.put(`orders/${order_id}`, order);
+
         return data;
       },
       deleteOne: async (order_id: string): Promise<OrderProps> => {

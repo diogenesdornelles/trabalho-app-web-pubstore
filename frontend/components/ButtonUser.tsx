@@ -8,12 +8,12 @@ export default function ButtonUser() {
   const { authSession } = useSession();
   const router = useRouter();
   return (
-    <Link style={styles.buttonUserLinkHeader} href="/account" asChild>
+    <Link style={styles.buttonUserLinkHeader} href="/user" asChild>
       <TouchableOpacity
         activeOpacity={0.7}
         style={styles.buttonUserHeader}
         hitSlop={20}
-        onPressIn={() => router.push('/account')}
+        onPressIn={() => router.push('/user')}
       >
         {authSession && (
           <Text style={styles.buttonUserTextHeader}>{authSession ? authSession.name : ''}</Text>

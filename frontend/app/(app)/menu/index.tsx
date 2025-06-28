@@ -6,33 +6,38 @@ import { StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import CustomHeader from '@/components/CustomHeader';
 import ButtonUser from '@/components/ButtonUser';
+import { useCallback } from 'react';
+import { cssVar } from '@/constants/css';
+
+const buttons: ButtonType[] = [
+  {
+    text: 'Chopps',
+    type: 'chopp',
+  },
+  {
+    text: 'Cervejas',
+    type: 'beer',
+  },
+  {
+    text: 'Whiskeys',
+    type: 'whiskey',
+  },
+  {
+    text: 'Espumantes',
+    type: 'sparkling',
+  },
+  {
+    text: 'Vinhos',
+    type: 'wine',
+  },
+];
 
 export default function Menu() {
-  const buttons: ButtonType[] = [
-    {
-      text: 'Chopps',
-      type: 'chopp',
-    },
-    {
-      text: 'Cervejas',
-      type: 'beer',
-    },
-    {
-      text: 'Whiskeys',
-      type: 'whiskey',
-    },
-    {
-      text: 'Espumantes',
-      type: 'sparkling',
-    },
-    {
-      text: 'Vinhos',
-      type: 'wine',
-    },
-  ];
-
-  const renderButton = ({ item, index }: { item: ButtonType; index: number }) => (
-    <ButtonMenu item={item} index={index} key={`${item.text}-${index}-${item.type}`} />
+  const renderButton = useCallback(
+    ({ item, index }: { item: ButtonType; index: number }) => (
+      <ButtonMenu item={item} index={index} key={`${item.text}-${index}-${item.type}`} />
+    ),
+    []
   );
 
   return (
@@ -57,9 +62,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingHorizontal: 20,
+    backgroundColor: cssVar.color.black,
   },
   menuListContent: {
-    alignItems: 'center',
     paddingVertical: 20,
   },
 });

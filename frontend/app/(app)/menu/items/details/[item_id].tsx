@@ -22,22 +22,22 @@ import Dropdown from 'react-native-input-select';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Details() {
-  const { id } = useLocalSearchParams();
+  const { item_id } = useLocalSearchParams();
   const router = useRouter();
   const [quantity, setQuantity] = useState<number>(1);
   const [quantityError, setQuantityError] = useState<boolean>(false);
   const { isPending, error, data, isFetching, isRefetching, isLoading, refetch } =
-    useGetProductById(id as string);
+    useGetProductById(item_id as string);
 
   const state = useBasketStore(state => state);
 
   useEffect(() => {
-    if (error) {
+    if (error && item_id && !isPending && !isFetching && !isRefetching) {
       console.error('Error fetching product details:', error);
       Alert.alert('Erro', `Falha ao carregar detalhes`, [
         {
-          text: 'Tentar novamente',
-          onPress: () => refetch(),
+          text: 'Ir para Home',
+          onPress: () => router.push('/home'),
         },
         {
           text: 'OK',
@@ -46,7 +46,11 @@ export default function Details() {
       ]);
       return;
     }
-  }, [error, refetch]);
+  }, [error, refetch, isFetching, isRefetching, isPending, item_id, router]);
+
+  if (!item_id) {
+    return <CustomBackdrop isOpen={true} />;
+  }
 
   const handleAddProduct = () => {
     if (state && !state.customer_id) {
@@ -115,18 +119,6 @@ export default function Details() {
       }
     }
   };
-
-  useEffect(() => {
-    if (error) {
-      Alert.alert('Erro', 'Ocorreu um erro ao buscar os produtos', [
-        {
-          text: 'OK',
-          onPress: () => router.push('/home'),
-          style: 'cancel',
-        },
-      ]);
-    }
-  }, [error, router]);
 
   return data && data.id ? (
     <Page header={<CustomHeader title="Detalhes" right={<ButtonUser />} />} type="view">

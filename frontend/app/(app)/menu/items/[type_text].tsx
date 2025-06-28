@@ -9,6 +9,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import CustomHeader from '@/components/CustomHeader';
 import ButtonUser from '@/components/ButtonUser';
+import { cssVar } from '@/constants/css';
 
 export default function Items() {
   const router = useRouter();
@@ -18,6 +19,19 @@ export default function Items() {
 
   const queryProductsMutation = useCreateQueryProducts();
   const { data, isPending, isError, error, mutateAsync: queryProducts } = queryProductsMutation;
+
+  useEffect(() => {
+    if (isError && type && text && !isPending) {
+      console.error('Erro ao buscar produtos:', error);
+      Alert.alert('Erro', `Ocorreu um erro ao buscar os produtos`, [
+        {
+          text: 'OK',
+          onPress: () => router.push('/home'),
+          style: 'cancel',
+        },
+      ]);
+    }
+  }, [isError, error, router, isPending, type, text]);
 
   const fetchProducts = useCallback(async () => {
     if (!type || !text) {
@@ -44,18 +58,9 @@ export default function Items() {
     fetchProducts();
   }, [fetchProducts]);
 
-  useEffect(() => {
-    if (isError) {
-      console.error('Erro ao buscar produtos:', error);
-      Alert.alert('Erro', `Ocorreu um erro ao buscar os produtos`, [
-        {
-          text: 'OK',
-          onPress: () => router.push('/home'),
-          style: 'cancel',
-        },
-      ]);
-    }
-  }, [isError, error, router]);
+  if (!type || !text) {
+    return <CustomBackdrop isOpen={true} />;
+  }
 
   return (
     <Page header={<CustomHeader title="Produtos" right={<ButtonUser />} />} type="view">
@@ -77,6 +82,7 @@ const styles = StyleSheet.create({
   itemsContainer: {
     flex: 1,
     width: '100%',
+    backgroundColor: cssVar.color.black,
   },
   itemsList: {
     paddingTop: 20,

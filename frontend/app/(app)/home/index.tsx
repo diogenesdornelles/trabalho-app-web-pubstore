@@ -22,7 +22,7 @@ export default function Home() {
         }}
         style={[styles.homeLink, { marginHorizontal: 'auto' }]}
         asChild
-        key="Sign-in"
+        key="menu"
       >
         <TouchableOpacity style={styles.homeButton} activeOpacity={0.7}>
           <Text style={styles.homeButtonText}>Menu</Text>
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   homeLink: {},
   homeButton: {
     color: cssVar.color.white,
-    fontSize: RFValue(16, 540), // vw padrão de 680
+    fontSize: RFValue(16, 540),
     fontWeight: 'bold',
     textAlign: 'center',
     justifyContent: 'center',
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   homeButtonText: {
-    fontSize: RFValue(16, 540), // vw padrão de 680
+    fontSize: RFValue(16, 540),
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 8,

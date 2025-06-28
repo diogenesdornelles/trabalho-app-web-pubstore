@@ -39,14 +39,11 @@ export default function Orders() {
     }
   }, [error, refetch]);
 
-  const renderOrderItem = ({ item, index }: { item: any; index: number }) => (
-    <OrderItem order={item} index={index} />
-  );
+  const renderOrderItem = ({ item }: { item: any }) => <OrderItem order={item} />;
 
   return (
     <Page header={<CustomHeader title="Pedidos" right={<ButtonUser />} />} type="view">
-      {(isPending || isLoading || isFetching || isRefetching) && <
-        CustomBackdrop isOpen={true} />}
+      {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <View style={styles.ordersCard}>
         <Text style={styles.ordersTitle}>Lista</Text>
         {data && data.length > 0 ? (

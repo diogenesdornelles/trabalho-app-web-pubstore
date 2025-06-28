@@ -8,10 +8,10 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useDeleteOrder } from '@/hooks/service/delete/useDeleteOrder';
 interface OrderItemProps {
   order: OrderProps;
-  index: number;
+  forPay?: boolean;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, forPay = false }) => {
   const { mutate, isPending, isSuccess, isError } = useDeleteOrder();
   const totalItems = order.ordered_products.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -74,9 +74,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
       <View style={styles.orderItemHeader}>
         <Text style={styles.orderItemOrderId}>Pedido #{order.id.substring(0, 8)}</Text>
         <Text style={styles.orderItemDate}>{formattedDate}</Text>
-        <TouchableOpacity onPress={handleRemove} style={styles.orderItemRemoveButton}>
-          <Ionicons name="trash" size={24} color={cssVar.color.red} />
-        </TouchableOpacity>
+        {!forPay && order.payment_status !== 'paid' && (
+          <TouchableOpacity onPress={handleRemove} style={styles.orderItemRemoveButton}>
+            <Ionicons name="trash" size={24} color={cssVar.color.red} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.orderItemDetails}>
         <View style={styles.orderItemDetailRow}>
@@ -103,10 +105,10 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, index }) => {
           </View>
         </View>
       </View>
-      {order.payment_status === 'pending' && (
+      {order.payment_status === 'pending' && !forPay && (
         <Link
           href={{
-            pathname: '/(app)/(orders)/(payment)/[order_id]',
+            pathname: '/orders/payment/[order_id]',
             params: { order_id: order.id },
           }}
           style={[styles.orderItemLink, { marginHorizontal: 'auto', marginBottom: 30 }]}
@@ -148,9 +150,11 @@ const styles = StyleSheet.create({
   },
   orderItemHeader: {
     flexDirection: 'row',
+    width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
+    gap: 8,
     borderBottomWidth: 1,
     borderBottomColor: cssVar.color.highlight + '30',
     paddingBottom: 8,
