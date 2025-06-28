@@ -62,13 +62,14 @@ class ProductOrderedRepository(
 
             return ProductOrderedOut.model_validate(temp_prod)
         except Exception as e:
-            # Fazer rollback em caso de erros
             await self.db_session.rollback()
             raise HTTPException(
                 status_code=500, detail=f"Error on create order: {str(e)}"
             ) from e
 
-    async def update_one(self, item_id: str, data: ProductOrderedIn) -> ProductOrderedOut:
+    async def update_one(
+        self, item_id: str, data: ProductOrderedIn
+    ) -> ProductOrderedOut:
         raise NotImplementedError("Not implemented method")
 
     async def delete_one(self, item_id: str) -> ProductOrderedOut:

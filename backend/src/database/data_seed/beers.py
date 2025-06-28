@@ -55,8 +55,8 @@ beers: list[ProductIn] = [
         alcohol_content=5.2,
         ibu=18,
         disponible=True,
-        source=f"{static_files_source}/patagonia_pilsener.jpg",
+        source=f"{static_files_source}/patagonia_pilsener.png",
         quantity=400,
         volume=355,
-    )
+    ),
 ]

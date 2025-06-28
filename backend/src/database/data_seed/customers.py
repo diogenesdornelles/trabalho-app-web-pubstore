@@ -8,7 +8,7 @@ settings = get_settings()
 
 customers = [
     CustomerIn(
-        name="first",
+        name="João Silva",
         cpf=settings.SUPER_USER_COD,
         password=get_pwd_hash(settings.SUPER_USER_PWD),
         address="Rua 1, Bairro 1, Cidade 1, Estado 1",

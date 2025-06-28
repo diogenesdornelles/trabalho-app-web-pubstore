@@ -51,9 +51,18 @@ class OrderInDB(OrderBase):
     customer_id: UUID4 = Field(description="Customer id")
     payment_status: PaymentStatusEnum = Field(
         description="Order payment status must be paid, pending, cancelled, refunded or chargeback",
-        default="pending",
+        default=PaymentStatusEnum.pending,
     )
     created_at: datetime | None = Field(default=None, description="Created at date")
+
+
+class OrderUpdate(OrderBase):
+    """Classe de atualização para pedido"""
+
+    payment_status: PaymentStatusEnum = Field(
+        description="Order payment status must be paid, pending, cancelled, refunded or chargeback",
+        default=PaymentStatusEnum.pending,
+    )
 
 
 class OrderOut(OrderInDB):

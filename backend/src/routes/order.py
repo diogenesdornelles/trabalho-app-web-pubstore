@@ -8,7 +8,7 @@ from fastapi.responses import ORJSONResponse
 from src.crud.order_repository import OrderRepository
 from src.dependencies.customer_auth_dep import customer_auth_dep
 from src.dependencies.db_session_dep import DBSessionDep
-from src.models.order import OrderIn, OrderOut
+from src.models.order import OrderIn, OrderOut, OrderUpdate
 
 order_router: APIRouter = APIRouter(
     prefix="/orders",
@@ -61,6 +61,30 @@ async def create_one(
     """Busca produto por ID"""
     repo = OrderRepository(db_session)
     result = await repo.create_one(order)
+    if result:
+        return ORJSONResponse(
+            content=result.model_dump(mode="json"),
+            media_type="application/json; charset=UTF-8",
+        )
+    return ORJSONResponse(
+        content={"Error": "order id not found"},
+        status_code=status.HTTP_400_BAD_REQUEST,
+        media_type="application/json; charset=UTF-8",
+    )
+
+
+@order_router.put("/{order_id}", response_model=OrderOut)
+async def put_one(
+    db_session: DBSessionDep,
+    order_id: Annotated[
+        str,
+        Path(regex="^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"),
+    ],
+    order: Annotated[OrderUpdate, Body()],
+) -> ORJSONResponse:
+    """Busca produto por ID"""
+    repo = OrderRepository(db_session)
+    result = await repo.update_one(order_id, order)
     if result:
         return ORJSONResponse(
             content=result.model_dump(mode="json"),
