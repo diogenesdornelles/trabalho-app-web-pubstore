@@ -7,5 +7,6 @@ export function useGetProductById(product_id: string) {
   return useQuery({
     queryFn: () => product.getOne(product_id),
     queryKey: ['product', 'get', product_id],
+    enabled: !!product_id,
   });
 }

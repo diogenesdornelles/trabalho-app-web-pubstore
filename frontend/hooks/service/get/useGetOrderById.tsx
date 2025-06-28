@@ -6,5 +6,6 @@ export function useGetOrderById(order_id: string) {
   return useQuery({
     queryFn: () => order.getOne(order_id),
     queryKey: ['order', 'getOne', order_id],
+    enabled: !!order_id,
   });
 }

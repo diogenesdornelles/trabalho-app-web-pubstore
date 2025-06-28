@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useApi } from '../../useApi';
 
-export function useGetOrdersByCustomerId(customer_id: string) {
+export function useGetOrdersByCustomerId(customer_id: string, enable: boolean = true) {
   const { order } = useApi();
   return useQuery({
     queryFn: () => order.getByCustomerId(customer_id),
