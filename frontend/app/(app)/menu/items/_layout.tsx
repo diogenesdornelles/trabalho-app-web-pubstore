@@ -7,7 +7,10 @@ export default function ItemsLayout() {
   SystemUI.setBackgroundColorAsync('black');
   return (
     <View style={{ backgroundColor: cssVar.color.black, flex: 1 }}>
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="[type]" />
+        <Stack.Screen name="details" />
+      </Stack>
     </View>
   );
 }

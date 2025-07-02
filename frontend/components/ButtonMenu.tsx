@@ -1,20 +1,31 @@
 import { cssVar } from '@/constants/css';
 import { ButtonType } from '@/domain/types/Button.type';
-import { Link } from 'expo-router';
+import { ExternalPathString, Link } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export default function ButtonMenu({ item, index }: { item: ButtonType; index: number }) {
+export default function ButtonMenu({
+  item,
+  isDrink = false,
+}: {
+  item: ButtonType;
+  isDrink?: boolean;
+}) {
+  let href: string | { pathname: ExternalPathString; params?: Record<string, any> };
+
+  if (!isDrink) {
+    href = {
+      pathname: item.url as ExternalPathString,
+    };
+  } else {
+    href = {
+      pathname: '/menu/items/[type]' as ExternalPathString,
+      params: { type: item.url },
+    };
+  }
+
   return (
-    <Link
-      href={{
-        pathname: '/menu/items/[type_text]',
-        params: { type_text: `${item.type}_${item.text}` },
-      }}
-      style={styles.buttonMenuLink}
-      asChild
-      key={`${item.text}-${index}`}
-    >
+    <Link href={href} style={styles.buttonMenuLink} asChild>
       <TouchableOpacity style={styles.buttonMenu} activeOpacity={0.7}>
         <Text style={styles.menuButtonText}>{item.text}</Text>
       </TouchableOpacity>

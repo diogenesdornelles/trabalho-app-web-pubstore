@@ -6,7 +6,10 @@ export default function MenuLayout() {
   SystemUI.setBackgroundColorAsync('black');
   return (
     <View style={{ backgroundColor: cssVar.color.black, flex: 1 }}>
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="items" />
+      </Stack>
     </View>
   );
 }

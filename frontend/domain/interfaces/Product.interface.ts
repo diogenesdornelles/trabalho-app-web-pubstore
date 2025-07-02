@@ -1,4 +1,4 @@
-type ProductType = 'chopp' | 'wine' | 'beer' | 'sparkling' | 'whiskey';
+export type ProductType = 'chopp' | 'wine' | 'beer' | 'sparkling' | 'whiskey';
 
 interface BaseProductProps {
   id: string;

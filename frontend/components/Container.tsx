@@ -1,5 +1,4 @@
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Container({
   children,
@@ -36,9 +35,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    height: RFValue(75),
     backgroundColor: '#000',
     width: '100%',
+    height: 60,
   },
   body: {
     width: '100%',

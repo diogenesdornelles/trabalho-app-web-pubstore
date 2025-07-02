@@ -3,7 +3,7 @@ import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
 import { useEndSession } from '@/hooks/useEndSession';
 import useSession from '@/hooks/useSession';
-import {  StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function Account() {
   const { authSession } = useSession();

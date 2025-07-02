@@ -1,58 +1,34 @@
 import Page from '@/components/Page';
 import ButtonMenu from '@/components/ButtonMenu';
-import { ButtonType } from '@/domain/types/Button.type';
-
-import { StyleSheet, View } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import CustomHeader from '@/components/CustomHeader';
-import ButtonUser from '@/components/ButtonUser';
-import { useCallback } from 'react';
 import { cssVar } from '@/constants/css';
 
-const buttons: ButtonType[] = [
-  {
-    text: 'Chopps',
-    type: 'chopp',
-  },
-  {
-    text: 'Cervejas',
-    type: 'beer',
-  },
-  {
-    text: 'Whiskeys',
-    type: 'whiskey',
-  },
-  {
-    text: 'Espumantes',
-    type: 'sparkling',
-  },
-  {
-    text: 'Vinhos',
-    type: 'wine',
-  },
-];
-
 export default function Menu() {
-  const renderButton = useCallback(
-    ({ item, index }: { item: ButtonType; index: number }) => (
-      <ButtonMenu item={item} index={index} key={`${item.text}-${index}-${item.type}`} />
-    ),
-    []
-  );
-
   return (
-    <Page header={<CustomHeader title="Menu" right={<ButtonUser />} />} type="view">
-      <View style={styles.menuContainer}>
-        <FlashList
-          data={buttons}
-          renderItem={({ item, index }) => {
-            return renderButton({ item, index });
+    <Page
+      header={<CustomHeader title="Menu" showBasket showUser showBackButton={false} />}
+      type="view"
+    >
+      <ScrollView style={styles.menuContainer}>
+        <ButtonMenu item={{ text: 'Pesquisar', url: 'search' }} />
+        <ButtonMenu item={{ text: 'Meus Pedidos', url: 'orders' }} />
+        <ButtonMenu item={{ text: 'Cesta', url: 'basket' }} />
+        <View
+          style={{
+            marginTop: 20,
+            borderTopWidth: 1,
+            borderColor: cssVar.color.gray,
+            paddingTop: 20,
           }}
-          keyExtractor={(item, index) => `${item.text}-${index}-${item.type}`}
-          estimatedItemSize={120}
-          contentContainerStyle={styles.menuListContent}
-        />
-      </View>
+        >
+          <ButtonMenu item={{ text: 'Chopps', url: 'chopp' }} isDrink={true} />
+          <ButtonMenu item={{ text: 'Cervejas', url: 'beer' }} isDrink={true} />
+          <ButtonMenu item={{ text: 'Whiskeys', url: 'whiskey' }} isDrink={true} />
+          <ButtonMenu item={{ text: 'Espumantes', url: 'sparkling' }} isDrink={true} />
+          <ButtonMenu item={{ text: 'Vinhos', url: 'wine' }} isDrink={true} />
+        </View>
+      </ScrollView>
     </Page>
   );
 }
@@ -61,10 +37,9 @@ const styles = StyleSheet.create({
   menuContainer: {
     flex: 1,
     width: '100%',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     backgroundColor: cssVar.color.black,
-  },
-  menuListContent: {
-    paddingVertical: 20,
+    gap: 15,
+    marginVertical: 20,
   },
 });

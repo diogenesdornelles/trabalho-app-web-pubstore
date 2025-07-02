@@ -16,7 +16,9 @@ export default function ButtonUser() {
         onPressIn={() => router.push('/user')}
       >
         {authSession && (
-          <Text style={styles.buttonUserTextHeader}>{authSession ? authSession.name : ''}</Text>
+          <Text style={styles.buttonUserTextHeader}>
+            {authSession ? authSession.name.split(' ')[0] : ''}
+          </Text>
         )}
         {authSession ? (
           <Feather name="user-check" size={25} color="white" />

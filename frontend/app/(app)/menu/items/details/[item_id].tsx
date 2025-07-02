@@ -1,4 +1,3 @@
-import ButtonUser from '@/components/ButtonUser';
 import CustomBackdrop from '@/components/CustomBackdrop';
 import CustomHeader from '@/components/CustomHeader';
 import Page from '@/components/Page';
@@ -121,7 +120,7 @@ export default function Details() {
   };
 
   return data && data.id ? (
-    <Page header={<CustomHeader title="Detalhes" right={<ButtonUser />} />} type="view">
+    <Page header={<CustomHeader title="Detalhes" showBasket showUser />} type="view">
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <ScrollView style={styles.detailsCard}>
         <Image source={{ uri: data.source }} style={styles.detailsImage} contentFit="contain" />

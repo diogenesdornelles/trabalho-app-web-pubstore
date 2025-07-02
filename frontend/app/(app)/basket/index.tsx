@@ -13,7 +13,6 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import { useQueryClient } from '@tanstack/react-query';
 import CustomHeader from '@/components/CustomHeader';
-import ButtonUser from '@/components/ButtonUser';
 
 export default function Basket() {
   const state = useBasketStore(state => state);
@@ -133,7 +132,7 @@ export default function Basket() {
   }, [isErrorProductData, errorProductData]);
 
   return (
-    <Page header={<CustomHeader title="Cesta" right={<ButtonUser />} />} type="view">
+    <Page header={<CustomHeader title="Cesta" showUser />} type="view">
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
       <View style={styles.basketCard}>
         <Text style={styles.basketTitle}>Produtos</Text>
@@ -141,9 +140,7 @@ export default function Basket() {
           <>
             <FlashList
               data={state.products}
-              keyExtractor={(product, index) =>
-                `${product.id}-${index}-${product.quantity}-${product.name}`
-              }
+              keyExtractor={product => product.id}
               renderItem={({ item, index }) => (
                 <BasketItem
                   product={item}

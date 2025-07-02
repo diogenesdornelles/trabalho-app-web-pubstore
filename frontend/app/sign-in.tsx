@@ -48,7 +48,7 @@ export default function SignIn() {
     }
   };
   return (
-    <Page header={<CustomHeader title="Sigin" backOptions={{ show: false }} />} type="view">
+    <Page header={<CustomHeader title="Sigin" />} type="view">
       <Formik
         initialValues={{ cpf: '', password: '' }}
         onSubmit={async values => handleSignIn(await signIn(values.cpf, values.password))}

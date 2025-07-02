@@ -22,7 +22,6 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import * as Yup from 'yup';
 import { FlashList } from '@shopify/flash-list';
 import CustomHeader from '@/components/CustomHeader';
-import ButtonUser from '@/components/ButtonUser';
 
 const SearchSchema = Yup.object().shape({
   name: Yup.string().notRequired(),
@@ -74,7 +73,7 @@ export default function Search() {
   };
 
   return (
-    <Page header={<CustomHeader title="Pesquisar" right={<ButtonUser />} />} type="view">
+    <Page header={<CustomHeader title="Pesquisar" showBackButton />} type="view">
       {isPending && <CustomBackdrop isOpen={true} />}
       {data && (
         <View style={{ flex: 1, width: '100%' }}>
@@ -89,7 +88,7 @@ export default function Search() {
           ) : (
             <FlashList
               data={data}
-              keyExtractor={(product, index) => `${product.id}-${index}-${product.price}`}
+              keyExtractor={product => product.id}
               renderItem={({ item }) => <Product {...item} />}
               estimatedItemSize={200}
               contentContainerStyle={styles.searchListContent}

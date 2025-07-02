@@ -9,7 +9,6 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { RFValue } from 'react-native-responsive-fontsize';
 import CustomHeader from '@/components/CustomHeader';
-import ButtonUser from '@/components/ButtonUser';
 
 export default function Orders() {
   const state = useBasketStore(state => state);
@@ -42,16 +41,14 @@ export default function Orders() {
   const renderOrderItem = ({ item }: { item: any }) => <OrderItem order={item} />;
 
   return (
-    <Page header={<CustomHeader title="Pedidos" right={<ButtonUser />} />} type="view">
+    <Page header={<CustomHeader title="Pedidos" showBasket showUser />} type="view">
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <View style={styles.ordersCard}>
         <Text style={styles.ordersTitle}>Lista</Text>
         {data && data.length > 0 ? (
           <FlashList
             data={data}
-            keyExtractor={(order, index) =>
-              `${order.id}-${index}-${order.created_at.toString()}-${order.ordered_products.length}`
-            }
+            keyExtractor={order => order.id}
             renderItem={renderOrderItem}
             estimatedItemSize={150}
             contentContainerStyle={styles.ordersListContent}

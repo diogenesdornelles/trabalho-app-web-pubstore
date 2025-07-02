@@ -1,21 +1,21 @@
 import CustomBackdrop from '@/components/CustomBackdrop';
 import Page from '@/components/Page';
 import Product from '@/components/Product';
-import { ProductBasketProps } from '@/domain/interfaces/Product.interface';
+import { ProductBasketProps, ProductType } from '@/domain/interfaces/Product.interface';
 import { useCreateQueryProducts } from '@/hooks/service/post/useCreateQueryProducts';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import CustomHeader from '@/components/CustomHeader';
-import ButtonUser from '@/components/ButtonUser';
 import { cssVar } from '@/constants/css';
+import { itemTypeConverter } from '@/utils/itemTypeConverter';
 
 export default function Items() {
   const router = useRouter();
-  const { type_text } = useLocalSearchParams();
+  const { type } = useLocalSearchParams();
 
-  const [type, text] = typeof type_text === 'string' ? type_text.split('_') : ['beer', 'Cervejas'];
+  const text = itemTypeConverter(type as ProductType);
 
   const queryProductsMutation = useCreateQueryProducts();
   const { data, isPending, isError, error, mutateAsync: queryProducts } = queryProductsMutation;
@@ -63,12 +63,12 @@ export default function Items() {
   }
 
   return (
-    <Page header={<CustomHeader title="Produtos" right={<ButtonUser />} />} type="view">
+    <Page header={<CustomHeader title="Produtos" showBasket showUser />} type="view">
       {isPending && <CustomBackdrop isOpen={true} />}
       <View style={styles.itemsContainer}>
         <FlashList
           data={data}
-          keyExtractor={(product, index) => `${product.id}-${index}-${product.name}`}
+          keyExtractor={product => product.id}
           renderItem={({ item }) => <Product {...item} />}
           estimatedItemSize={200}
           contentContainerStyle={styles.itemsList}

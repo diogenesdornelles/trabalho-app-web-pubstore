@@ -84,11 +84,7 @@ export default function BasketItem({
             }}
             asChild
             onPress={e => e.stopPropagation()}
-          >
-            <TouchableOpacity style={styles.basketItemViewButton} activeOpacity={0.7}>
-              <AntDesign name="infocirlceo" size={30} color={cssVar.color.black} />
-            </TouchableOpacity>
-          </Link>
+          ></Link>
         </View>
 
         {/* Linha do meio: Botões de quantidade */}
