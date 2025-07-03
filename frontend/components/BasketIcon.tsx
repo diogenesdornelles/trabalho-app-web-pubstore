@@ -1,6 +1,6 @@
 import { cssVar } from '@/constants/css';
 import useBasketStore from '@/hooks/useBasketStore';
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
@@ -16,9 +16,9 @@ export const BasketIcon = () => {
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.iconContainer}>
         {quantity > 0 ? (
-          <SimpleLineIcons name="basket-loaded" size={28} color={cssVar.color.highlight} />
+          <MaterialCommunityIcons name="basket-fill" size={28} color={cssVar.color.highlight} />
         ) : (
-          <SimpleLineIcons name="basket" size={28} color={cssVar.color.highlight} />
+          <MaterialCommunityIcons name="basket-off" size={28} color={cssVar.color.highlight} />
         )}
         {quantity > 0 && (
           <View style={styles.badge}>

@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     height: '90%',
     flex: 1,
     backgroundColor: cssVar.color.gray,
-    borderRadius: 0,
+    borderRadius: 10,
     shadowColor: cssVar.color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     padding: 3,
     paddingTop: 7,
     paddingBottom: 10,
+    marginVertical: 30,
   },
   detailsImage: {
     width: '100%',
@@ -273,7 +274,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 15,
     marginBottom: 40,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   detailsButtonText: {
     color: cssVar.color.black,

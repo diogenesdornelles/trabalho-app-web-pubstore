@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   basketItemImage: {
     width: RFValue(50),
     height: RFValue(50),
-    borderRadius: 5,
+    borderRadius: 10,
     marginRight: RFValue(10),
   },
   basketItemInfo: {

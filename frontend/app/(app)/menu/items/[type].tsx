@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: cssVar.color.black,
+    marginVertical: 30,
   },
   itemsList: {
     paddingTop: 20,

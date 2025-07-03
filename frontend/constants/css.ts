@@ -6,7 +6,7 @@ export const cssVar = {
     // Cores de realce
     greenLight: '#84BF04', // Verde 1
     greenMedium: '#618C03', // Verde 2
-    greenDark: '#5B7329', // Verde 3
+    greenDark: '#2f4858', // Verde 3
 
     // Cores de fundo
     background: '#222426', // Cor de fundo principal
@@ -44,7 +44,7 @@ export const cssVar = {
     yellow: '#FFD54F', // Avisos suaves ou destaques alternativos
     red: '#E53935', // Erros ou ações negativas
     darkRed: '#C62828',
-    orange: '#FF9800', // Alertas ou chamadas de atenção
+    orange: '#F27B57', // Alertas ou chamadas de atenção
     blue: '#1E88E5', // Informações ou elementos interativos
   },
 };

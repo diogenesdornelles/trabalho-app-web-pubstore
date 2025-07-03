@@ -41,7 +41,7 @@ export default function Orders() {
   const renderOrderItem = ({ item }: { item: any }) => <OrderItem order={item} />;
 
   return (
-    <Page header={<CustomHeader title="Pedidos" showBasket showUser />} type="view">
+    <Page header={<CustomHeader title="Pedidos" showBasket showUser showMenu />} type="view">
       {(isPending || isLoading || isFetching || isRefetching) && <CustomBackdrop isOpen={true} />}
       <View style={styles.ordersCard}>
         <Text style={styles.ordersTitle}>Lista</Text>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: cssVar.color.darkGray,
-    borderRadius: 0,
+    borderRadius: 10,
     shadowColor: cssVar.color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 2,
     paddingTop: 4,
+    marginVertical: 30,
   },
   ordersListContent: {
     paddingTop: 10,

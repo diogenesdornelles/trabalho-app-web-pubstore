@@ -132,7 +132,7 @@ export default function Basket() {
   }, [isErrorProductData, errorProductData]);
 
   return (
-    <Page header={<CustomHeader title="Cesta" showUser />} type="view">
+    <Page header={<CustomHeader title="Cesta" showUser showMenu />} type="view">
       {(isPendingOrderData || isPendingProductData) && <CustomBackdrop isOpen={true} />}
       <View style={styles.basketCard}>
         <Text style={styles.basketTitle}>Produtos</Text>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: cssVar.color.darkGray,
-    borderRadius: 0,
+    borderRadius: 10,
     shadowColor: cssVar.color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 2,
     paddingTop: 4,
+    marginVertical: 30,
   },
   basketListContent: {
     paddingTop: 10,
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 15,
     marginBottom: 40,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   basketButtonText: {
     color: cssVar.color.black,

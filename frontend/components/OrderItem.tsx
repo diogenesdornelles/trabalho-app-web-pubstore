@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   orderItemStatusBadge: {
     paddingVertical: 4,
     paddingHorizontal: 12,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   orderItemPaidStatus: {
     backgroundColor: '#2E7D32',
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: cssVar.color.black,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: cssVar.color.highlight,
     marginTop: 20,

@@ -1,6 +1,6 @@
 import { cssVar } from '@/constants/css';
 import useSession from '@/hooks/useSession';
-import Feather from '@expo/vector-icons/Feather';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
@@ -21,9 +21,9 @@ export default function ButtonUser() {
           </Text>
         )}
         {authSession ? (
-          <Feather name="user-check" size={25} color="white" />
+          <MaterialCommunityIcons name="account-check" size={28} color={cssVar.color.highlight} />
         ) : (
-          <Feather name="user-minus" size={25} color="white" />
+          <MaterialCommunityIcons name="account-minus" size={28} color={cssVar.color.highlight} />
         )}
       </TouchableOpacity>
     </Link>

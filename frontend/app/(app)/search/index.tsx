@@ -13,8 +13,8 @@ import {
   ActivityIndicator,
   Alert,
   StyleSheet,
-  Text,
   TextInput,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -73,7 +73,7 @@ export default function Search() {
   };
 
   return (
-    <Page header={<CustomHeader title="Pesquisar" showBackButton />} type="view">
+    <Page header={<CustomHeader title="Pesquisar" showBackButton showMenu />} type="view">
       {isPending && <CustomBackdrop isOpen={true} />}
       {data && (
         <View style={{ flex: 1, width: '100%' }}>
@@ -98,113 +98,119 @@ export default function Search() {
       )}
 
       {!data && (
-        <Formik
-          initialValues={{
-            name: '',
-            brand: '',
-            description: '',
-            min_price: '',
-            max_price: '',
-            product_type: undefined,
-          }}
-          onSubmit={handleSearch}
-          validationSchema={SearchSchema}
-        >
-          {({ handleChange, handleBlur, submitForm, values, errors, touched, setFieldValue }) => (
-            <View style={styles.searchForm}>
-              <Text style={styles.searchTitle}>Buscar Produtos</Text>
+        <View style={{ flex: 1, width: '100%', marginVertical: 30 }}>
+          <Formik
+            initialValues={{
+              name: '',
+              brand: '',
+              description: '',
+              min_price: '',
+              max_price: '',
+              product_type: undefined,
+            }}
+            onSubmit={handleSearch}
+            validationSchema={SearchSchema}
+          >
+            {({ handleChange, handleBlur, submitForm, values, errors, touched, setFieldValue }) => (
+              <View style={styles.searchForm}>
+                <Text style={styles.searchTitle}>Buscar Produtos</Text>
 
-              <View style={styles.searchInputRow}>
-                <Text style={styles.searchLabel}>Nome</Text>
-                <TextInput
-                  placeholder="Nome"
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  value={values.name}
-                  style={styles.searchInput}
-                  placeholderTextColor="#aaa"
-                />
-                {touched.name && errors.name && (
-                  <Text style={styles.searchErrorText}>{errors.name}</Text>
-                )}
-              </View>
+                <View style={styles.searchInputRow}>
+                  <Text style={styles.searchLabel}>Nome</Text>
+                  <TextInput
+                    placeholder="Nome"
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    value={values.name}
+                    style={styles.searchInput}
+                    placeholderTextColor="#aaa"
+                  />
+                  {touched.name && errors.name && (
+                    <Text style={styles.searchErrorText}>{errors.name}</Text>
+                  )}
+                </View>
 
-              <View style={styles.searchInputRow}>
-                <Text style={styles.searchLabel}>Descrição</Text>
-                <TextInput
-                  placeholder="Descrição"
-                  onChangeText={handleChange('description')}
-                  onBlur={handleBlur('description')}
-                  value={values.description}
-                  style={styles.searchInput}
-                  placeholderTextColor="#aaa"
-                />
-                {touched.description && errors.description && (
-                  <Text style={styles.searchErrorText}>{errors.description}</Text>
-                )}
-              </View>
+                <View style={styles.searchInputRow}>
+                  <Text style={styles.searchLabel}>Descrição</Text>
+                  <TextInput
+                    placeholder="Descrição"
+                    onChangeText={handleChange('description')}
+                    onBlur={handleBlur('description')}
+                    value={values.description}
+                    style={styles.searchInput}
+                    placeholderTextColor="#aaa"
+                  />
+                  {touched.description && errors.description && (
+                    <Text style={styles.searchErrorText}>{errors.description}</Text>
+                  )}
+                </View>
 
-              <View style={styles.searchInputRow}>
-                <Text style={styles.searchLabel}>Preço mínimo</Text>
-                <TextInput
-                  placeholder="Preço mínimo"
-                  keyboardType="numeric"
-                  onChangeText={handleChange('min_price')}
-                  onBlur={handleBlur('min_price')}
-                  value={values.min_price}
-                  style={styles.searchInput}
-                  placeholderTextColor="#aaa"
-                />
-                {touched.min_price && errors.min_price && (
-                  <Text style={styles.searchErrorText}>{errors.min_price}</Text>
-                )}
-              </View>
+                <View style={styles.searchInputRow}>
+                  <Text style={styles.searchLabel}>Preço mínimo</Text>
+                  <TextInput
+                    placeholder="Preço mínimo"
+                    keyboardType="numeric"
+                    onChangeText={handleChange('min_price')}
+                    onBlur={handleBlur('min_price')}
+                    value={values.min_price}
+                    style={styles.searchInput}
+                    placeholderTextColor="#aaa"
+                  />
+                  {touched.min_price && errors.min_price && (
+                    <Text style={styles.searchErrorText}>{errors.min_price}</Text>
+                  )}
+                </View>
 
-              <View style={styles.searchInputRow}>
-                <Text style={styles.searchLabel}>Preço máximo</Text>
-                <TextInput
-                  placeholder="Preço máximo"
-                  keyboardType="numeric"
-                  onChangeText={handleChange('max_price')}
-                  onBlur={handleBlur('max_price')}
-                  value={values.max_price}
-                  style={styles.searchInput}
-                  placeholderTextColor="#aaa"
-                />
-                {touched.max_price && errors.max_price && (
-                  <Text style={styles.searchErrorText}>{errors.max_price}</Text>
-                )}
-              </View>
+                <View style={styles.searchInputRow}>
+                  <Text style={styles.searchLabel}>Preço máximo</Text>
+                  <TextInput
+                    placeholder="Preço máximo"
+                    keyboardType="numeric"
+                    onChangeText={handleChange('max_price')}
+                    onBlur={handleBlur('max_price')}
+                    value={values.max_price}
+                    style={styles.searchInput}
+                    placeholderTextColor="#aaa"
+                  />
+                  {touched.max_price && errors.max_price && (
+                    <Text style={styles.searchErrorText}>{errors.max_price}</Text>
+                  )}
+                </View>
 
-              <View style={styles.searchInputRow}>
-                <Text style={styles.searchLabel}>Tipo de Produto</Text>
-                <Picker
-                  selectedValue={values.product_type}
-                  onValueChange={value => setFieldValue('product_type', value)}
-                  style={[styles.searchInput, { height: 60, borderRadius: 8 }]}
-                  dropdownIconColor={cssVar.color.white}
-                >
-                  <Picker.Item label="Todos" value={undefined} />
-                  <Picker.Item label="Chopp" value="chopp" />
-                  <Picker.Item label="Vinho" value="wine" />
-                  <Picker.Item label="Cerveja" value="beer" />
-                  <Picker.Item label="Espumante" value="sparkling" />
-                  <Picker.Item label="Whiskey" value="whiskey" />
-                </Picker>
-                {touched.product_type && errors.product_type && (
-                  <Text style={styles.searchErrorText}>{errors.product_type}</Text>
-                )}
+                <View style={styles.searchInputRow}>
+                  <Text style={styles.searchLabel}>Tipo de Produto</Text>
+                  <Picker
+                    selectedValue={values.product_type}
+                    onValueChange={value => setFieldValue('product_type', value)}
+                    style={[styles.searchInput, { height: 60, borderRadius: 8 }]}
+                    dropdownIconColor={cssVar.color.white}
+                  >
+                    <Picker.Item label="Todos" value={undefined} />
+                    <Picker.Item label="Chopp" value="chopp" />
+                    <Picker.Item label="Vinho" value="wine" />
+                    <Picker.Item label="Cerveja" value="beer" />
+                    <Picker.Item label="Espumante" value="sparkling" />
+                    <Picker.Item label="Whiskey" value="whiskey" />
+                  </Picker>
+                  {touched.product_type && errors.product_type && (
+                    <Text style={styles.searchErrorText}>{errors.product_type}</Text>
+                  )}
+                </View>
+                <TouchableOpacity onPress={submitForm} style={styles.searchButton}>
+                  {!isPending ? (
+                    <Text style={styles.searchButtonText}>Buscar</Text>
+                  ) : (
+                    <ActivityIndicator
+                      size="large"
+                      color={cssVar.color.highlight}
+                      animating={true}
+                    />
+                  )}
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={submitForm} style={styles.searchButton}>
-                {!isPending ? (
-                  <Text style={styles.searchButtonText}>Buscar</Text>
-                ) : (
-                  <ActivityIndicator size="large" color={cssVar.color.highlight} animating={true} />
-                )}
-              </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
+            )}
+          </Formik>
+        </View>
       )}
     </Page>
   );
@@ -215,9 +221,7 @@ const styles = StyleSheet.create({
     backgroundColor: cssVar.color.white,
     width: '100%',
     padding: 10,
-    borderRadius: 0,
     alignItems: 'center',
-    marginVertical: 20,
     shadowColor: cssVar.color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -234,7 +238,6 @@ const styles = StyleSheet.create({
     padding: 18,
     zIndex: 10,
     backgroundColor: cssVar.color.black,
-    marginTop: 20,
     alignItems: 'center',
   },
   searchListContent: {
@@ -263,7 +266,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     fontSize: 18,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
@@ -276,7 +279,7 @@ const styles = StyleSheet.create({
     backgroundColor: cssVar.color.black,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: cssVar.color.highlight,
     marginTop: 20,

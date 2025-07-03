@@ -80,6 +80,7 @@ export const SignInForm = () => {
               onBlur={handleBlur('password')}
               value={values.password}
               style={styles.signFormInput}
+              keyboardType="numeric"
               secureTextEntry
               placeholderTextColor="#aaa"
             />
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     backgroundColor: cssVar.color.white,
     width: '90%',
     padding: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     alignItems: 'center',
     marginVertical: 20,
     shadowColor: cssVar.color.black,
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     fontSize: 18,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: cssVar.color.black,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: cssVar.color.highlight,
     marginTop: 20,

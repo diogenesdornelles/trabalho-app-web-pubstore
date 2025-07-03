@@ -3,7 +3,8 @@ import Page from '@/components/Page';
 import { cssVar } from '@/constants/css';
 import { useEndSession } from '@/hooks/useEndSession';
 import useSession from '@/hooks/useSession';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Card, List, Button, Avatar } from 'react-native-paper';
 
 export default function Account() {
   const { authSession } = useSession();
@@ -20,63 +21,102 @@ export default function Account() {
   }
 
   return (
-    <Page header={<CustomHeader title="Conta" />} type="view">
-      <View style={styles.userInfo}>
-        <Text style={styles.userText}>Informações do usuário: </Text>
-        {name && <Text style={styles.userText}>Nome: {name}</Text>}
-        {id && <Text style={styles.userText}>ID: {id}</Text>}
-        {cpf && <Text style={styles.userText}>CPF: {cpf}</Text>}
-        {address && <Text style={styles.userText}>Endereço: {address}</Text>}
-        {email && <Text style={styles.userText}>E-mail: {email}</Text>}
-        {loggedAt && (
-          <Text style={styles.userText}>Logado em: {new Date(loggedAt).toLocaleDateString()}</Text>
-        )}
+    <Page header={<CustomHeader title="Conta" showMenu />} type="view">
+      <View style={styles.container}>
+        <Avatar.Icon
+          icon="account-circle"
+          size={80}
+          style={{ backgroundColor: cssVar.color.backgroundDark, marginBottom: 16 }}
+          color={cssVar.color.highlight}
+        />
+        <Card style={styles.card}>
+          <Card.Title
+            title={name || 'Usuário'}
+            subtitle={email}
+            titleStyle={styles.cardTitle}
+            subtitleStyle={styles.cardSubtitle}
+            left={props => <Avatar.Text {...props} label={name ? name[0] : '?'} />}
+          />
+          <Card.Content>
+            <List.Section>
+              {id && (
+                <List.Item
+                  title="ID"
+                  description={id}
+                  left={props => <List.Icon {...props} icon="identifier" />}
+                />
+              )}
+              {cpf && (
+                <List.Item
+                  title="CPF"
+                  description={cpf}
+                  left={props => <List.Icon {...props} icon="card-account-details" />}
+                />
+              )}
+              {address && (
+                <List.Item
+                  title="Endereço"
+                  description={address}
+                  left={props => <List.Icon {...props} icon="home" />}
+                />
+              )}
+              {loggedAt && (
+                <List.Item
+                  title="Logado em"
+                  description={new Date(loggedAt).toLocaleDateString()}
+                  left={props => <List.Icon {...props} icon="calendar-check" />}
+                />
+              )}
+            </List.Section>
+          </Card.Content>
+        </Card>
+        <Button
+          mode="contained"
+          onPress={endSession}
+          style={styles.signOutButton}
+          labelStyle={styles.signOutLabel}
+          buttonColor={cssVar.color.red}
+        >
+          Sair
+        </Button>
       </View>
-      <Text style={styles.userSignOut} onPress={() => endSession()}>
-        Sair
-      </Text>
     </Page>
   );
 }
 
 const styles = StyleSheet.create({
-  userInfo: {
-    backgroundColor: cssVar.color.black,
-    padding: 20,
-    margin: 20,
-    borderWidth: 1,
-    borderTopColor: cssVar.color.highlight,
-    borderBottomColor: cssVar.color.highlight,
-    shadowColor: cssVar.color.highlight,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 5,
-    width: '100%',
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    paddingVertical: 5,
+    paddingHorizontal: 3,
+    marginVertical: 30,
   },
-  userTitle: {
+  card: {
+    width: '100%',
+    marginBottom: 30,
+    backgroundColor: cssVar.color.greenDark,
+    borderRadius: 16,
+    elevation: 4,
+  },
+  cardTitle: {
     color: cssVar.color.highlight,
-    fontSize: 26,
-    fontWeight: '600',
-    marginBottom: 10,
-    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: 'bold',
   },
-  userText: {
-    color: cssVar.color.white,
-    fontSize: 18,
-    marginVertical: 4,
+  cardSubtitle: {
+    color: cssVar.color.gray,
+    fontSize: 16,
   },
-  userSignOut: {
-    fontSize: 26,
-    position: 'absolute',
-    color: cssVar.color.white,
-    bottom: 10,
-    marginTop: 30,
-    textShadowColor: cssVar.color.black,
-    backgroundColor: cssVar.color.black,
-    padding: 50,
+  signOutButton: {
     width: '100%',
-    textAlign: 'center',
-    opacity: 1,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  signOutLabel: {
+    color: cssVar.color.white,
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });

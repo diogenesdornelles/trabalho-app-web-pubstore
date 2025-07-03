@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   productContainer: {
     width: '95%',
     backgroundColor: cssVar.color.backgroundDark,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: RFValue(10),
     alignItems: 'center',
     shadowColor: cssVar.color.black,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   productImage: {
     width: '100%',
     height: RFValue(120),
-    borderRadius: 5,
+    borderRadius: 10,
   },
   productTextContainer: {
     marginTop: RFValue(10),
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: RFValue(4),
     paddingHorizontal: RFValue(8),
-    borderRadius: 5,
+    borderRadius: 10,
   },
   productAvailable: {
     color: cssVar.color.white,
